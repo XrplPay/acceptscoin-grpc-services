@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AcceptsCoin.Services.CoreServer.Migrations
 {
-    public partial class InitialDb : Migration
+    public partial class initialDb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -283,19 +283,19 @@ namespace AcceptsCoin.Services.CoreServer.Migrations
                 columns: new[] { "CategoryId", "CreatedById", "CreatedDate", "Deleted", "Icon", "Logo", "Name", "Priority", "Published", "UpdatedById", "UpdatedDate" },
                 values: new object[,]
                 {
-                    { new Guid("711425a4-07b9-4396-bb33-942a73ba6354"), new Guid("999bb90f-3167-4f81-83bb-0c76d1d3ace5"), new DateTime(2021, 12, 5, 0, 11, 52, 88, DateTimeKind.Local).AddTicks(970), false, "", "", "Food", 1, true, null, null },
-                    { new Guid("ba626277-b49c-4e2b-9410-16ca496f278d"), new Guid("999bb90f-3167-4f81-83bb-0c76d1d3ace5"), new DateTime(2021, 12, 5, 0, 11, 52, 95, DateTimeKind.Local).AddTicks(8140), false, "", "", "Car", 2, true, null, null }
+                    { new Guid("711425a4-07b9-4396-bb33-942a73ba6354"), new Guid("999bb90f-3167-4f81-83bb-0c76d1d3ace5"), new DateTime(2021, 12, 5, 13, 34, 11, 233, DateTimeKind.Local).AddTicks(2923), false, "", "", "Food", 1, true, null, null },
+                    { new Guid("ba626277-b49c-4e2b-9410-16ca496f278d"), new Guid("999bb90f-3167-4f81-83bb-0c76d1d3ace5"), new DateTime(2021, 12, 5, 13, 34, 11, 235, DateTimeKind.Local).AddTicks(9360), false, "", "", "Car", 2, true, null, null }
                 });
 
             migrationBuilder.InsertData(
                 table: "Languages",
                 columns: new[] { "LanguageId", "Code", "CreatedById", "CreatedDate", "Deleted", "Icon", "Logo", "Name", "Priority", "Published", "UpdatedById", "UpdatedDate" },
-                values: new object[] { new Guid("9934b846-e3f1-406a-9207-04926e553d1b"), "en", new Guid("999bb90f-3167-4f81-83bb-0c76d1d3ace5"), new DateTime(2021, 12, 5, 0, 11, 52, 96, DateTimeKind.Local).AddTicks(4640), false, "", "", "ENGLISH", 0, true, null, null });
+                values: new object[] { new Guid("9934b846-e3f1-406a-9207-04926e553d1b"), "en", new Guid("999bb90f-3167-4f81-83bb-0c76d1d3ace5"), new DateTime(2021, 12, 5, 13, 34, 11, 236, DateTimeKind.Local).AddTicks(9922), false, "", "", "ENGLISH", 0, true, null, null });
 
             migrationBuilder.InsertData(
                 table: "Partners",
                 columns: new[] { "PartnerId", "ApiKey", "ContactNumber", "CreatedById", "CreatedDate", "Deleted", "Description", "Email", "LanguageId", "Logo", "Manager", "Name", "Owner", "Published", "UpdatedById", "UpdatedDate", "WebSiteUrl" },
-                values: new object[] { new Guid("bff3b2dd-e89d-46fc-a868-aab93a3efbbe"), new Guid("a96b2fa5-fbf2-4173-92eb-c5c9ce77e7dc"), "0000", new Guid("999bb90f-3167-4f81-83bb-0c76d1d3ace5"), new DateTime(2021, 12, 5, 0, 11, 52, 96, DateTimeKind.Local).AddTicks(9020), false, null, "info@acceptscoin.com", new Guid("9934b846-e3f1-406a-9207-04926e553d1b"), "", null, "Accepts Coin", null, true, null, null, "https://acceptscoin.com" });
+                values: new object[] { new Guid("bff3b2dd-e89d-46fc-a868-aab93a3efbbe"), new Guid("a96b2fa5-fbf2-4173-92eb-c5c9ce77e7dc"), "0000", new Guid("999bb90f-3167-4f81-83bb-0c76d1d3ace5"), new DateTime(2021, 12, 5, 13, 34, 11, 237, DateTimeKind.Local).AddTicks(4458), false, null, "info@acceptscoin.com", new Guid("9934b846-e3f1-406a-9207-04926e553d1b"), "", null, "Accepts Coin", null, true, null, null, "https://acceptscoin.com" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Categories_CreatedById",

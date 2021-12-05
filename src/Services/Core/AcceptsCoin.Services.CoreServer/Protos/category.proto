@@ -7,22 +7,24 @@ package category;
 
 
 service CategoryAppService{
-    rpc GetAllCategory (Empty) returns (CategoriesApp);
+    rpc GetAll (Empty) returns (CategoryListGm);
+    rpc GetById (CategoryIdFilter) returns (CategoryGm);
+    rpc Post (CategoryGm) returns (CategoryGm);
+    rpc Put (CategoryGm) returns (CategoryGm);
+    rpc Delete (CategoryIdFilter) returns (Empty);
 }
-
-
 message Empty{
-
 }
-
-message CategoryApp {
-    string categoryId=1;
-    string name=2;
-    string icon=3;
-    string logo=4;
-    string priority=5;
+message CategoryIdFilter {
+ string categoryId = 1;
 }
-
-message CategoriesApp {
-    repeated CategoryApp items = 1;
+message CategoryGm {
+    string categoryId = 1;
+    string name = 2;
+    string icon = 3;
+    string logo = 4;
+    int32 priority = 5;
+}
+message CategoryListGm {
+    repeated CategoryGm items = 1;
 }

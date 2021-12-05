@@ -2,7 +2,17 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <UserSecretsId>7358c4bf-370a-438e-967f-750777c675c2</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>..\..</DockerfileContext>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Controllers\v1\AuthController.cs" />
+    <Compile Remove="Controllers\v1\CoreController.cs" />
+    <Compile Remove="Controllers\v1\DirectoryController.cs" />
+    <Compile Remove="Controllers\v1\TokenController.cs" />
+  </ItemGroup>
 
   <ItemGroup>
     <None Remove="Controllers\" />
@@ -22,15 +32,14 @@
     <None Remove="Grpc.Tools" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Controllers\" />
+    <Folder Include="Controllers\v1\Directory\" />
+    <Folder Include="Controllers\v1\Token\" />
     <Folder Include="Controllers\v2\" />
-    <Folder Include="Controllers\v1\" />
-    <Folder Include="Core\" />
     <Folder Include="Core\Views\" />
-    <Folder Include="Core\Dtos\" />
     <Folder Include="Protos\" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.11.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="5.0.0" />
@@ -44,8 +53,15 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-      <Protobuf Include="..\..\Services\Core\AcceptsCoin.Services.CoreServer\Protos\category.proto" GrpcServices="Client">
-          <Link>Protos\category.proto</Link>
-      </Protobuf>
+    <ProjectReference Include="..\..\Common\AcceptsCoin.Common\AcceptsCoin.Common.csproj" />
+    <ProjectReference Include="..\..\Services\Core\AcceptsCoin.Services.CoreServer\AcceptsCoin.Services.CoreServer.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Protobuf Include="..\..\Services\Core\AcceptsCoin.Services.CoreServer\Protos\category.proto" GrpcServices="Client" ProtoCompile="true">
+      <Link>Protos\category.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\..\Services\Identity\AcceptsCoin.Services.IdentityServer\Protos\auth.proto" GrpcServices="Client">
+      <Link>Protos\auth.proto</Link>
+    </Protobuf>
   </ItemGroup>
 </Project>

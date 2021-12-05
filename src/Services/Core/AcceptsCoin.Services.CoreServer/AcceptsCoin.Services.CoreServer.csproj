@@ -2,11 +2,17 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <UserSecretsId>eb9d072c-8704-49d1-b476-46a2af27bf0a</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>..\..\..</DockerfileContext>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Grpc.AspNetCore" Version="2.34.0" />
+    <PackageReference Include="Grpc.AspNetCore.Web" Version="2.40.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.12" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.12" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.11.1" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.10" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NetTopologySuite" Version="5.0.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.12">
@@ -43,6 +49,7 @@
     <Folder Include="Data\Repository\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Common\AcceptsCoin.Common\AcceptsCoin.Common.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Protobuf Include="Protos\category.proto" GrpcServices="Server" />

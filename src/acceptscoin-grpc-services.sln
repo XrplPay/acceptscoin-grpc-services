@@ -9,9 +9,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gateways", "Gateways", "{2E
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{9177BD93-3038-4C51-B748-FD18383EFF3A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AcceptsCoin.ApiGateway", "Gateways\AcceptsCoin.ApiGateway\AcceptsCoin.ApiGateway.csproj", "{B07C6662-7092-48F9-BB54-DED3D63BD7C9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AcceptsCoin.ApiGateway", "Gateways\AcceptsCoin.ApiGateway\AcceptsCoin.ApiGateway.csproj", "{B07C6662-7092-48F9-BB54-DED3D63BD7C9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AcceptsCoin.Services.IdentityServer", "Services\Identity\AcceptsCoin.Services.IdentityServer\AcceptsCoin.Services.IdentityServer.csproj", "{D71199E1-D428-41DE-A3D9-51D418297555}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AcceptsCoin.Services.IdentityServer", "Services\Identity\AcceptsCoin.Services.IdentityServer\AcceptsCoin.Services.IdentityServer.csproj", "{D71199E1-D428-41DE-A3D9-51D418297555}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Identity", "Identity", "{E88EA179-E926-4B9C-B8B7-20D5E751FEFD}"
 EndProject
@@ -19,17 +19,21 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DIrectory", "DIrectory", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Token", "Token", "{7F73FC98-C85A-484E-B355-8A60B6BC3300}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AcceptsCoin.Services.DirectoryServer", "Services\DIrectory\AcceptsCoin.Services.DirectoryServer\AcceptsCoin.Services.DirectoryServer.csproj", "{86ACF861-29CC-467E-B42C-AA231DE7148E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AcceptsCoin.Services.DirectoryServer", "Services\DIrectory\AcceptsCoin.Services.DirectoryServer\AcceptsCoin.Services.DirectoryServer.csproj", "{86ACF861-29CC-467E-B42C-AA231DE7148E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AcceptsCoin.Services.TokenServer", "Services\Token\AcceptsCoin.Services.TokenServer\AcceptsCoin.Services.TokenServer.csproj", "{4099B9B4-3909-4DB5-A11D-205188195D4B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AcceptsCoin.Services.TokenServer", "Services\Token\AcceptsCoin.Services.TokenServer\AcceptsCoin.Services.TokenServer.csproj", "{4099B9B4-3909-4DB5-A11D-205188195D4B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{94095B3D-38F5-4249-A8DA-CDCA38FCA9A9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AcceptsCoin.Services.CoreServer", "Services\Core\AcceptsCoin.Services.CoreServer\AcceptsCoin.Services.CoreServer.csproj", "{955D6221-A5B1-4918-BF0B-F06CC916B2F5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AcceptsCoin.Services.CoreServer", "Services\Core\AcceptsCoin.Services.CoreServer\AcceptsCoin.Services.CoreServer.csproj", "{955D6221-A5B1-4918-BF0B-F06CC916B2F5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Storage", "Storage", "{812E2ED8-44C3-4A94-A011-0998E204A090}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AcceptsCoin.Services.StorageServer", "Services\Storage\AcceptsCoin.Services.StorageServer\AcceptsCoin.Services.StorageServer.csproj", "{491A65C8-556A-4941-A013-0FB597CB3D04}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AcceptsCoin.Services.StorageServer", "Services\Storage\AcceptsCoin.Services.StorageServer\AcceptsCoin.Services.StorageServer.csproj", "{491A65C8-556A-4941-A013-0FB597CB3D04}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{22F230DB-B649-4094-9B24-3162C2BEB4AE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AcceptsCoin.Common", "Common\AcceptsCoin.Common\AcceptsCoin.Common.csproj", "{0CAFD544-9A2A-48E5-8672-8FDDB971E1E3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,9 +43,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{B07C6662-7092-48F9-BB54-DED3D63BD7C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -116,6 +117,21 @@ Global
 		{491A65C8-556A-4941-A013-0FB597CB3D04}.Release|x64.Build.0 = Release|Any CPU
 		{491A65C8-556A-4941-A013-0FB597CB3D04}.Release|x86.ActiveCfg = Release|Any CPU
 		{491A65C8-556A-4941-A013-0FB597CB3D04}.Release|x86.Build.0 = Release|Any CPU
+		{0CAFD544-9A2A-48E5-8672-8FDDB971E1E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0CAFD544-9A2A-48E5-8672-8FDDB971E1E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0CAFD544-9A2A-48E5-8672-8FDDB971E1E3}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{0CAFD544-9A2A-48E5-8672-8FDDB971E1E3}.Debug|x64.Build.0 = Debug|Any CPU
+		{0CAFD544-9A2A-48E5-8672-8FDDB971E1E3}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{0CAFD544-9A2A-48E5-8672-8FDDB971E1E3}.Debug|x86.Build.0 = Debug|Any CPU
+		{0CAFD544-9A2A-48E5-8672-8FDDB971E1E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0CAFD544-9A2A-48E5-8672-8FDDB971E1E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0CAFD544-9A2A-48E5-8672-8FDDB971E1E3}.Release|x64.ActiveCfg = Release|Any CPU
+		{0CAFD544-9A2A-48E5-8672-8FDDB971E1E3}.Release|x64.Build.0 = Release|Any CPU
+		{0CAFD544-9A2A-48E5-8672-8FDDB971E1E3}.Release|x86.ActiveCfg = Release|Any CPU
+		{0CAFD544-9A2A-48E5-8672-8FDDB971E1E3}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{2E1BDBCF-9D61-4F94-8E22-303F3F740B7C} = {B30993B3-138F-4153-9787-A2F1D919A05D}
@@ -131,5 +147,10 @@ Global
 		{955D6221-A5B1-4918-BF0B-F06CC916B2F5} = {94095B3D-38F5-4249-A8DA-CDCA38FCA9A9}
 		{812E2ED8-44C3-4A94-A011-0998E204A090} = {9177BD93-3038-4C51-B748-FD18383EFF3A}
 		{491A65C8-556A-4941-A013-0FB597CB3D04} = {812E2ED8-44C3-4A94-A011-0998E204A090}
+		{22F230DB-B649-4094-9B24-3162C2BEB4AE} = {B30993B3-138F-4153-9787-A2F1D919A05D}
+		{0CAFD544-9A2A-48E5-8672-8FDDB971E1E3} = {22F230DB-B649-4094-9B24-3162C2BEB4AE}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {53C42A20-DC78-466E-8CB8-76653EDB6E1C}
 	EndGlobalSection
 EndGlobal

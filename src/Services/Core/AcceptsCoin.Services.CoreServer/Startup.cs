@@ -1,8 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using AcceptsCoin.Common.Auth;
 using AcceptsCoin.Services.CoreServer.Data.Context;
+using AcceptsCoin.Services.CoreServer.Data.Repository;
+using AcceptsCoin.Services.CoreServer.Domain.Interfaces;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -10,7 +15,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-
+using Microsoft.IdentityModel.Tokens;
 
 namespace AcceptsCoin.Services.CoreServer
 {
@@ -41,6 +46,38 @@ namespace AcceptsCoin.Services.CoreServer
 
 
             services.AddGrpc();
+            //services.AddJwt(Configuration);
+            //var key = Encoding.ASCII.GetBytes("KEY");
+            //services.AddAuthentication(x =>
+            //{
+            //    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            //    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
+            //}).AddJwtBearer(x=>
+            //{
+            //    x.RequireHttpsMetadata = false;
+            //    x.SaveToken = true;
+            //    x.TokenValidationParameters = new TokenValidationParameters
+            //    {
+            //        ValidateIssuerSigningKey = true,
+            //        IssuerSigningKey = new SymmetricSecurityKey(key),
+            //        ValidateIssuer = false,
+            //        ValidateAudience = false,
+            //    };
+            //});
+
+            //services.AddAuthorization();
+
+            services.AddCors(options => {
+                options.AddPolicy("cors", policy => {
+                    policy.AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin().WithExposedHeaders("Grpc-Status", "Grpc-Message", "Grpc-Encoding", "Grpc-Accept-Encoding"); ;
+                });
+            });
+
+
+
+
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,10 +89,14 @@ namespace AcceptsCoin.Services.CoreServer
             }
 
             app.UseRouting();
-
+            //app.UseAuthentication();
+            //app.UseAuthorization();
+            app.UseCors("cors");
+            app.UseGrpcWeb();
             app.UseEndpoints(endpoints =>
             {
-                //endpoints.MapGrpcService<GreeterService>();
+                endpoints.MapGrpcService<CategoryService>().EnableGrpcWeb()
+                                                  .RequireCors("cors") ;
 
                 endpoints.MapGet("/", async context =>
                 {

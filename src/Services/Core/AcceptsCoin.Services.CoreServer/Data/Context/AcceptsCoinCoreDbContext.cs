@@ -28,7 +28,7 @@ namespace AcceptsCoin.Services.CoreServer.Data.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
+            modelBuilder.HasPostgresExtension("postgis");
 
             #region UserSeed
 

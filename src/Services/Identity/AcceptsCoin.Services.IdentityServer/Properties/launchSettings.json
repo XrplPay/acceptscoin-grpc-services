@@ -2,10 +2,16 @@
   "profiles": {
     "AcceptsCoin.Services.IdentityServer": {
       "commandName": "Project",
-      "applicationUrl": "http://localhost:1186;https://localhost:38110",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      },
+      "applicationUrl": "http://localhost:1186;https://localhost:38110"
+    },
+    "Docker": {
+      "commandName": "Docker",
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
+      "publishAllPorts": true,
+      "useSSL": true
     }
   }
 }

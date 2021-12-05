@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AcceptsCoin.Common.Auth;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -27,7 +28,7 @@ namespace AcceptsCoin.ApiGateway
         {
 
             services.AddControllers();
-
+            services.AddJwt(Configuration);
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc(name: "v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "Accepts Coin WebAPI", Version = "V1", });
@@ -53,7 +54,7 @@ namespace AcceptsCoin.ApiGateway
             });
 
             //app.UseHttpsRedirection();
-
+            app.UseAuthentication();
             app.UseRouting();
 
             app.UseAuthorization();
