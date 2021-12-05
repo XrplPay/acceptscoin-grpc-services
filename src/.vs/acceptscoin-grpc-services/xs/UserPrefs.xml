@@ -1,3 +1,48 @@
-﻿<Properties>
+﻿<Properties StartupConfiguration="{B07C6662-7092-48F9-BB54-DED3D63BD7C9}|Default">
+  <MonoDevelop.Ide.Workbench ActiveDocument="../../../.nuget/packages/grpc.tools/2.42.0/build/_protobuf/Google.Protobuf.Tools.targets">
+    <Files>
+      <File FileName="Gateways/AcceptsCoin.ApiGateway/Controllers/v1/CoreController.cs" Line="34" Column="29" />
+      <File FileName="Gateways/AcceptsCoin.ApiGateway/Controllers/v1/AuthController.cs" Line="109" Column="1" />
+      <File FileName="Services/Core/AcceptsCoin.Services.CoreServer/Domain/Models/Category.cs" Line="22" Column="28" />
+      <File FileName="Services/Core/AcceptsCoin.Services.CoreServer/Services/CategoryAppService.cs" Line="15" Column="31" />
+      <File FileName="Services/Core/AcceptsCoin.Services.CoreServer/Protos/category.proto" Line="9" Column="27" />
+      <File FileName="Services/Core/AcceptsCoin.Services.CoreServer/appsettings.json" Line="20" Column="1" />
+      <File FileName="Services/Core/AcceptsCoin.Services.CoreServer/AcceptsCoin.Services.CoreServer.csproj" Line="48" Column="67" />
+      <File FileName="Services/Core/AcceptsCoin.Services.CoreServer/Domain/Interfaces/ICategoryRepository.cs" Line="12" Column="26" />
+      <File FileName="Services/Core/AcceptsCoin.Services.CoreServer/Data/Repository/CategoryRepository.cs" Line="24" Column="6" />
+      <File FileName="Services/Core/AcceptsCoin.Services.CoreServer/Data/Context/AcceptsCoinCoreDbContext.cs" Line="7" Column="42" />
+      <File FileName="Gateways/AcceptsCoin.ApiGateway/AcceptsCoin.ApiGateway.csproj" Line="1" Column="1" />
+      <File FileName="Services/Core/AcceptsCoin.Services.CoreServer/Program.cs" Line="37" Column="6" />
+      <File FileName="Services/DIrectory/AcceptsCoin.Services.DirectoryServer/Program.cs" Line="36" Column="19" />
+      <File FileName="../../../.nuget/packages/grpc.tools/2.42.0/build/_protobuf/Google.Protobuf.Tools.targets" Line="278" Column="17" />
+      <File FileName="Gateways/AcceptsCoin.ApiGateway/Program.cs" Line="24" Column="20" />
+      <File FileName="Gateways/AcceptsCoin.ApiGateway/appsettings.json" Line="11" Column="1" />
+      <File FileName="Gateways/AcceptsCoin.ApiGateway/Startup.cs" Line="55" Column="15" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="acceptscoin-grpc-services" expanded="True">
+            <Node name="src" expanded="True">
+              <Node name="Gateways" expanded="True" />
+              <Node name="Services" expanded="True">
+                <Node name="Core" expanded="True" />
+                <Node name="DIrectory" expanded="True" />
+                <Node name="Identity" expanded="True" />
+                <Node name="Storage" expanded="True" />
+                <Node name="Token" expanded="True" />
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.ItemProperties.src.Gateways.AcceptsCoin.ApiGateway PreferredExecutionTarget="/Applications/Google Chrome.app" />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MultiItemStartupConfigurations />
 </Properties>

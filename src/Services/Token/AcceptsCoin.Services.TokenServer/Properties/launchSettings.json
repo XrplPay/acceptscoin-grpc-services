@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "AcceptsCoin.Services.TokenServer": {
+      "commandName": "Project",
+      "applicationUrl": "http://localhost:41658;https://localhost:47958",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}

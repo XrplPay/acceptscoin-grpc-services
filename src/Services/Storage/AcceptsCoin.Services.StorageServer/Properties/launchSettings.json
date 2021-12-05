@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "AcceptsCoin.Services.StorageServer": {
+      "commandName": "Project",
+      "applicationUrl": "http://localhost:54160;https://localhost:10336",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}

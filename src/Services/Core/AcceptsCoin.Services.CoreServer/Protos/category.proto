@@ -1,0 +1,28 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "AcceptsCoin.Services.CoreServer";
+
+
+package category;
+
+
+service CategoryAppService{
+    rpc GetAllCategory (Empty) returns (CategoriesApp);
+}
+
+
+message Empty{
+
+}
+
+message CategoryApp {
+    string categoryId=1;
+    string name=2;
+    string icon=3;
+    string logo=4;
+    string priority=5;
+}
+
+message CategoriesApp {
+    repeated CategoryApp items = 1;
+}
