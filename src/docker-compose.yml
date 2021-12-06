@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  acceptscoin.apigateway:
+    image: ${DOCKER_REGISTRY-}acceptscoinapigateway
+    build:
+      context: .
+      dockerfile: Gateways/AcceptsCoin.ApiGateway/Dockerfile
