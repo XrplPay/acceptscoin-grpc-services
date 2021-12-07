@@ -3,7 +3,7 @@
   <PropertyGroup Label="Globals">
     <ProjectVersion>2.1</ProjectVersion>
     <DockerTargetOS>Linux</DockerTargetOS>
-    <ProjectGuid>27022e18-1e6e-49d7-9426-8b86ca6509e7</ProjectGuid>
+    <ProjectGuid>cc6a1591-2cdb-4aea-8b53-01cbc2b34b47</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}/swagger</DockerServiceUrl>
     <DockerServiceName>acceptscoin.apigateway</DockerServiceName>

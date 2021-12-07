@@ -32,7 +32,7 @@ namespace AcceptsCoin.Services.IdentityServer
                                HttpProtocols.Http2);
                        });
                    }
-                   webBuilder.UseStartup<Startup>().UseUrls("https://*:5051");
+                   webBuilder.UseStartup<Startup>().UseUrls("http://*:5051");
                });
     }
 }
