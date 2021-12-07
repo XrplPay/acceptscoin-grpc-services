@@ -12,7 +12,6 @@ COPY ["Common/AcceptsCoin.Common/AcceptsCoin.Common.csproj", "Common/AcceptsCoin
 COPY ["Services/Core/AcceptsCoin.Services.CoreServer/AcceptsCoin.Services.CoreServer.csproj", "Services/Core/AcceptsCoin.Services.CoreServer/"]
 RUN dotnet restore "Gateways/AcceptsCoin.ApiGateway/AcceptsCoin.ApiGateway.csproj"
 COPY . .
-WORKDIR "/src/Gateways/AcceptsCoin.ApiGateway"
 RUN dotnet build "AcceptsCoin.ApiGateway.csproj" -c Release -o /app/build
 
 FROM build AS publish
