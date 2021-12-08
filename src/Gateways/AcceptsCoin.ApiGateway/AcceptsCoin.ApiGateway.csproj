@@ -36,7 +36,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\v1\Directory\" />
-    <Folder Include="Controllers\v1\Token\" />
     <Folder Include="Controllers\v2\" />
     <Folder Include="Core\Views\" />
     <Folder Include="Protos\" />
@@ -57,7 +56,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Common\AcceptsCoin.Common\AcceptsCoin.Common.csproj" />
-    <ProjectReference Include="..\..\Services\Core\AcceptsCoin.Services.CoreServer\AcceptsCoin.Services.CoreServer.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Protobuf Include="..\..\Services\Core\AcceptsCoin.Services.CoreServer\Protos\category.proto" GrpcServices="Client" ProtoCompile="true">
@@ -65,6 +63,9 @@
     </Protobuf>
     <Protobuf Include="..\..\Services\Identity\AcceptsCoin.Services.IdentityServer\Protos\auth.proto" GrpcServices="Client">
       <Link>Protos\auth.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\..\Services\Token\AcceptsCoin.Services.TokenServer\Protos\token.proto" GrpcServices="Client" ProtoCompile="true">
+      <Link>Protos\token.proto</Link>
     </Protobuf>
   </ItemGroup>
 </Project>

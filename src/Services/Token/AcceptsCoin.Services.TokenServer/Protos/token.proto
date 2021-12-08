@@ -3,3 +3,32 @@
 option csharp_namespace = "AcceptsCoin.Services.TokenServer.Protos";
 
 
+package token;
+
+
+service TokenAppService{
+    rpc GetAll (Empty) returns (TokenListGm);
+    rpc GetById (TokenIdFilter) returns (TokenGm);
+    rpc Post (TokenGm) returns (TokenGm);
+    rpc Put (TokenGm) returns (TokenGm);
+    rpc Delete (TokenIdFilter) returns (Empty);
+}
+message Empty{
+}
+message TokenIdFilter {
+ string TokenId = 1;
+}
+message TokenGm {
+    string TokenId = 1;
+    string Name = 2;
+    string Symbol = 3;
+    string Description = 4;
+    string Icon = 5;
+    string Logo = 6;
+    int32 Priority = 7;  
+    string Link = 8;
+    
+}
+message TokenListGm {
+    repeated TokenGm items = 1;
+}
