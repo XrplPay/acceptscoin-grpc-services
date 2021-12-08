@@ -4,14 +4,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using AcceptsCoin.ApiGateway.Core.Dtos;
 using AcceptsCoin.ApiGateway.Core.Views;
-using AcceptsCoin.Services.TokenServer ;
-using AcceptsCoin.Services.TokenServer.Protos;
+using AcceptsCoin.Services.CoreServer ;
+using AcceptsCoin.Services.CoreServer.Protos;
 using Grpc.Net.Client;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AcceptsCoin.ApiGateway.Controllers.v1.Token
+namespace AcceptsCoin.ApiGateway.Controllers.v1.Core
 {
     [ApiController]
     [ApiVersion("1.0")]
@@ -20,20 +20,20 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Token
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class PartnerController : ControllerBase
     {
-        const string channelUrl = "https://localhost:5053";
+        const string channelUrl = "https://localhost:5052";
         public PartnerController()
         {
 
         }
 
-        [HttpGet("GetTokenList")]
+        [HttpGet("GetPartnerList")]
         public async Task<ActionResult> GetAll([FromQuery] int pageId = 1, [FromQuery] int pageSize = 10)
         {
             try
             {
                 var channel = GrpcChannel.ForAddress(channelUrl);
-                var client = new TokenAppService.TokenAppServiceClient(channel);
-                var reply = await client.GetAllAsync(new Empty());
+                var client = new PartnerAppService.PartnerAppServiceClient(channel);
+                var reply = await client.GetAllAsync(new EmptyPartner());
 
                 return Ok(reply);
             }
@@ -55,8 +55,8 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Token
             try
             {
                 var channel = GrpcChannel.ForAddress(channelUrl);
-                var client = new TokenAppService.TokenAppServiceClient(channel);
-                var reply = await client.GetByIdAsync(new TokenIdFilter { TokenId = id.ToString() });
+                var client = new PartnerAppService.PartnerAppServiceClient(channel);
+                var reply = await client.GetByIdAsync(new PartnerIdFilter { PartnerId = id.ToString() });
 
                 return Ok(reply);
             }
@@ -74,24 +74,23 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Token
 
 
         [HttpPost]
-        public async Task<ActionResult> Post([FromBody] CreateTokenDto entity)
+        public async Task<ActionResult> Post([FromBody] CreatePartnerDto entity)
         {
             try
             {
                 var channel = GrpcChannel.ForAddress(channelUrl);
-                var client = new TokenAppService.TokenAppServiceClient(channel);
-                var reply = await client.PostAsync(new TokenGm
+                var client = new PartnerAppService.PartnerAppServiceClient(channel);
+                var reply = await client.PostAsync(new PartnerGm
                 {
-                    TokenId = "",
+                    PartnerId = "",
                     Name = entity.Name,
-                    Symbol = entity.Symbol,
-                    Description = entity.Description,
-
-                    Icon = entity.Icon,
-
+                    ContactNumber = entity.ContactNumber,
+                    Email = entity.Email,
+                    LanguageId = entity.LanguageId.ToString(),
                     Logo = entity.Logo,
-                    Priority = entity.Priority,
-                    Link = entity.Link,
+                    Manager = entity.Manager,
+                    Owner = entity.Owner,
+                    WebSiteUrl = entity.WebSiteUrl,
                 });
 
                 return Ok(reply);
@@ -110,24 +109,23 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Token
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> Put(Guid id, [FromBody] UpdateTokenDto entity)
+        public async Task<ActionResult> Put(Guid id, [FromBody] UpdatePartnerDto entity)
         {
             try
             {
                 var channel = GrpcChannel.ForAddress(channelUrl);
-                var client = new TokenAppService.TokenAppServiceClient(channel);
-                var reply = await client.PutAsync(new TokenGm
+                var client = new PartnerAppService.PartnerAppServiceClient(channel);
+                var reply = await client.PutAsync(new PartnerGm
                 {
-                    TokenId = id.ToString(),
+                    PartnerId = id.ToString(),
                     Name = entity.Name,
-                    Symbol = entity.Symbol,
-                    Description = entity.Description,
-
-                    Icon = entity.Icon,
-
+                    ContactNumber = entity.ContactNumber,
+                    Email = entity.Email,
+                    LanguageId = entity.LanguageId.ToString(),
                     Logo = entity.Logo,
-                    Priority = entity.Priority,
-                    Link = entity.Link,
+                    Manager = entity.Manager,
+                    Owner = entity.Owner,
+                    WebSiteUrl = entity.WebSiteUrl,
                 });
 
                 return Ok(reply);
@@ -151,8 +149,8 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Token
             try
             {
                 var channel = GrpcChannel.ForAddress(channelUrl);
-                var client = new TokenAppService.TokenAppServiceClient(channel);
-                var reply = await client.DeleteAsync(new TokenIdFilter { TokenId = id.ToString() });
+                var client = new PartnerAppService.PartnerAppServiceClient(channel);
+                var reply = await client.DeleteAsync(new PartnerIdFilter { PartnerId = id.ToString() });
 
                 return Ok(reply);
             }

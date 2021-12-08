@@ -37,6 +37,12 @@ namespace AcceptsCoin.Services.TokenServer.Core.Services
             return await _tokenRepository.GetAll();
         }
 
+        public async Task SoftDelete(Token entity)
+        {
+            entity.Deleted = true;
+            await _tokenRepository.Update(entity);
+        }
+
         public async Task<Token> Update(Token entity)
         {
             return await _tokenRepository.Update(entity);

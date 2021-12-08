@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+option csharp_namespace = "AcceptsCoin.Services.CoreServer.Protos";
+
+
+package partner;
+
+
+service PartnerAppService{
+    rpc GetAll (EmptyPartner) returns (PartnerListGm);
+    rpc GetById (PartnerIdFilter) returns (PartnerGm);
+    rpc Post (PartnerGm) returns (PartnerGm);
+    rpc Put (PartnerGm) returns (PartnerGm);
+    rpc Delete (PartnerIdFilter) returns (EmptyPartner);
+}
+message EmptyPartner{
+}
+message PartnerIdFilter {
+ string PartnerId = 1;
+}
+message PartnerGm {
+    string PartnerId = 1;
+    string Name = 2;
+    string Logo = 3;
+    string WebSiteUrl = 4;
+    string Email = 5;
+    string ContactNumber = 6;
+    string Manager = 7;
+    string Owner = 8;
+    string LanguageId = 9;
+    }
+message PartnerListGm {
+    repeated PartnerGm items = 1;
+}

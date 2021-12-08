@@ -61,6 +61,15 @@
     <Protobuf Include="..\..\Services\Core\AcceptsCoin.Services.CoreServer\Protos\category.proto" GrpcServices="Client" ProtoCompile="true">
       <Link>Protos\category.proto</Link>
     </Protobuf>
+    <Protobuf Include="..\..\Services\Core\AcceptsCoin.Services.CoreServer\Protos\language.proto" GrpcServices="Client">
+      <Link>Protos\language.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\..\Services\Core\AcceptsCoin.Services.CoreServer\Protos\partner.proto" GrpcServices="Client">
+      <Link>Protos\partner.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\..\Services\Core\AcceptsCoin.Services.CoreServer\Protos\tag.proto" GrpcServices="Client">
+      <Link>Protos\tag.proto</Link>
+    </Protobuf>
     <Protobuf Include="..\..\Services\Identity\AcceptsCoin.Services.IdentityServer\Protos\auth.proto" GrpcServices="Client">
       <Link>Protos\auth.proto</Link>
     </Protobuf>

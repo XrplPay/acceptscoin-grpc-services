@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+option csharp_namespace = "AcceptsCoin.Services.CoreServer.Protos";
+
+
+package tag;
+
+
+service TagAppService{
+    rpc GetAll (EmptyTag) returns (TagListGm);
+    rpc GetById (TagIdFilter) returns (TagGm);
+    rpc Post (TagGm) returns (TagGm);
+    rpc Put (TagGm) returns (TagGm);
+    rpc Delete (TagIdFilter) returns (EmptyTag);
+}
+message EmptyTag{
+}
+message TagIdFilter {
+ string TagId = 1;
+}
+message TagGm {
+    string TagId = 1;
+    string Title = 2;
+    }
+message TagListGm {
+    repeated TagGm items = 1;
+}

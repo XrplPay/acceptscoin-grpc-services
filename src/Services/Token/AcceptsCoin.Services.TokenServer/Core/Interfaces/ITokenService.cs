@@ -16,5 +16,7 @@ namespace AcceptsCoin.Services.TokenServer.Core.Interfaces
         Task<Token> Update(Token entity);
 
         Task Delete(Token entity);
+
+        Task SoftDelete(Token entity);
     }
 }

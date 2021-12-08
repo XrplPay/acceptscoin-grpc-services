@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AcceptsCoin.Common.Auth;
+using AcceptsCoin.Services.CoreServer.Core.Interfaces;
+using AcceptsCoin.Services.CoreServer.Core.Services;
 using AcceptsCoin.Services.CoreServer.Data.Context;
 using AcceptsCoin.Services.CoreServer.Data.Repository;
 using AcceptsCoin.Services.CoreServer.Domain.Interfaces;
@@ -58,6 +60,8 @@ namespace AcceptsCoin.Services.CoreServer
 
 
             services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<ILanguageRepository, LanguageRepository>();
+            services.AddScoped<ILanguageService, LanguageService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

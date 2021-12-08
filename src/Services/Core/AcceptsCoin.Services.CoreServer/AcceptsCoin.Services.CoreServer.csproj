@@ -29,6 +29,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Protos\language.proto" />
+    <None Remove="Protos\partner.proto" />
+    <None Remove="Protos\tag.proto" />
     <None Remove="Services\" />
     <None Remove="Data\" />
     <None Remove="Data\Context\" />
@@ -44,17 +47,15 @@
     <None Remove="Data\Repository\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Services\" />
-    <Folder Include="Data\" />
     <Folder Include="Data\Context\" />
-    <Folder Include="Protos\" />
-    <Folder Include="Domain\Interfaces\" />
-    <Folder Include="Data\Repository\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Common\AcceptsCoin.Common\AcceptsCoin.Common.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Protobuf Include="Protos\category.proto" GrpcServices="Server" />
+    <Protobuf Include="Protos\language.proto" GrpcServices="Server" />
+    <Protobuf Include="Protos\partner.proto" GrpcServices="Server" />
+    <Protobuf Include="Protos\tag.proto" GrpcServices="Server" />
   </ItemGroup>
 </Project>

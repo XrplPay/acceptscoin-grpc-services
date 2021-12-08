@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+option csharp_namespace = "AcceptsCoin.Services.CoreServer.Protos";
+
+
+package language;
+
+
+service LanguageAppService{
+    rpc GetAll (EmptyLanguage) returns (LanguageListGm);
+    rpc GetById (LanguageIdFilter) returns (LanguageGm);
+    rpc Post (LanguageGm) returns (LanguageGm);
+    rpc Put (LanguageGm) returns (LanguageGm);
+    rpc Delete (LanguageIdFilter) returns (EmptyLanguage);
+}
+message EmptyLanguage{
+}
+message LanguageIdFilter {
+ string LanguageId = 1;
+}
+message LanguageGm {
+    string LanguageId = 1;
+    string Name = 2;
+    string Code = 3;
+    string Logo = 4;
+    string Icon = 5;
+    int32 Priority = 6;  
+}
+message LanguageListGm {
+    repeated LanguageGm items = 1;
+}

@@ -4,36 +4,36 @@ using System.Linq;
 using System.Threading.Tasks;
 using AcceptsCoin.ApiGateway.Core.Dtos;
 using AcceptsCoin.ApiGateway.Core.Views;
-using AcceptsCoin.Services.TokenServer ;
-using AcceptsCoin.Services.TokenServer.Protos;
+using AcceptsCoin.Services.CoreServer ;
+using AcceptsCoin.Services.CoreServer.Protos;
 using Grpc.Net.Client;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AcceptsCoin.ApiGateway.Controllers.v1.Token
+namespace AcceptsCoin.ApiGateway.Controllers.v1.Core
 {
     [ApiController]
     [ApiVersion("1.0")]
     [ApiExplorerSettings(GroupName = "v1")]
     [Route("api/v1/[controller]")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    public class PartnerController : ControllerBase
+    public class LanguageController : ControllerBase
     {
-        const string channelUrl = "https://localhost:5053";
-        public PartnerController()
+        const string channelUrl = "https://localhost:5052";
+        public LanguageController()
         {
 
         }
 
-        [HttpGet("GetTokenList")]
+        [HttpGet("GetLanguageList")]
         public async Task<ActionResult> GetAll([FromQuery] int pageId = 1, [FromQuery] int pageSize = 10)
         {
             try
             {
                 var channel = GrpcChannel.ForAddress(channelUrl);
-                var client = new TokenAppService.TokenAppServiceClient(channel);
-                var reply = await client.GetAllAsync(new Empty());
+                var client = new LanguageAppService.LanguageAppServiceClient(channel);
+                var reply = await client.GetAllAsync(new EmptyLanguage());
 
                 return Ok(reply);
             }
@@ -55,8 +55,8 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Token
             try
             {
                 var channel = GrpcChannel.ForAddress(channelUrl);
-                var client = new TokenAppService.TokenAppServiceClient(channel);
-                var reply = await client.GetByIdAsync(new TokenIdFilter { TokenId = id.ToString() });
+                var client = new LanguageAppService.LanguageAppServiceClient(channel);
+                var reply = await client.GetByIdAsync(new LanguageIdFilter { LanguageId = id.ToString() });
 
                 return Ok(reply);
             }
@@ -74,24 +74,20 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Token
 
 
         [HttpPost]
-        public async Task<ActionResult> Post([FromBody] CreateTokenDto entity)
+        public async Task<ActionResult> Post([FromBody] CreateLanguageDto entity)
         {
             try
             {
                 var channel = GrpcChannel.ForAddress(channelUrl);
-                var client = new TokenAppService.TokenAppServiceClient(channel);
-                var reply = await client.PostAsync(new TokenGm
+                var client = new LanguageAppService.LanguageAppServiceClient(channel);
+                var reply = await client.PostAsync(new LanguageGm
                 {
-                    TokenId = "",
-                    Name = entity.Name,
-                    Symbol = entity.Symbol,
-                    Description = entity.Description,
-
-                    Icon = entity.Icon,
-
-                    Logo = entity.Logo,
-                    Priority = entity.Priority,
-                    Link = entity.Link,
+                    LanguageId = "",
+                    Name= entity.Name,
+                    Code=entity.Code,
+                    Icon=entity.Icon,
+                    Logo=entity.Logo,
+                    Priority=entity.Priority,
                 });
 
                 return Ok(reply);
@@ -110,24 +106,20 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Token
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> Put(Guid id, [FromBody] UpdateTokenDto entity)
+        public async Task<ActionResult> Put(Guid id, [FromBody] UpdateLanguageDto entity)
         {
             try
             {
                 var channel = GrpcChannel.ForAddress(channelUrl);
-                var client = new TokenAppService.TokenAppServiceClient(channel);
-                var reply = await client.PutAsync(new TokenGm
+                var client = new LanguageAppService.LanguageAppServiceClient(channel);
+                var reply = await client.PutAsync(new LanguageGm
                 {
-                    TokenId = id.ToString(),
+                    LanguageId = id.ToString(),
                     Name = entity.Name,
-                    Symbol = entity.Symbol,
-                    Description = entity.Description,
-
+                    Code = entity.Code,
                     Icon = entity.Icon,
-
                     Logo = entity.Logo,
                     Priority = entity.Priority,
-                    Link = entity.Link,
                 });
 
                 return Ok(reply);
@@ -151,8 +143,8 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Token
             try
             {
                 var channel = GrpcChannel.ForAddress(channelUrl);
-                var client = new TokenAppService.TokenAppServiceClient(channel);
-                var reply = await client.DeleteAsync(new TokenIdFilter { TokenId = id.ToString() });
+                var client = new LanguageAppService.LanguageAppServiceClient(channel);
+                var reply = await client.DeleteAsync(new LanguageIdFilter { LanguageId = id.ToString() });
 
                 return Ok(reply);
             }
