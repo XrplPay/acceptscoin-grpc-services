@@ -38,6 +38,7 @@
     <Folder Include="Controllers\v1\Directory\" />
     <Folder Include="Controllers\v2\" />
     <Folder Include="Core\Views\" />
+    <Folder Include="Helper\" />
     <Folder Include="Protos\" />
   </ItemGroup>
   <ItemGroup>

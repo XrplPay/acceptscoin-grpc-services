@@ -6,10 +6,12 @@ using AcceptsCoin.ApiGateway.Core.Dtos;
 using AcceptsCoin.ApiGateway.Core.Views;
 using AcceptsCoin.Services.CoreServer ;
 using AcceptsCoin.Services.CoreServer.Protos;
+using Grpc.Core;
 using Grpc.Net.Client;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Net.Http.Headers;
 
 namespace AcceptsCoin.ApiGateway.Controllers.v1.Core
 {
@@ -26,14 +28,26 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Core
 
         }
 
-        [HttpGet("GetTagList")]
+        private Metadata GetHeader ()
+        {
+            var accessToken = Request.Headers[HeaderNames.Authorization];
+
+            var header = new Metadata();
+            header.Add("Authorization", accessToken);
+            return header;
+        }
+        [HttpGet("GetAll")]
         public async Task<ActionResult> GetAll([FromQuery] int pageId = 1, [FromQuery] int pageSize = 10)
         {
             try
             {
+                var accessToken = Request.Headers[HeaderNames.Authorization];
+
+                //var header = new Metadata();
+                //header.Add("Authorization", accessToken);
                 var channel = GrpcChannel.ForAddress(channelUrl);
                 var client = new TagAppService.TagAppServiceClient(channel);
-                var reply = await client.GetAllAsync(new EmptyTag());
+                var reply = await client.GetAllAsync(new EmptyTag(), headers: GetHeader());
 
                 return Ok(reply);
             }
@@ -56,7 +70,7 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Core
             {
                 var channel = GrpcChannel.ForAddress(channelUrl);
                 var client = new TagAppService.TagAppServiceClient(channel);
-                var reply = await client.GetByIdAsync(new TagIdFilter { TagId = id.ToString() });
+                var reply = await client.GetByIdAsync(new TagIdFilter { TagId = id.ToString() }, headers: GetHeader());
 
                 return Ok(reply);
             }
@@ -84,7 +98,7 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Core
                 {
                     TagId = "",
                     Title= entity.Title,
-                });
+                }, headers: GetHeader());
 
                 return Ok(reply);
             }
@@ -112,7 +126,7 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Core
                 {
                     TagId = id.ToString(),
                     Title = entity.Title,
-                });
+                }, headers: GetHeader());
 
                 return Ok(reply);
             }
@@ -136,7 +150,7 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Core
             {
                 var channel = GrpcChannel.ForAddress(channelUrl);
                 var client = new TagAppService.TagAppServiceClient(channel);
-                var reply = await client.DeleteAsync(new TagIdFilter { TagId = id.ToString() });
+                var reply = await client.DeleteAsync(new TagIdFilter { TagId = id.ToString() }, headers: GetHeader());
 
                 return Ok(reply);
             }

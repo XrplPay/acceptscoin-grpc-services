@@ -45,8 +45,8 @@ namespace AcceptsCoin.Services.CoreServer
             services.AddDbContext<AcceptsCoinCoreDbContext>(option =>
                 option.UseNpgsql(PGSQL_CONNECTION_STRING, x => x.UseNetTopologySuite())
             );
-
-
+            services.AddJwt(Configuration);
+            services.AddAuthorization();
             services.AddGrpc();
             
 
@@ -57,11 +57,22 @@ namespace AcceptsCoin.Services.CoreServer
             });
 
 
+            
 
 
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<ILanguageRepository, LanguageRepository>();
             services.AddScoped<ILanguageService, LanguageService>();
+
+            services.AddScoped<ITagRepository, TagRepository>();
+            services.AddScoped<ITagService, TagService>();
+
+
+            services.AddScoped<IPartnerRepository, PartnerRepository>();
+            services.AddScoped<IPartnerService, PartnerService>();
+
+            services.AddScoped<IPartnerRepository, PartnerRepository>();
+            services.AddScoped<IPartnerService, PartnerService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -72,15 +83,26 @@ namespace AcceptsCoin.Services.CoreServer
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseAuthentication();
             app.UseRouting();
-            //app.UseAuthentication();
-            //app.UseAuthorization();
+
+            app.UseAuthorization();
             app.UseCors("cors");
             app.UseGrpcWeb();
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGrpcService<CategoryService>().EnableGrpcWeb()
-                                                  .RequireCors("cors") ;
+                endpoints.MapGrpcService<CategoryService>()
+                .EnableGrpcWeb().RequireCors("cors");
+                
+                endpoints.MapGrpcService<TagGrpcService>()
+                .EnableGrpcWeb().RequireCors("cors");
+                
+                endpoints.MapGrpcService<PartnerGrpcService>()
+                .EnableGrpcWeb()
+                .RequireCors("cors");
+
+                endpoints.MapGrpcService<LanguageGrpcService>()
+                .EnableGrpcWeb().RequireCors("cors");
 
                 endpoints.MapGet("/", async context =>
                 {

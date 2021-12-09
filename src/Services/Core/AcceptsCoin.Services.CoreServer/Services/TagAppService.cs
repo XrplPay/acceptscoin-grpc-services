@@ -5,11 +5,13 @@ using AcceptsCoin.Services.CoreServer.Core.Interfaces;
 using AcceptsCoin.Services.CoreServer.Domain.Models;
 using AcceptsCoin.Services.CoreServer.Protos;
 using Grpc.Core;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
 
 namespace AcceptsCoin.Services.CoreServer
 {
-    //[Authorize]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class TagGrpcService : TagAppService.TagAppServiceBase
     {
         private readonly ILogger<TagGrpcService> _logger;
@@ -20,6 +22,7 @@ namespace AcceptsCoin.Services.CoreServer
             _tagService = tagService;
         }
 
+        
         public override async Task<TagListGm> GetAll(EmptyTag request, ServerCallContext context)
         {
             TagListGm response = new TagListGm();
