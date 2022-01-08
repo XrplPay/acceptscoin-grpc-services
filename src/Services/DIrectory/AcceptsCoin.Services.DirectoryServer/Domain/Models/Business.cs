@@ -77,10 +77,10 @@ namespace AcceptsCoin.Services.DirectoryServer.Domain.Models
         public string OfferedServices { get; set; }
 
 
-        [ForeignKey(nameof(ServiceType))]
+        [ForeignKey(nameof(Category))]
         [Required]
-        public Guid ServiceTypeId { get; set; }
-        public ServiceType ServiceType { get; set; }
+        public Guid CategoryId { get; set; }
+        public Category Category { get; set; }
 
 
         [ForeignKey(nameof(Partner))]
@@ -91,15 +91,15 @@ namespace AcceptsCoin.Services.DirectoryServer.Domain.Models
 
         
 
-        public ICollection<Comment> Comments { get; set; }
+       // public ICollection<Comment> Comments { get; set; }
 
-        public ICollection<Rate> Rates { get; set; }
+       // public ICollection<Rate> Rates { get; set; }
 
-        public ICollection<Wallet> Wallets { get; set; }
+       // public ICollection<Wallet> Wallets { get; set; }
 
         public ICollection<BusinessTag> BusinessTags { get; set; }
 
-        public ICollection<Gallery> Gallerys { get; set; }
+       // public ICollection<Gallery> Gallerys { get; set; }
 
     }
 }

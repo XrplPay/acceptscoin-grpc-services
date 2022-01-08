@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
 
 namespace AcceptsCoin.Services.DirectoryServer.Domain.Models
 {
-    public class User
+    public class Tag 
     {
         [Key]
-        public Guid UserId { get; set; }
+        public Guid TagId { get; set; }
 
+        public ICollection<BusinessTag> BusinessTags { get; set; }
     }
 }
