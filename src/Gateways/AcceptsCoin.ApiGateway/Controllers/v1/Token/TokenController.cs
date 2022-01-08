@@ -18,10 +18,10 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Token
     [ApiExplorerSettings(GroupName = "v1")]
     [Route("api/v1/[controller]")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    public class PartnerController : ControllerBase
+    public class TokenController : ControllerBase
     {
         const string channelUrl = "https://localhost:5053";
-        public PartnerController()
+        public TokenController()
         {
 
         }

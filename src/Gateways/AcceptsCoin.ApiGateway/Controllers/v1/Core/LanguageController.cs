@@ -26,7 +26,7 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Core
 
         }
 
-        [HttpGet("GetLanguageList")]
+        [HttpGet("GetAll")]
         public async Task<ActionResult> GetAll([FromQuery] int pageId = 1, [FromQuery] int pageSize = 10)
         {
             try

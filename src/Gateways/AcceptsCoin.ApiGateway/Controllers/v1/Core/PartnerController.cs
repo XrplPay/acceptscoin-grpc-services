@@ -20,17 +20,18 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Core
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class PartnerController : ControllerBase
     {
-        const string channelUrl = "https://localhost:5052";
+        
         public PartnerController()
         {
 
         }
 
-        [HttpGet("GetPartnerList")]
+        [HttpGet("GetAllo")]
         public async Task<ActionResult> GetAll([FromQuery] int pageId = 1, [FromQuery] int pageSize = 10)
         {
             try
             {
+                var channelUrl = "https://localhost:5052";
                 var channel = GrpcChannel.ForAddress(channelUrl);
                 var client = new PartnerAppService.PartnerAppServiceClient(channel);
                 var reply = await client.GetAllAsync(new EmptyPartner());
@@ -54,6 +55,7 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Core
         {
             try
             {
+                var channelUrl = "https://localhost:5052";
                 var channel = GrpcChannel.ForAddress(channelUrl);
                 var client = new PartnerAppService.PartnerAppServiceClient(channel);
                 var reply = await client.GetByIdAsync(new PartnerIdFilter { PartnerId = id.ToString() });
@@ -77,7 +79,9 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Core
         public async Task<ActionResult> Post([FromBody] CreatePartnerDto entity)
         {
             try
+
             {
+                var channelUrl = "https://localhost:5052";
                 var channel = GrpcChannel.ForAddress(channelUrl);
                 var client = new PartnerAppService.PartnerAppServiceClient(channel);
                 var reply = await client.PostAsync(new PartnerGm
@@ -113,6 +117,7 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Core
         {
             try
             {
+                var channelUrl = "https://localhost:5052";
                 var channel = GrpcChannel.ForAddress(channelUrl);
                 var client = new PartnerAppService.PartnerAppServiceClient(channel);
                 var reply = await client.PutAsync(new PartnerGm
@@ -148,6 +153,7 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Core
         {
             try
             {
+                var channelUrl = "https://localhost:5052";
                 var channel = GrpcChannel.ForAddress(channelUrl);
                 var client = new PartnerAppService.PartnerAppServiceClient(channel);
                 var reply = await client.DeleteAsync(new PartnerIdFilter { PartnerId = id.ToString() });
