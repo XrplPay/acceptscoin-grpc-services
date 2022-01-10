@@ -2,9 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AcceptsCoin.Common.Auth;
+using AcceptsCoin.Services.DirectoryServer.Core.Interfaces;
+using AcceptsCoin.Services.DirectoryServer.Core.Services;
+using AcceptsCoin.Services.DirectoryServer.Data.Context;
+using AcceptsCoin.Services.DirectoryServer.Data.Repository;
+using AcceptsCoin.Services.DirectoryServer.Domain.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -12,11 +20,42 @@ namespace AcceptsCoin.Services.DirectoryServer
 {
     public class Startup
     {
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
+        public IConfiguration Configuration { get; }
+
         public void ConfigureServices(IServiceCollection services)
         {
+            var PGSQL_CONNECTION_STRING = Environment.GetEnvironmentVariable("ACCEPTSCOIN_PGSQL_CONNECTION_STRING");
+
+            if (PGSQL_CONNECTION_STRING == null)
+            {
+                PGSQL_CONNECTION_STRING = Configuration.GetConnectionString("ACCEPTSCOIN_PGSQL_CONNECTION_STRING");
+            }
+
+            services.AddDbContext<AcceptsCoinDirectoryDbContext>(option =>
+                option.UseNpgsql(PGSQL_CONNECTION_STRING, x => x.UseNetTopologySuite())
+            );
+            services.AddJwt(Configuration);
+            services.AddAuthorization();
             services.AddGrpc();
+
+
+            services.AddCors(options => {
+                options.AddPolicy("cors", policy => {
+                    policy.AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin().WithExposedHeaders("Grpc-Status", "Grpc-Message", "Grpc-Encoding", "Grpc-Accept-Encoding"); ;
+                });
+            });
+
+
+
+
+
+            services.AddScoped<IBusinessRepository, BusinessRepository>();
+            services.AddScoped<IBusinessService, BusinessService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -27,11 +66,18 @@ namespace AcceptsCoin.Services.DirectoryServer
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseAuthentication();
             app.UseRouting();
 
+            app.UseAuthorization();
+            app.UseCors("cors");
+            app.UseGrpcWeb();
             app.UseEndpoints(endpoints =>
             {
-               // endpoints.MapGrpcService<GreeterService>();
+                endpoints.MapGrpcService<BusinessGrpcService>()
+                .EnableGrpcWeb().RequireCors("cors");
+
+               
 
                 endpoints.MapGet("/", async context =>
                 {

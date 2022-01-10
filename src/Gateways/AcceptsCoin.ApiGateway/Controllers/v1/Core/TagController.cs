@@ -22,7 +22,7 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Core
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class TagController : ControllerBase
     {
-        const string channelUrl = "https://localhost:5052";
+        const string channelUrl = "http://localhost:5052";
         public TagController()
         {
 

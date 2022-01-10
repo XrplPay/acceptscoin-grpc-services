@@ -17,6 +17,7 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Identity
     [Route("api/v1/[controller]")]
     public class AuthController : ControllerBase
     {
+        const string channelUrl = "http://localhost:5051";
         public AuthController()
         {
 
@@ -27,7 +28,7 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Identity
         {
             try
             {
-                var channel = GrpcChannel.ForAddress("https://localhost:5051");
+                var channel = GrpcChannel.ForAddress(channelUrl);
                 var client = new AuthAppService.AuthAppServiceClient(channel);
                 var reply = await client.AuthenticateAsync(new AuthGm
                 {

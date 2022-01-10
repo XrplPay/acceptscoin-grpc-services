@@ -1,21 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using AcceptsCoin.Services.DirectoryServer.Domain.Models;
 
-namespace AcceptsCoin.Services.DirectoryServer.Domain.Interfaces
+namespace AcceptsCoin.Services.DirectoryServer.Core.Interfaces
 {
-    public interface IBusinessRepository
+    
+    public interface IBusinessService
     {
-        IQueryable<Business> GetQuery();
-
-        Task<int> GetCount(IQueryable<Business> query);
-
         Task<IEnumerable<Business>> GetAll();
-
-        Task<IEnumerable<Business>> GetAll(IQueryable<Business> query, int pageId, int pageSize);
-
         Task<Business> Find(string Id);
 
         Task<Business> Add(Business entity);
@@ -23,5 +16,7 @@ namespace AcceptsCoin.Services.DirectoryServer.Domain.Interfaces
         Task<Business> Update(Business entity);
 
         Task Delete(Business entity);
+
+        Task SoftDelete(Business entity);
     }
 }

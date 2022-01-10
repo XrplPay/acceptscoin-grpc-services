@@ -20,7 +20,7 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Token
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class TokenController : ControllerBase
     {
-        const string channelUrl = "https://localhost:5053";
+        const string channelUrl = "http://localhost:5055";
         public TokenController()
         {
 

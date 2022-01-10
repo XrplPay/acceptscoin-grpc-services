@@ -1,8 +1,10 @@
 ﻿<Properties StartupConfiguration="Multiple Projects">
   <MonoDevelop.Ide.ItemProperties.src.Services.DIrectory.AcceptsCoin.Services.DirectoryServer PreferredExecutionTarget="/Applications/Google Chrome.app" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Services/DIrectory/AcceptsCoin.Services.DirectoryServer/Data/Repository/BusinessRepository.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Gateways/AcceptsCoin.ApiGateway/Controllers/v1/Token/TokenController.cs">
     <Files>
-      <File FileName="Services/DIrectory/AcceptsCoin.Services.DirectoryServer/Data/Repository/BusinessRepository.cs" Line="8" Column="36" />
+      <File FileName="Services/DIrectory/AcceptsCoin.Services.DirectoryServer/Services/BusinessAppService.cs" Line="70" Column="76" />
+      <File FileName="Gateways/AcceptsCoin.ApiGateway/Controllers/v1/Directory/BusinessController.cs" Line="40" Column="1" />
+      <File FileName="Gateways/AcceptsCoin.ApiGateway/Controllers/v1/Token/TokenController.cs" Line="27" Column="10" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -13,35 +15,25 @@
                 <Node name="AcceptsCoin.ApiGateway" expanded="True">
                   <Node name="Controllers" expanded="True">
                     <Node name="v1" expanded="True">
-                      <Node name="Identity" expanded="True" />
+                      <Node name="Directory" expanded="True" />
+                      <Node name="Token" expanded="True">
+                        <Node name="TokenController.cs" selected="True" />
+                      </Node>
                     </Node>
                   </Node>
+                  <Node name="Core" expanded="True" />
                 </Node>
               </Node>
               <Node name="Services" expanded="True">
-                <Node name="Core" expanded="True">
-                  <Node name="AcceptsCoin.Services.CoreServer" expanded="True">
-                    <Node name="Dependencies" expanded="True">
-                      <Node name="PackageDependencies" expanded="True" />
-                    </Node>
-                    <Node name="Data" expanded="True">
-                      <Node name="Context" expanded="True" />
-                      <Node name="Repository" expanded="True" />
-                    </Node>
-                  </Node>
-                </Node>
                 <Node name="DIrectory" expanded="True">
                   <Node name="AcceptsCoin.Services.DirectoryServer" expanded="True">
+                    <Node name="Protos" expanded="True" />
+                    <Node name="Services" expanded="True" />
+                  </Node>
+                </Node>
+                <Node name="Token" expanded="True">
+                  <Node name="AcceptsCoin.Services.TokenServer" expanded="True">
                     <Node name="Core" expanded="True" />
-                    <Node name="Data" expanded="True">
-                      <Node name="Context" expanded="True" />
-                      <Node name="Repository" expanded="True">
-                        <Node name="BusinessRepository.cs" selected="True" />
-                      </Node>
-                    </Node>
-                    <Node name="Domain" expanded="True">
-                      <Node name="Models" expanded="True" />
-                    </Node>
                   </Node>
                 </Node>
               </Node>
@@ -57,7 +49,9 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.ItemProperties.src.Services.Identity.AcceptsCoin.Services.IdentityServer PreferredExecutionTarget="/Applications/Google Chrome.app" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
+    <BreakpointStore>
+      <Breakpoint enabled="false" file="/Users/amin/Projects/acceptscoin-grpc-services/src/Gateways/AcceptsCoin.ApiGateway/Controllers/v1/Directory/BusinessController.cs" relfile="Gateways/AcceptsCoin.ApiGateway/Controllers/v1/Directory/BusinessController.cs" line="93" column="1" />
+    </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MultiItemStartupConfigurations>
     <MultiItemSolutionRunConfiguration Id="Multiple Projects" Name="Multiple Projects">

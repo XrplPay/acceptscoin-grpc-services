@@ -33,6 +33,8 @@
     <None Remove="Grpc.AspNetCore" />
     <None Remove="Grpc.Net.Client" />
     <None Remove="Grpc.Tools" />
+    <None Remove="Controllers\v1\Storage\" />
+    <None Remove="Core\Dtos\Directory\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\v1\Directory\" />
@@ -40,6 +42,8 @@
     <Folder Include="Core\Views\" />
     <Folder Include="Helper\" />
     <Folder Include="Protos\" />
+    <Folder Include="Controllers\v1\Storage\" />
+    <Folder Include="Core\Dtos\Directory\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.11.1" />
@@ -47,10 +51,10 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="5.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.12" />
-    <PackageReference Include="Google.Protobuf" Version="3.19.1" />
+    <PackageReference Include="Google.Protobuf" Version="3.19.2" />
     <PackageReference Include="Grpc.AspNetCore" Version="2.41.0" />
     <PackageReference Include="Grpc.Net.Client" Version="2.41.0" />
-    <PackageReference Include="Grpc.Tools" Version="2.42.0">
+    <PackageReference Include="Grpc.Tools" Version="2.43.0">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
@@ -76,6 +80,9 @@
     </Protobuf>
     <Protobuf Include="..\..\Services\Token\AcceptsCoin.Services.TokenServer\Protos\token.proto" GrpcServices="Client" ProtoCompile="true">
       <Link>Protos\token.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\..\Services\DIrectory\AcceptsCoin.Services.DirectoryServer\Protos\business.proto" GrpcServices="Client">
+      <Link>Protos\business.proto</Link>
     </Protobuf>
   </ItemGroup>
 </Project>

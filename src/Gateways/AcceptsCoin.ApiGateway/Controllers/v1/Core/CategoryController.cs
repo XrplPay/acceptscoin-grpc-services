@@ -19,6 +19,7 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Core
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class CategoryController : ControllerBase
     {
+        const string channelUrl = "http://localhost:5052";
         public CategoryController()
         {
 
@@ -29,7 +30,7 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Core
         {
             try
             {
-                var channel = GrpcChannel.ForAddress("https://localhost:5052");
+                var channel = GrpcChannel.ForAddress(channelUrl);
                 var client = new CategoryAppService.CategoryAppServiceClient(channel);
                 var reply = await client.GetAllAsync(new Empty());
 
@@ -52,7 +53,7 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Core
         {
             try
             {
-                var channel = GrpcChannel.ForAddress("https://localhost:5052");
+                var channel = GrpcChannel.ForAddress(channelUrl);
                 var client = new CategoryAppService.CategoryAppServiceClient(channel);
                 var reply = await client.GetByIdAsync(new CategoryIdFilter { CategoryId = id.ToString() });
 
@@ -76,7 +77,7 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Core
         {
             try
             {
-                var channel = GrpcChannel.ForAddress("https://localhost:5052");
+                var channel = GrpcChannel.ForAddress(channelUrl);
                 var client = new CategoryAppService.CategoryAppServiceClient(channel);
                 var reply = await client.PostAsync(new CategoryGm { CategoryId = "", Name = createCategory.Name, Icon = createCategory.Icon
                     , Logo = createCategory.Logo, Priority = createCategory.Priority });
@@ -101,7 +102,7 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Core
         {
             try
             {
-                var channel = GrpcChannel.ForAddress("https://localhost:5052");
+                var channel = GrpcChannel.ForAddress(channelUrl);
                 var client = new CategoryAppService.CategoryAppServiceClient(channel);
                 var reply = await client.PutAsync(new CategoryGm
                 {
@@ -133,7 +134,7 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Core
         {
             try
             {
-                var channel = GrpcChannel.ForAddress("https://localhost:5052");
+                var channel = GrpcChannel.ForAddress(channelUrl);
                 var client = new CategoryAppService.CategoryAppServiceClient(channel);
                 var reply = await client.DeleteAsync(new CategoryIdFilter { CategoryId = id.ToString() });
 

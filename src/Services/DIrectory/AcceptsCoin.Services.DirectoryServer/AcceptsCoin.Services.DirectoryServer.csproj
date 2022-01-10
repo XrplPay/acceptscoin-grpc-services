@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Grpc.AspNetCore" Version="2.34.0" />
+    <PackageReference Include="Grpc.AspNetCore" Version="2.41.0" />
     <PackageReference Include="GeoAPI" Version="1.7.5" />
     <PackageReference Include="NetTopologySuite" Version="2.4.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.12" />
@@ -20,6 +20,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.12" />
   </ItemGroup>
 
   <ItemGroup>
@@ -43,6 +44,8 @@
     <None Remove="Npgsql.EntityFrameworkCore.PostgreSQL.NetTopologySuite" />
     <None Remove="Microsoft.EntityFrameworkCore.Design" />
     <None Remove="Microsoft.EntityFrameworkCore.Tools" />
+    <None Remove="Microsoft.AspNetCore.Authentication.JwtBearer" />
+    <None Remove="Protos\business.proto" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Protos\" />
@@ -57,5 +60,13 @@
     <Folder Include="Core\Services\" />
     <Folder Include="Data\Context\" />
     <Folder Include="Data\Repository\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Common\AcceptsCoin.Common\AcceptsCoin.Common.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Protobuf Include="Protos\business.proto" GrpcServices="Server" />
   </ItemGroup>
 </Project>

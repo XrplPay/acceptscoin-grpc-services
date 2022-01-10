@@ -30,6 +30,7 @@ namespace AcceptsCoin.Services.IdentityServer.Services
             JsonWebToken prd = await _userServices.LoginAsync(request.Username,request.Password);
             if (prd == null)
             {
+                _logger.LogError("USER IS NOT EXIST");
                 return await Task.FromResult<TokenGm>(null);
             }
 

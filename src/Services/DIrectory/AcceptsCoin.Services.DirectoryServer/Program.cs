@@ -20,19 +20,19 @@ namespace AcceptsCoin.Services.DirectoryServer
         // Additional configuration is required to successfully run gRPC on macOS.
         // For instructions on how to configure Kestrel and gRPC clients on macOS, visit https://go.microsoft.com/fwlink/?linkid=2099682
         public static IHostBuilder CreateHostBuilder(string[] args) =>
-           Host.CreateDefaultBuilder(args)
-               .ConfigureWebHostDefaults(webBuilder =>
-               {
-                   if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-                   {
-                       webBuilder.ConfigureKestrel(options =>
-                       {
+          Host.CreateDefaultBuilder(args)
+              .ConfigureWebHostDefaults(webBuilder =>
+              {
+                  if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                  {
+                      webBuilder.ConfigureKestrel(options =>
+                      {
                            // Setup a HTTP/2 endpoint without TLS.
-                           options.ListenLocalhost(7000, o => o.Protocols =
-                               HttpProtocols.Http2);
-                       });
-                   }
-                   webBuilder.UseStartup<Startup>();
-               });
+                           options.ListenLocalhost(5053, o => o.Protocols =
+                              HttpProtocols.Http2);
+                      });
+                  }
+                  webBuilder.UseStartup<Startup>().UseUrls("http://*:5053");
+              });
     }
 }

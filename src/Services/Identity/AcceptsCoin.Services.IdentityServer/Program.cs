@@ -28,11 +28,12 @@ namespace AcceptsCoin.Services.IdentityServer
                        webBuilder.ConfigureKestrel(options =>
                        {
                            // Setup a HTTP/2 endpoint without TLS.
-                           options.ListenLocalhost(7001, o => o.Protocols =
+                           options.ListenLocalhost(5051, o => o.Protocols =
                                HttpProtocols.Http2);
                        });
                    }
-                   webBuilder.UseStartup<Startup>().UseUrls("https://*:5051");
+                   webBuilder.UseStartup<Startup>().UseUrls("http://*:5051");
                });
+
     }
 }
