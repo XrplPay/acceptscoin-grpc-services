@@ -28,4 +28,13 @@ namespace AcceptsCoin.ApiGateway.Core.Dtos
         public string Link { get; set; }
 
     }
+    public class DeleteDto
+    {
+        public Guid Id { get; set; }
+    }
+    public class DeleteCollectionTokenDto
+    {
+        public IEnumerable<DeleteDto> Items { get; set; }
+
+    }
 }

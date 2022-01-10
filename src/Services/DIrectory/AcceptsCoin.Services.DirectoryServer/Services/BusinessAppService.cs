@@ -33,7 +33,6 @@ namespace AcceptsCoin.Services.DirectoryServer
             return "bff3b2dd-e89d-46fc-a868-aab93a3efbbe";
         }
 
-        [AllowAnonymous]
         public override async Task<BusinessListGm> GetAll(BusinessQueryFilter request, ServerCallContext context)
         {
             BusinessListGm response = new BusinessListGm();
@@ -41,7 +40,7 @@ namespace AcceptsCoin.Services.DirectoryServer
 
             IQueryable<Business> query = _businessRepository.GetQuery();
 
-            
+
             pagination.CurrentPage = request.PageId;
             pagination.ItemCount = await _businessRepository.GetCount(query);
             pagination.PageCount = (pagination.ItemCount / request.PageSize) + 1;
@@ -69,8 +68,6 @@ namespace AcceptsCoin.Services.DirectoryServer
                                  OfferedServices = business.OfferedServices,
                                  CategoryId = business.CategoryId.ToString(),
                                  PartnerId = business.PartnerId.ToString(),
-
-
                              };
 
             response.Items.AddRange(businesses.ToArray());

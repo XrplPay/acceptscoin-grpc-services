@@ -6,10 +6,12 @@ using AcceptsCoin.ApiGateway.Core.Dtos;
 using AcceptsCoin.ApiGateway.Core.Views;
 using AcceptsCoin.Services.TokenServer ;
 using AcceptsCoin.Services.TokenServer.Protos;
+using Grpc.Core;
 using Grpc.Net.Client;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Net.Http.Headers;
 
 namespace AcceptsCoin.ApiGateway.Controllers.v1.Token
 {
@@ -25,6 +27,14 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Token
         {
 
         }
+        private Metadata GetHeader()
+        {
+            var accessToken = Request.Headers[HeaderNames.Authorization];
+
+            var header = new Metadata();
+            header.Add("Authorization", accessToken);
+            return header;
+        }
 
         [HttpGet("GetAll")]
         public async Task<ActionResult> GetAll([FromQuery] int pageId = 1, [FromQuery] int pageSize = 10)
@@ -33,7 +43,7 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Token
             {
                 var channel = GrpcChannel.ForAddress(channelUrl);
                 var client = new TokenAppService.TokenAppServiceClient(channel);
-                var reply = await client.GetAllAsync(new Empty());
+                var reply = await client.GetAllAsync(new TokenQueryFilter { PageId = pageId, PageSize = pageSize }, headers: GetHeader());
 
                 return Ok(reply);
             }
@@ -56,7 +66,7 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Token
             {
                 var channel = GrpcChannel.ForAddress(channelUrl);
                 var client = new TokenAppService.TokenAppServiceClient(channel);
-                var reply = await client.GetByIdAsync(new TokenIdFilter { TokenId = id.ToString() });
+                var reply = await client.GetByIdAsync(new TokenIdFilter { TokenId = id.ToString() }, headers: GetHeader());
 
                 return Ok(reply);
             }
@@ -82,17 +92,17 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Token
                 var client = new TokenAppService.TokenAppServiceClient(channel);
                 var reply = await client.PostAsync(new TokenGm
                 {
-                    TokenId = "",
+                    Id = "",
                     Name = entity.Name,
                     Symbol = entity.Symbol,
                     Description = entity.Description,
 
-                    Icon = entity.Icon,
+                    Icon = "",
 
                     Logo = entity.Logo,
                     Priority = entity.Priority,
                     Link = entity.Link,
-                });
+                }, headers: GetHeader());
 
                 return Ok(reply);
             }
@@ -118,7 +128,7 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Token
                 var client = new TokenAppService.TokenAppServiceClient(channel);
                 var reply = await client.PutAsync(new TokenGm
                 {
-                    TokenId = id.ToString(),
+                    Id = id.ToString(),
                     Name = entity.Name,
                     Symbol = entity.Symbol,
                     Description = entity.Description,
@@ -128,7 +138,7 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Token
                     Logo = entity.Logo,
                     Priority = entity.Priority,
                     Link = entity.Link,
-                });
+                }, headers: GetHeader());
 
                 return Ok(reply);
             }
@@ -152,7 +162,37 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Token
             {
                 var channel = GrpcChannel.ForAddress(channelUrl);
                 var client = new TokenAppService.TokenAppServiceClient(channel);
-                var reply = await client.DeleteAsync(new TokenIdFilter { TokenId = id.ToString() });
+                var reply = await client.SoftDeleteAsync(new TokenIdFilter { TokenId = id.ToString() }, headers: GetHeader());
+
+                return Ok(reply);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new WebApiErrorMessageResponse()
+                {
+                    Errors = new List<string>() {
+                            ex.Message
+                    },
+                    Success = false
+                });
+            }
+
+        }
+        [HttpDelete("DeleteCollection")]
+        public async Task<ActionResult> DeleteCollection([FromBody] DeleteCollectionTokenDto items)
+        {
+            try
+            {
+                var channel = GrpcChannel.ForAddress(channelUrl);
+                var client = new TokenAppService.TokenAppServiceClient(channel);
+
+                DeleteCollectionGm collectionGm = new DeleteCollectionGm();
+                foreach (var item in items.Items)
+                {
+                    collectionGm.Items.Add(new TokenIdFilter { TokenId = item.Id.ToString() });
+                }
+
+                var reply = await client.SoftDeleteCollectionAsync(collectionGm, headers: GetHeader());
 
                 return Ok(reply);
             }

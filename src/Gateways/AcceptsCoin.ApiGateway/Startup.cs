@@ -16,6 +16,8 @@ namespace AcceptsCoin.ApiGateway
 {
     public class Startup
     {
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -28,6 +30,16 @@ namespace AcceptsCoin.ApiGateway
         {
 
             services.AddControllers();
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: MyAllowSpecificOrigins,
+                                  builder =>
+                                  {
+                                      builder.WithOrigins("http://localhost:3000").AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
+                                  });
+            });
+
             services.AddJwt(Configuration);
             services.AddSwaggerGen(c =>
             {
@@ -44,6 +56,7 @@ namespace AcceptsCoin.ApiGateway
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCors(MyAllowSpecificOrigins);
 
             app.UseSwagger();
 

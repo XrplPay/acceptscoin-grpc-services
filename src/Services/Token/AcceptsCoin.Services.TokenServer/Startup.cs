@@ -1,4 +1,5 @@
 ﻿using System;
+using AcceptsCoin.Common.Auth;
 using AcceptsCoin.Services.TokenServer.Core.Interfaces;
 using AcceptsCoin.Services.TokenServer.Core.Services;
 using AcceptsCoin.Services.TokenServer.Data.Context;
@@ -47,7 +48,8 @@ namespace AcceptsCoin.Services.TokenServer
             });
 
 
-
+            services.AddJwt(Configuration);
+            services.AddAuthorization();
 
             services.AddScoped<ITokenRepository, TokenRepository>();
             services.AddScoped<ITokenService, TokenService>();
@@ -61,9 +63,11 @@ namespace AcceptsCoin.Services.TokenServer
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseAuthentication();
             app.UseRouting();
-            //app.UseAuthentication();
-            //app.UseAuthorization();
+
+            app.UseAuthorization();
+
             app.UseCors("cors");
             app.UseGrpcWeb();
             app.UseEndpoints(endpoints =>

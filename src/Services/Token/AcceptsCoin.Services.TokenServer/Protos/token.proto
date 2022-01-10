@@ -7,19 +7,33 @@ package token;
 
 
 service TokenAppService{
-    rpc GetAll (Empty) returns (TokenListGm);
+    rpc GetAll (TokenQueryFilter) returns (TokenListGm);
     rpc GetById (TokenIdFilter) returns (TokenGm);
     rpc Post (TokenGm) returns (TokenGm);
     rpc Put (TokenGm) returns (TokenGm);
     rpc Delete (TokenIdFilter) returns (Empty);
+    rpc SoftDelete (TokenIdFilter) returns (Empty);
+    rpc SoftDeleteCollection (DeleteCollectionGm) returns (Empty);
 }
 message Empty{
 }
 message TokenIdFilter {
  string TokenId = 1;
 }
+message TokenQueryFilter {
+ int32 pageId = 1;
+ int32 pageSize = 2;
+}
+message DeleteCollectionGm {
+ repeated TokenIdFilter items = 1;
+}
+message PaginationGm{
+    int32 currentPage = 1;
+    int32 itemCount = 2;
+    int32 pageCount = 3;
+}
 message TokenGm {
-    string TokenId = 1;
+    string Id = 1;
     string Name = 2;
     string Symbol = 3;
     string Description = 4;
@@ -31,4 +45,8 @@ message TokenGm {
 }
 message TokenListGm {
     repeated TokenGm items = 1;
+    int32 currentPage = 2;
+    int32 itemCount = 3;
+    int32 pageCount = 4;
+
 }
