@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AcceptsCoin.Services.CoreServer.Data.Context;
 using AcceptsCoin.Services.CoreServer.Domain.Interfaces;
@@ -17,6 +18,27 @@ namespace AcceptsCoin.Services.CoreServer.Data.Repository
         {
             _context = context;
         }
+
+        public IQueryable<Category> GetQuery()
+        {
+            return _context.Categories;
+        }
+
+        public async Task<int> GetCount(IQueryable<Category> query)
+        {
+            return await query.CountAsync();
+        }
+
+        public async Task<IEnumerable<Category>> GetAll(IQueryable<Category> query, int pageId, int pageSize)
+        {
+
+            var skip = (pageId - 1) * pageSize;
+            var take = pageSize;
+
+            return await query.Where(x => x.Deleted == false).Skip(skip).Take(take).ToListAsync();
+
+        }
+
 
         public async Task<Category> Add(Category entity)
         {

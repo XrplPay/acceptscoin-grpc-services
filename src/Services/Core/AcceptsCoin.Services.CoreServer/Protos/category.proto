@@ -7,17 +7,28 @@ package category;
 
 
 service CategoryAppService{
-    rpc GetAll (Empty) returns (CategoryListGm);
+    rpc GetAll (CategoryQueryFilter) returns (CategoryListGm);
     rpc GetById (CategoryIdFilter) returns (CategoryGm);
     rpc Post (CategoryGm) returns (CategoryGm);
     rpc Put (CategoryGm) returns (CategoryGm);
     rpc Delete (CategoryIdFilter) returns (Empty);
+    rpc SoftDelete (CategoryIdFilter) returns (Empty);
+    rpc SoftDeleteCollection (DeleteCollectionGm) returns (Empty);
 }
 message Empty{
+}
+
+message CategoryQueryFilter {
+ int32 pageId = 1;
+ int32 pageSize = 2;
 }
 message CategoryIdFilter {
  string categoryId = 1;
 }
+message DeleteCollectionGm {
+ repeated CategoryIdFilter items = 1;
+}
+
 message CategoryGm {
     string categoryId = 1;
     string name = 2;
@@ -27,4 +38,7 @@ message CategoryGm {
 }
 message CategoryListGm {
     repeated CategoryGm items = 1;
+    int32 currentPage = 2;
+    int32 itemCount = 3;
+    int32 pageCount = 4;
 }

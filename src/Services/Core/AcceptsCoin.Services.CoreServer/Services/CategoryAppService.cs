@@ -5,12 +5,13 @@ using System.Threading.Tasks;
 using AcceptsCoin.Services.CoreServer.Domain.Interfaces;
 using AcceptsCoin.Services.CoreServer.Domain.Models;
 using Grpc.Core;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
 
 namespace AcceptsCoin.Services.CoreServer
 {
-    //[Authorize]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class CategoryService : CategoryAppService.CategoryAppServiceBase
     {
         private readonly ILogger<CategoryService> _logger;
@@ -21,11 +22,25 @@ namespace AcceptsCoin.Services.CoreServer
             _categoryRepository = categoryRepository;
         }
 
-        public override async Task<CategoryListGm> GetAll(Empty request, ServerCallContext context)
+        private Guid getUserId(ServerCallContext context)
+        {
+            return Guid.Parse(context.GetHttpContext().User.Identity.Name);
+        }
+        private string getPartnetId(ServerCallContext context)
+        {
+            return "bff3b2dd-e89d-46fc-a868-aab93a3efbbe";
+        }
+        public override async Task<CategoryListGm> GetAll(CategoryQueryFilter request, ServerCallContext context)
         {
             CategoryListGm response = new CategoryListGm();
 
-            Console.WriteLine(context.GetHttpContext().User.Identity.Name);
+            IQueryable<Category> query = _categoryRepository.GetQuery();
+
+
+            response.CurrentPage = request.PageId;
+            response.ItemCount = await _categoryRepository.GetCount(query);
+            response.PageCount = (response.ItemCount / request.PageSize) + 1;
+
             var categories = from prd in await _categoryRepository.GetAll()
             select new CategoryGm()
             {
@@ -63,7 +78,7 @@ namespace AcceptsCoin.Services.CoreServer
                 Icon = request.Icon,
                 Logo = request.Logo,
                 Priority = request.Priority,
-                CreatedById = Guid.Parse("999bb90f-3167-4f81-83bb-0c76d1d3ace5"),
+                CreatedById = getUserId(context),
                 CreatedDate = DateTime.Now,
                 Published = true,
             };
@@ -97,7 +112,7 @@ namespace AcceptsCoin.Services.CoreServer
             prd.Logo = request.Logo;
             prd.Icon = request.Icon;
             prd.Priority = request.Priority;
-            prd.UpdatedById = Guid.Parse("999bb90f-3167-4f81-83bb-0c76d1d3ace5");
+            prd.UpdatedById = getUserId(context);
             prd.UpdatedDate = DateTime.Now;
 
 
@@ -123,6 +138,44 @@ namespace AcceptsCoin.Services.CoreServer
             }
 
             await _categoryRepository.Delete(prd);
+            return await Task.FromResult<Empty>(new Empty());
+        }
+
+        public override async Task<Empty> SoftDelete(CategoryIdFilter request, ServerCallContext context)
+        {
+            Category category = await _categoryRepository.Find(request.CategoryId);
+
+            if (category == null)
+            {
+                return await Task.FromResult<Empty>(null);
+            }
+
+            category.Deleted = true;
+            category.UpdatedById = getUserId(context);
+            category.UpdatedDate = DateTime.Now;
+
+            await _categoryRepository.Update(category);
+            return await Task.FromResult<Empty>(new Empty());
+        }
+        public override async Task<Empty> SoftDeleteCollection(DeleteCollectionGm request, ServerCallContext context)
+        {
+
+            foreach (var item in request.Items)
+            {
+                Category category = await _categoryRepository.Find(item.CategoryId);
+
+                if (category == null)
+                {
+                    return await Task.FromResult<Empty>(null);
+                }
+
+                category.Deleted = true;
+                category.UpdatedById = getUserId(context);
+                category.UpdatedDate = DateTime.Now;
+
+                await _categoryRepository.Update(category);
+            }
+
             return await Task.FromResult<Empty>(new Empty());
         }
     }

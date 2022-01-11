@@ -39,14 +39,14 @@ namespace AcceptsCoin.Services.TokenServer
         {
             TokenListGm response = new TokenListGm();
 
-            PaginationGm pagination = new PaginationGm();
+            //PaginationGm pagination = new PaginationGm();
 
             IQueryable<Token> query = _tokenRepository.GetQuery();
 
 
             response.CurrentPage = request.PageId;
             response.ItemCount = await _tokenRepository.GetCount(query);
-            response.PageCount = (pagination.ItemCount / request.PageSize) + 1;
+            response.PageCount = (response.ItemCount / request.PageSize) + 1;
 
 
             var tokens = from prd in await _tokenRepository.GetAll(query, request.PageId, request.PageSize)
