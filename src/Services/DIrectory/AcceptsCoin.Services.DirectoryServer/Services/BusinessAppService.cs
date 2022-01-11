@@ -24,9 +24,9 @@ namespace AcceptsCoin.Services.DirectoryServer
             _businessRepository = businessRepository;
         }
 
-        private string getUserId(ServerCallContext context)
+        private Guid getUserId(ServerCallContext context)
         {
-            return context.GetHttpContext().User.Identity.Name;
+            return Guid.Parse(context.GetHttpContext().User.Identity.Name);
         }
         private string getPartnetId(ServerCallContext context)
         {
@@ -50,7 +50,7 @@ namespace AcceptsCoin.Services.DirectoryServer
             var businesses = from business in await _businessRepository.GetAll(query, request.PageId, request.PageSize)
                              select new BusinessGm()
                              {
-                                 BusinessId = business.BusinessId.ToString(),
+                                 Id = business.BusinessId.ToString(),
                                  Email = business.Email,
                                  WebSiteUrl = business.WebSiteUrl,
                                  ContactNumber = business.ContactNumber,
@@ -80,7 +80,7 @@ namespace AcceptsCoin.Services.DirectoryServer
             var business = await _businessRepository.Find(request.BusinessId);
             var searchedBusiness = new BusinessGm()
             {
-                BusinessId = business.BusinessId.ToString(),
+                Id = business.BusinessId.ToString(),
                 Email = business.Email,
                 WebSiteUrl = business.WebSiteUrl,
                 ContactNumber = business.ContactNumber,
@@ -108,7 +108,7 @@ namespace AcceptsCoin.Services.DirectoryServer
             {
                 BusinessId = Guid.NewGuid(),
                 Name = request.Name,
-                CreatedById = Guid.Parse(getUserId(context)),
+                CreatedById = getUserId(context),
                 CategoryId = Guid.Parse(request.CategoryId),
                 PartnerId = Guid.Parse(getPartnetId(context)),
                 CreatedDate = DateTime.Now,
@@ -134,7 +134,7 @@ namespace AcceptsCoin.Services.DirectoryServer
 
             var response = new BusinessGm()
             {
-                BusinessId = res.BusinessId.ToString(),
+                Id = res.BusinessId.ToString(),
 
                 Email = res.Email,
                 WebSiteUrl = res.WebSiteUrl,
@@ -161,7 +161,7 @@ namespace AcceptsCoin.Services.DirectoryServer
         public override async Task<BusinessGm> Put(BusinessGm request,
           ServerCallContext context)
         {
-            Business business = await _businessRepository.Find(request.BusinessId);
+            Business business = await _businessRepository.Find(request.Id);
             if (business == null)
             {
                 return await Task.FromResult<BusinessGm>(null);
@@ -184,7 +184,7 @@ namespace AcceptsCoin.Services.DirectoryServer
             business.Address = request.Address;
             business.OfferedServices = request.OfferedServices;
             business.CategoryId = Guid.Parse(request.CategoryId);
-            business.UpdatedById = Guid.Parse(getUserId(context));
+            business.UpdatedById = getUserId(context);
             business.UpdatedDate = DateTime.Now;
 
 
@@ -193,7 +193,7 @@ namespace AcceptsCoin.Services.DirectoryServer
             await _businessRepository.Update(business);
             return await Task.FromResult<BusinessGm>(new BusinessGm()
             {
-                BusinessId = business.BusinessId.ToString(),
+                Id = business.BusinessId.ToString(),
                 Email = business.Email,
                 WebSiteUrl = business.WebSiteUrl,
                 ContactNumber = business.ContactNumber,
@@ -235,10 +235,31 @@ namespace AcceptsCoin.Services.DirectoryServer
             }
 
             business.Deleted = true;
-            business.UpdatedById = Guid.Parse(getUserId(context));
+            business.UpdatedById = getUserId(context);
             business.UpdatedDate = DateTime.Now;
 
             await _businessRepository.Update(business);
+            return await Task.FromResult<Empty>(new Empty());
+        }
+        public override async Task<Empty> SoftDeleteCollection(BusinessDeleteCollectionGm request, ServerCallContext context)
+        {
+
+            foreach (var item in request.Items)
+            {
+                Business business = await _businessRepository.Find(item.BusinessId);
+
+                if (business == null)
+                {
+                    return await Task.FromResult<Empty>(null);
+                }
+
+                business.Deleted = true;
+                business.UpdatedById = getUserId(context);
+                business.UpdatedDate = DateTime.Now;
+
+                await _businessRepository.Update(business);
+            }
+
             return await Task.FromResult<Empty>(new Empty());
         }
     }

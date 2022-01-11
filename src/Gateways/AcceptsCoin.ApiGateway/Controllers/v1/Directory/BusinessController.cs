@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AcceptsCoin.ApiGateway.Core.Dtos;
 using AcceptsCoin.ApiGateway.Core.Dtos.Directory;
 using AcceptsCoin.ApiGateway.Core.Views;
 using AcceptsCoin.Services.DirectoryServer.Protos;
@@ -94,7 +95,7 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Directory
                 var client = new BusinessAppService.BusinessAppServiceClient(channel);
                 var reply = await client.PostAsync(new BusinessGm
                 {
-                    BusinessId = "",
+                    Id = "",
                     Address = entity.Address,
                     CategoryId = entity.CategoryId.ToString(),
                     ContactNumber = entity.ContactNumber,
@@ -140,7 +141,7 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Directory
                 var client = new BusinessAppService.BusinessAppServiceClient(channel);
                 var reply = await client.PutAsync(new BusinessGm
                 {
-                    BusinessId = id.ToString(),
+                    Id = id.ToString(),
                     Address = entity.Address,
                     CategoryId = entity.CategoryId.ToString(),
                     ContactNumber = entity.ContactNumber,
@@ -208,6 +209,36 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Directory
                 var channel = GrpcChannel.ForAddress(channelUrl);
                 var client = new BusinessAppService.BusinessAppServiceClient(channel);
                 var reply = await client.SoftDeleteAsync(new BusinessIdFilter { BusinessId = id.ToString() }, headers: GetHeader());
+
+                return Ok(reply);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new WebApiErrorMessageResponse()
+                {
+                    Errors = new List<string>() {
+                            ex.Message
+                    },
+                    Success = false
+                });
+            }
+
+        }
+        [HttpDelete("DeleteCollection")]
+        public async Task<ActionResult> DeleteCollection([FromBody] DeleteCollectionTokenDto items)
+        {
+            try
+            {
+                var channel = GrpcChannel.ForAddress(channelUrl);
+                var client = new BusinessAppService.BusinessAppServiceClient(channel);
+
+                BusinessDeleteCollectionGm collectionGm = new BusinessDeleteCollectionGm();
+                foreach (var item in items.Items)
+                {
+                    collectionGm.Items.Add(new BusinessIdFilter { BusinessId = item.Id.ToString() });
+                }
+
+                var reply = await client.SoftDeleteCollectionAsync(collectionGm, headers: GetHeader());
 
                 return Ok(reply);
             }

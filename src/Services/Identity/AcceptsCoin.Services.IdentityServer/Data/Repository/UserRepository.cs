@@ -19,6 +19,18 @@ namespace AcceptsCoin.Services.CoreServer.Data.Repository
             _context = context;
         }
 
+        public IQueryable<User> GetQuery()
+        {
+            return _context.Users;
+        }
+
+        public async Task<int> GetCount(IQueryable<User> query)
+        {
+            return await query.CountAsync();
+        }
+
+       
+
         public async Task<User> Add(User entity)
         {
             await _context.Users.AddAsync(entity);
@@ -35,9 +47,12 @@ namespace AcceptsCoin.Services.CoreServer.Data.Repository
             return await _context.Users.Where(x => x.UserName == userName).FirstOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<User>> GetAll()
+        public async Task<IEnumerable<User>> GetAll(IQueryable<User> query, int pageId, int pageSize)
         {
-            return await _context.Users.ToListAsync();
+            var skip = (pageId - 1) * pageSize;
+            var take = pageSize;
+
+            return await query.Where(x => x.Deleted == false).Skip(skip).Take(take).ToListAsync();
         }
 
         public async Task<User> Update(User entity)

@@ -55,7 +55,7 @@ namespace AcceptsCoin.Services.DirectoryServer.Data.Repository
             var skip = (pageId - 1) * pageSize;
             var take = pageSize;
 
-            return await query.Skip(skip).Take(take).ToListAsync();
+            return await query.Where(x => x.Deleted == false).Skip(skip).Take(take).ToListAsync();
 
         }
 

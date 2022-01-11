@@ -35,6 +35,7 @@
     <None Remove="Grpc.Tools" />
     <None Remove="Controllers\v1\Storage\" />
     <None Remove="Core\Dtos\Directory\" />
+    <None Remove="Core\Dtos\Identity\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\v1\Directory\" />
@@ -44,6 +45,7 @@
     <Folder Include="Protos\" />
     <Folder Include="Controllers\v1\Storage\" />
     <Folder Include="Core\Dtos\Directory\" />
+    <Folder Include="Core\Dtos\Identity\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.11.1" />
@@ -83,6 +85,9 @@
     </Protobuf>
     <Protobuf Include="..\..\Services\DIrectory\AcceptsCoin.Services.DirectoryServer\Protos\business.proto" GrpcServices="Client">
       <Link>Protos\business.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\..\Services\Identity\AcceptsCoin.Services.IdentityServer\Protos\user.proto" GrpcServices="Client">
+      <Link>Protos\user.proto</Link>
     </Protobuf>
   </ItemGroup>
 </Project>

@@ -12,15 +12,20 @@ service BusinessAppService{
     rpc Put (BusinessGm) returns (BusinessGm);
     rpc Delete (BusinessIdFilter) returns (Empty);
     rpc SoftDelete (BusinessIdFilter) returns (Empty);
+    rpc SoftDeleteCollection (BusinessDeleteCollectionGm) returns (Empty);
+
 }
 
 message Empty{
 }
 
+
 message BusinessIdFilter {
  string businessId = 1;
 }
-
+message BusinessDeleteCollectionGm {
+ repeated BusinessIdFilter items = 1;
+}
 message BusinessQueryFilter {
  int32 pageId = 1;
  int32 pageSize = 2;
@@ -32,7 +37,7 @@ message PaginationGm{
     int32 pageCount = 3;
 }
 message BusinessGm {
-    string businessId = 1;
+    string Id = 1;
     string name = 2;
     string email = 3;
     string webSiteUrl = 4;

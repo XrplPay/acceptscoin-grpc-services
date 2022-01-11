@@ -11,7 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{91
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AcceptsCoin.ApiGateway", "Gateways\AcceptsCoin.ApiGateway\AcceptsCoin.ApiGateway.csproj", "{B07C6662-7092-48F9-BB54-DED3D63BD7C9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AcceptsCoin.Services.IdentityServer", "Services\Identity\AcceptsCoin.Services.IdentityServer\AcceptsCoin.Services.IdentityServer.csproj", "{D71199E1-D428-41DE-A3D9-51D418297555}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AcceptsCoin.Services.IdentityServer", "Services\Identity\AcceptsCoin.Services.IdentityServer\AcceptsCoin.Services.IdentityServer.csproj", "{D71199E1-D428-41DE-A3D9-51D418297555}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Identity", "Identity", "{E88EA179-E926-4B9C-B8B7-20D5E751FEFD}"
 EndProject
