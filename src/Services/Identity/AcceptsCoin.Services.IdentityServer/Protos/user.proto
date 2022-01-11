@@ -1,0 +1,50 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "AcceptsCoin.Services.IdentityServer.Protos";
+
+
+package user;
+
+
+service UserAppService{
+    rpc GetAll (UserQueryFilter) returns (UserListGm);
+    rpc GetById (UserIdFilter) returns (UserGm);
+    rpc Post (UserGm) returns (UserGm);
+    rpc Put (UserGm) returns (UserGm);
+    rpc Delete (UserIdFilter) returns (EmptyUser);
+    rpc SoftDelete (UserIdFilter) returns (EmptyUser);
+    rpc SoftDeleteCollection (UserDeleteCollectionGm) returns (EmptyUser);
+
+}
+
+message EmptyUser{
+}
+
+
+message UserIdFilter {
+ string UserId = 1;
+}
+message UserDeleteCollectionGm {
+ repeated UserIdFilter items = 1;
+}
+message UserQueryFilter {
+ int32 pageId = 1;
+ int32 pageSize = 2;
+}
+
+message UserGm {
+    string id = 1;
+    string name = 2;
+    string email = 3;
+    optional string password = 4;
+}
+message UserListGm {
+    repeated UserGm items = 1;
+    int32 currentPage = 2;
+    int32 itemCount = 3;
+    int32 pageCount = 4;
+}
+
+
+
+
