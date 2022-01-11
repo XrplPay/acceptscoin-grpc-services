@@ -43,14 +43,14 @@ namespace AcceptsCoin.Services.CoreServer
             response.PageCount = (response.ItemCount / request.PageSize) + 1;
 
 
-            var categories = from prd in await _tagRepository.GetAll()
+            var tags = from tag in await _tagRepository.GetAll(query, request.PageId, request.PageSize)
             select new TagGm()
             {
-                Id = prd.TagId.ToString(),
-                Title = prd.Title,
+                Id = tag.TagId.ToString(),
+                Title = tag.Title,
                                         
             };
-            response.Items.AddRange(categories.ToArray());
+            response.Items.AddRange(tags.ToArray());
             return await Task.FromResult(response);
         }
      

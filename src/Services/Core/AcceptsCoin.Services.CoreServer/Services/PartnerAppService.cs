@@ -43,38 +43,41 @@ namespace AcceptsCoin.Services.CoreServer
             response.PageCount = (response.ItemCount / request.PageSize) + 1;
 
 
-            var categories = from prd in await _partnerRepository.GetAll(query, request.PageId, request.PageSize)
-            select new PartnerGm()
-            {
-                Id = prd.PartnerId.ToString(),
-                Name = prd.Name,
-                Logo = prd.Logo,
-                WebSiteUrl = prd.WebSiteUrl,
-                Email = prd.Email,
-                ContactNumber = prd.ContactNumber,
-                Manager = prd.Manager,
-                Owner = prd.Owner,
-                LanguageId = prd.LanguageId.ToString(),
-                                        
-            };
-            response.Items.AddRange(categories.ToArray());
+            var partners = from partner in await _partnerRepository.GetAll(query, request.PageId, request.PageSize)
+                           select new PartnerGm()
+                           {
+                               Id = partner.PartnerId.ToString(),
+                               Name = partner.Name,
+                               Logo = partner.Logo,
+                               WebSiteUrl = partner.WebSiteUrl,
+                               Email = partner.Email,
+                               ContactNumber = partner.ContactNumber,
+                               Manager = partner.Manager,
+                               Owner = partner.Owner,
+                               ApiKey = partner.ApiKey.ToString(),
+                               LanguageId = partner.LanguageId.ToString(),
+
+
+
+                           };
+            response.Items.AddRange(partners.ToArray());
             return await Task.FromResult(response);
         }
 
         public override async Task<PartnerGm> GetById(PartnerIdFilter request,ServerCallContext context)
         {
-            var Partner =await _partnerRepository.Find(Guid.Parse(request.PartnerId));
+            var partner =await _partnerRepository.Find(Guid.Parse(request.PartnerId));
             var searchedPartner = new PartnerGm()
             {
-               Id=Partner.PartnerId.ToString(),
-                Name = Partner.Name,
-                Logo = Partner.Logo,
-                WebSiteUrl = Partner.WebSiteUrl,
-                Email = Partner.Email,
-                ContactNumber = Partner.ContactNumber,
-                Manager = Partner.Manager,
-                Owner = Partner.Owner,
-                LanguageId = Partner.LanguageId.ToString(),
+               Id= partner.PartnerId.ToString(),
+                Name = partner.Name,
+                Logo = partner.Logo,
+                WebSiteUrl = partner.WebSiteUrl,
+                Email = partner.Email,
+                ContactNumber = partner.ContactNumber,
+                Manager = partner.Manager,
+                Owner = partner.Owner,
+                LanguageId = partner.LanguageId.ToString(),
 
             };
             return await Task.FromResult(searchedPartner);
@@ -98,6 +101,7 @@ namespace AcceptsCoin.Services.CoreServer
                 CreatedDate = DateTime.Now,
                 Published = true,
                 Deleted = false,
+                ApiKey = Guid.NewGuid(),
             };
 
             var res = await _partnerRepository.Add(prdAdded);

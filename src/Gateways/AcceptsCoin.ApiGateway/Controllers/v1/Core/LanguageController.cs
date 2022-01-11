@@ -6,10 +6,12 @@ using AcceptsCoin.ApiGateway.Core.Dtos;
 using AcceptsCoin.ApiGateway.Core.Views;
 using AcceptsCoin.Services.CoreServer ;
 using AcceptsCoin.Services.CoreServer.Protos;
+using Grpc.Core;
 using Grpc.Net.Client;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Net.Http.Headers;
 
 namespace AcceptsCoin.ApiGateway.Controllers.v1.Core
 {
@@ -25,7 +27,14 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Core
         {
 
         }
+        private Metadata GetHeader()
+        {
+            var accessToken = Request.Headers[HeaderNames.Authorization];
 
+            var header = new Metadata();
+            header.Add("Authorization", accessToken);
+            return header;
+        }
         [HttpGet("GetAll")]
         public async Task<ActionResult> GetAll([FromQuery] int pageId = 1, [FromQuery] int pageSize = 10)
         {
@@ -33,7 +42,7 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Core
             {
                 var channel = GrpcChannel.ForAddress(channelUrl);
                 var client = new LanguageAppService.LanguageAppServiceClient(channel);
-                var reply = await client.GetAllAsync(new EmptyLanguage());
+                var reply = await client.GetAllAsync(new LanguageQueryFilter { PageId = pageId, PageSize = pageSize }, headers: GetHeader());
 
                 return Ok(reply);
             }
@@ -56,7 +65,7 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Core
             {
                 var channel = GrpcChannel.ForAddress(channelUrl);
                 var client = new LanguageAppService.LanguageAppServiceClient(channel);
-                var reply = await client.GetByIdAsync(new LanguageIdFilter { LanguageId = id.ToString() });
+                var reply = await client.GetByIdAsync(new LanguageIdFilter { LanguageId = id.ToString() }, headers: GetHeader());
 
                 return Ok(reply);
             }
@@ -82,13 +91,13 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Core
                 var client = new LanguageAppService.LanguageAppServiceClient(channel);
                 var reply = await client.PostAsync(new LanguageGm
                 {
-                    LanguageId = "",
+                    Id = "",
                     Name= entity.Name,
                     Code=entity.Code,
                     Icon=entity.Icon,
                     Logo=entity.Logo,
                     Priority=entity.Priority,
-                });
+                }, headers: GetHeader());
 
                 return Ok(reply);
             }
@@ -114,13 +123,13 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Core
                 var client = new LanguageAppService.LanguageAppServiceClient(channel);
                 var reply = await client.PutAsync(new LanguageGm
                 {
-                    LanguageId = id.ToString(),
+                    Id = id.ToString(),
                     Name = entity.Name,
                     Code = entity.Code,
                     Icon = entity.Icon,
                     Logo = entity.Logo,
                     Priority = entity.Priority,
-                });
+                }, headers: GetHeader());
 
                 return Ok(reply);
             }
@@ -144,7 +153,37 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Core
             {
                 var channel = GrpcChannel.ForAddress(channelUrl);
                 var client = new LanguageAppService.LanguageAppServiceClient(channel);
-                var reply = await client.DeleteAsync(new LanguageIdFilter { LanguageId = id.ToString() });
+                var reply = await client.SoftDeleteAsync(new LanguageIdFilter { LanguageId = id.ToString() }, headers: GetHeader());
+
+                return Ok(reply);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new WebApiErrorMessageResponse()
+                {
+                    Errors = new List<string>() {
+                            ex.Message
+                    },
+                    Success = false
+                });
+            }
+
+        }
+        [HttpDelete("DeleteCollection")]
+        public async Task<ActionResult> DeleteCollection([FromBody] DeleteCollectionTokenDto items)
+        {
+            try
+            {
+                var channel = GrpcChannel.ForAddress(channelUrl);
+                var client = new LanguageAppService.LanguageAppServiceClient(channel);
+
+                LanguageDeleteCollectionGm collectionGm = new  LanguageDeleteCollectionGm();
+                foreach (var item in items.Items)
+                {
+                    collectionGm.Items.Add(new LanguageIdFilter { LanguageId = item.Id.ToString() });
+                }
+
+                var reply = await client.SoftDeleteCollectionAsync(collectionGm, headers: GetHeader());
 
                 return Ok(reply);
             }

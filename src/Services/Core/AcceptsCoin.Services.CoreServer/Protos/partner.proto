@@ -38,6 +38,7 @@ message PartnerGm {
     string Manager = 7;
     string Owner = 8;
     string LanguageId = 9;
+    string ApiKey=10;
     }
 message PartnerListGm {
     repeated PartnerGm items = 1;

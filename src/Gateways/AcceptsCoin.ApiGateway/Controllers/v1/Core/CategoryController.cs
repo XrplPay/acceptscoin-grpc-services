@@ -146,7 +146,7 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Core
             {
                 var channel = GrpcChannel.ForAddress(channelUrl);
                 var client = new CategoryAppService.CategoryAppServiceClient(channel);
-                var reply = await client.DeleteAsync(new CategoryIdFilter { CategoryId = id.ToString() }, headers: GetHeader());
+                var reply = await client.SoftDeleteAsync(new CategoryIdFilter { CategoryId = id.ToString() }, headers: GetHeader());
 
                 return Ok(reply);
             }

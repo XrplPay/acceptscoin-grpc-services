@@ -40,7 +40,7 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Core
                 //header.Add("Authorization", accessToken);
                 var channel = GrpcChannel.ForAddress(channelUrl);
                 var client = new TagAppService.TagAppServiceClient(channel);
-                var reply = await client.GetAllAsync(new EmptyTag(), headers: GetHeader());
+                var reply = await client.GetAllAsync(new  TagQueryFilter { PageId = pageId, PageSize = pageSize }, headers: GetHeader());
 
                 return Ok(reply);
             }
@@ -89,7 +89,7 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Core
                 var client = new TagAppService.TagAppServiceClient(channel);
                 var reply = await client.PostAsync(new TagGm
                 {
-                    TagId = "",
+                    Id = "",
                     Title= entity.Title,
                 }, headers: GetHeader());
 
@@ -117,7 +117,7 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Core
                 var client = new TagAppService.TagAppServiceClient(channel);
                 var reply = await client.PutAsync(new TagGm
                 {
-                    TagId = id.ToString(),
+                    Id = id.ToString(),
                     Title = entity.Title,
                 }, headers: GetHeader());
 
@@ -143,7 +143,37 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Core
             {
                 var channel = GrpcChannel.ForAddress(channelUrl);
                 var client = new TagAppService.TagAppServiceClient(channel);
-                var reply = await client.DeleteAsync(new TagIdFilter { TagId = id.ToString() }, headers: GetHeader());
+                var reply = await client.SoftDeleteAsync(new TagIdFilter { TagId = id.ToString() }, headers: GetHeader());
+
+                return Ok(reply);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new WebApiErrorMessageResponse()
+                {
+                    Errors = new List<string>() {
+                            ex.Message
+                    },
+                    Success = false
+                });
+            }
+
+        }
+        [HttpDelete("DeleteCollection")]
+        public async Task<ActionResult> DeleteCollection([FromBody] DeleteCollectionTokenDto items)
+        {
+            try
+            {
+                var channel = GrpcChannel.ForAddress(channelUrl);
+                var client = new TagAppService.TagAppServiceClient(channel);
+
+                TagDeleteCollectionGm collectionGm = new TagDeleteCollectionGm();
+                foreach (var item in items.Items)
+                {
+                    collectionGm.Items.Add(new TagIdFilter { TagId = item.Id.ToString() });
+                }
+
+                var reply = await client.SoftDeleteCollectionAsync(collectionGm, headers: GetHeader());
 
                 return Ok(reply);
             }
