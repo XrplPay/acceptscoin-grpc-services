@@ -41,7 +41,7 @@ namespace AcceptsCoin.Services.CoreServer
             response.ItemCount = await _categoryRepository.GetCount(query);
             response.PageCount = (response.ItemCount / request.PageSize) + 1;
 
-            var categories = from prd in await _categoryRepository.GetAll()
+            var categories = from prd in await _categoryRepository.GetAll(query, request.PageId, request.PageSize)
             select new CategoryGm()
             {
                 Id = prd.CategoryId.ToString(),

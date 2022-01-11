@@ -7,19 +7,29 @@ package language;
 
 
 service LanguageAppService{
-    rpc GetAll (EmptyLanguage) returns (LanguageListGm);
+    rpc GetAll (LanguageQueryFilter) returns (LanguageListGm);
     rpc GetById (LanguageIdFilter) returns (LanguageGm);
     rpc Post (LanguageGm) returns (LanguageGm);
     rpc Put (LanguageGm) returns (LanguageGm);
     rpc Delete (LanguageIdFilter) returns (EmptyLanguage);
+    rpc SoftDelete (LanguageIdFilter) returns (EmptyLanguage);
+    rpc SoftDeleteCollection (LanguageDeleteCollectionGm) returns (EmptyLanguage);
 }
 message EmptyLanguage{
+}
+message LanguageQueryFilter {
+ int32 pageId = 1;
+ int32 pageSize = 2;
 }
 message LanguageIdFilter {
  string LanguageId = 1;
 }
+message LanguageDeleteCollectionGm {
+ repeated LanguageIdFilter items = 1;
+}
+
 message LanguageGm {
-    string LanguageId = 1;
+    string Id = 1;
     string Name = 2;
     string Code = 3;
     string Logo = 4;
@@ -28,4 +38,7 @@ message LanguageGm {
 }
 message LanguageListGm {
     repeated LanguageGm items = 1;
+    int32 currentPage = 2;
+    int32 itemCount = 3;
+    int32 pageCount = 4;
 }

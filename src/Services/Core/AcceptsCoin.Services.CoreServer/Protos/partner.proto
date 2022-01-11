@@ -7,19 +7,29 @@ package partner;
 
 
 service PartnerAppService{
-    rpc GetAll (EmptyPartner) returns (PartnerListGm);
+    rpc GetAll (PartnerQueryFilter) returns (PartnerListGm);
     rpc GetById (PartnerIdFilter) returns (PartnerGm);
     rpc Post (PartnerGm) returns (PartnerGm);
     rpc Put (PartnerGm) returns (PartnerGm);
     rpc Delete (PartnerIdFilter) returns (EmptyPartner);
+    rpc SoftDelete (PartnerIdFilter) returns (EmptyPartner);
+    rpc SoftDeleteCollection (PartnerDeleteCollectionGm) returns (EmptyPartner);
 }
 message EmptyPartner{
 }
 message PartnerIdFilter {
  string PartnerId = 1;
 }
+message PartnerQueryFilter {
+ int32 pageId = 1;
+ int32 pageSize = 2;
+}
+message PartnerDeleteCollectionGm {
+ repeated PartnerIdFilter items = 1;
+}
+
 message PartnerGm {
-    string PartnerId = 1;
+    string Id = 1;
     string Name = 2;
     string Logo = 3;
     string WebSiteUrl = 4;
@@ -31,4 +41,7 @@ message PartnerGm {
     }
 message PartnerListGm {
     repeated PartnerGm items = 1;
+    int32 currentPage = 2;
+    int32 itemCount = 3;
+    int32 pageCount = 4;
 }

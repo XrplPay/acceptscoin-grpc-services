@@ -7,21 +7,33 @@ package tag;
 
 
 service TagAppService{
-    rpc GetAll (EmptyTag) returns (TagListGm);
+    rpc GetAll (TagQueryFilter) returns (TagListGm);
     rpc GetById (TagIdFilter) returns (TagGm);
     rpc Post (TagGm) returns (TagGm);
     rpc Put (TagGm) returns (TagGm);
     rpc Delete (TagIdFilter) returns (EmptyTag);
+    rpc SoftDelete (TagIdFilter) returns (EmptyTag);
+    rpc SoftDeleteCollection (TagDeleteCollectionGm) returns (EmptyTag);
 }
 message EmptyTag{
+}
+message TagQueryFilter {
+ int32 pageId = 1;
+ int32 pageSize = 2;
 }
 message TagIdFilter {
  string TagId = 1;
 }
+message TagDeleteCollectionGm {
+ repeated TagIdFilter items = 1;
+}
 message TagGm {
-    string TagId = 1;
+    string Id = 1;
     string Title = 2;
     }
 message TagListGm {
     repeated TagGm items = 1;
+    int32 currentPage = 2;
+    int32 itemCount = 3;
+    int32 pageCount = 4;
 }

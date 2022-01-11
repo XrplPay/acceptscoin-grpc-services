@@ -1,50 +1,70 @@
 ﻿using System;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using AcceptsCoin.Services.CoreServer.Core.Interfaces;
+using AcceptsCoin.Services.CoreServer.Domain.Interfaces;
 using AcceptsCoin.Services.CoreServer.Domain.Models;
 using AcceptsCoin.Services.CoreServer.Protos;
 using Grpc.Core;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
 
 namespace AcceptsCoin.Services.CoreServer
 {
     //[Authorize]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+
     public class LanguageGrpcService : LanguageAppService.LanguageAppServiceBase
     {
         private readonly ILogger<LanguageGrpcService> _logger;
-        private ILanguageService _languageService;
-        public LanguageGrpcService(ILogger<LanguageGrpcService> logger, ILanguageService languageService)
+        private ILanguageRepository  _languageRepository;
+        public LanguageGrpcService(ILogger<LanguageGrpcService> logger, ILanguageRepository languageRepository)
         {
             _logger = logger;
-            _languageService = languageService;
+            _languageRepository = languageRepository;
         }
 
-        public override async Task<LanguageListGm> GetAll(EmptyLanguage request, ServerCallContext context)
+        private Guid getUserId(ServerCallContext context)
+        {
+            return Guid.Parse(context.GetHttpContext().User.Identity.Name);
+        }
+        private string getPartnetId(ServerCallContext context)
+        {
+            return "bff3b2dd-e89d-46fc-a868-aab93a3efbbe";
+        }
+        public override async Task<LanguageListGm> GetAll(LanguageQueryFilter request, ServerCallContext context)
         {
             LanguageListGm response = new LanguageListGm();
 
-            Console.WriteLine(context.GetHttpContext().User.Identity.Name);
-            var categories = from prd in await _languageService.GetAll()
+            IQueryable<Language> query = _languageRepository.GetQuery();
+
+
+            response.CurrentPage = request.PageId;
+            response.ItemCount = await _languageRepository.GetCount(query);
+            response.PageCount = (response.ItemCount / request.PageSize) + 1;
+
+            var languages = from prd in await _languageRepository.GetAll(query, request.PageId, request.PageSize)
             select new LanguageGm()
             {
-                LanguageId = prd.LanguageId.ToString(),
+                Id = prd.LanguageId.ToString(),
                 Name = prd.Name,
                 Code = prd.Code,
                 Logo = prd.Logo,
                 Icon = prd.Icon,
                 Priority = prd.Priority,                                 
             };
-            response.Items.AddRange(categories.ToArray());
+            response.Items.AddRange(languages.ToArray());
             return await Task.FromResult(response);
         }
      
         public override async Task<LanguageGm> GetById(LanguageIdFilter request,ServerCallContext context)
         {
-            var Language =await _languageService.Find(Guid.Parse(request.LanguageId));
+            var Language =await _languageRepository.Find(Guid.Parse(request.LanguageId));
             var searchedLanguage = new LanguageGm()
             {
-               LanguageId=Language.LanguageId.ToString(),
+               Id=Language.LanguageId.ToString(),
                Icon=Language.Icon,
                Name=Language.Name,
                Logo=Language.Logo,
@@ -64,7 +84,7 @@ namespace AcceptsCoin.Services.CoreServer
                 Icon = request.Icon,
                 Logo = request.Logo,
                 Priority = request.Priority,
-                CreatedById = Guid.Parse("999bb90f-3167-4f81-83bb-0c76d1d3ace5"),
+                CreatedById =getUserId(context),
                 CreatedDate = DateTime.Now,
                 Published = true,
                 Code = request.Code,
@@ -73,11 +93,11 @@ namespace AcceptsCoin.Services.CoreServer
 
             };
 
-            var res = await _languageService.Add(prdAdded);
+            var res = await _languageRepository.Add(prdAdded);
 
             var response = new LanguageGm()
             {
-                LanguageId = res.LanguageId.ToString(),
+                Id = res.LanguageId.ToString(),
                 Name = res.Name,
                 Icon = res.Icon,
                 Logo = res.Logo,
@@ -93,7 +113,7 @@ namespace AcceptsCoin.Services.CoreServer
         public override async Task<LanguageGm> Put(LanguageGm request,
            ServerCallContext context)
         {
-            Language prd = await _languageService.Find(Guid.Parse(request.LanguageId));
+            Language prd = await _languageRepository.Find(Guid.Parse(request.Id));
             if (prd == null)
             {
                 return await Task.FromResult<LanguageGm>(null);
@@ -104,18 +124,18 @@ namespace AcceptsCoin.Services.CoreServer
             prd.Logo = request.Logo;
             prd.Icon = request.Icon;
             prd.Priority = request.Priority;
-            prd.UpdatedById = Guid.Parse("999bb90f-3167-4f81-83bb-0c76d1d3ace5");
+            prd.UpdatedById = getUserId(context);
             prd.UpdatedDate = DateTime.Now;
             prd.Code = request.Code;
-            
 
 
 
 
-            await _languageService.Update(prd);
+
+            await _languageRepository.Update(prd);
             return await Task.FromResult<LanguageGm>(new LanguageGm()
             {
-                LanguageId = prd.LanguageId.ToString(),
+                Id = prd.LanguageId.ToString(),
                 Icon = prd.Icon,
                 Logo = prd.Logo,
                 Name = prd.Name,
@@ -128,13 +148,51 @@ namespace AcceptsCoin.Services.CoreServer
         
         public override async Task<EmptyLanguage> Delete(LanguageIdFilter request, ServerCallContext context)
         {
-            Language prd = await _languageService.Find(Guid.Parse(request.LanguageId));
+            Language prd = await _languageRepository.Find(Guid.Parse(request.LanguageId));
             if (prd == null)
             {
                 return await Task.FromResult<EmptyLanguage>(null);
             }
 
-            await _languageService.Delete(prd);
+            await _languageRepository.Delete(prd);
+            return await Task.FromResult<EmptyLanguage>(new EmptyLanguage());
+        }
+
+        public override async Task<EmptyLanguage> SoftDelete(LanguageIdFilter request, ServerCallContext context)
+        {
+            Language  language = await _languageRepository.Find(Guid.Parse(request.LanguageId));
+
+            if (language == null)
+            {
+                return await Task.FromResult<EmptyLanguage>(null);
+            }
+
+            language.Deleted = true;
+            language.UpdatedById = getUserId(context);
+            language.UpdatedDate = DateTime.Now;
+
+            await _languageRepository.Update(language);
+            return await Task.FromResult<EmptyLanguage>(new EmptyLanguage());
+        }
+        public override async Task<EmptyLanguage> SoftDeleteCollection(LanguageDeleteCollectionGm request, ServerCallContext context)
+        {
+
+            foreach (var item in request.Items)
+            {
+                Language language = await _languageRepository.Find(Guid.Parse(item.LanguageId));
+
+                if (language == null)
+                {
+                    return await Task.FromResult<EmptyLanguage>(null);
+                }
+
+                language.Deleted = true;
+                language.UpdatedById = getUserId(context);
+                language.UpdatedDate = DateTime.Now;
+
+                await _languageRepository.Update(language);
+            }
+
             return await Task.FromResult<EmptyLanguage>(new EmptyLanguage());
         }
     }

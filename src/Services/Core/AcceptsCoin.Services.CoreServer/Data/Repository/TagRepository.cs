@@ -19,6 +19,26 @@ namespace AcceptsCoin.Services.CoreServer.Data.Repository
             _context = context;
         }
 
+
+        public IQueryable<Tag> GetQuery()
+        {
+            return _context.Tags;
+        }
+
+        public async Task<int> GetCount(IQueryable<Tag> query)
+        {
+            return await query.CountAsync();
+        }
+
+        public async Task<IEnumerable<Tag>> GetAll(IQueryable<Tag> query, int pageId, int pageSize)
+        {
+
+            var skip = (pageId - 1) * pageSize;
+            var take = pageSize;
+
+            return await query.Where(x => x.Deleted == false).Skip(skip).Take(take).ToListAsync();
+
+        }
         public async Task<Tag> Add(Tag entity)
         {
             await _context.Tags.AddAsync(entity);

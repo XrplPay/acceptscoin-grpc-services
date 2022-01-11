@@ -2,33 +2,51 @@
 using System.Linq;
 using System.Threading.Tasks;
 using AcceptsCoin.Services.CoreServer.Core.Interfaces;
+using AcceptsCoin.Services.CoreServer.Domain.Interfaces;
 using AcceptsCoin.Services.CoreServer.Domain.Models;
 using AcceptsCoin.Services.CoreServer.Protos;
 using Grpc.Core;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
 
 namespace AcceptsCoin.Services.CoreServer
 {
-    //[Authorize]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class PartnerGrpcService : PartnerAppService.PartnerAppServiceBase
     {
         private readonly ILogger<PartnerGrpcService> _logger;
-        private IPartnerService _tagService;
-        public PartnerGrpcService(ILogger<PartnerGrpcService> logger, IPartnerService tagService)
+        private IPartnerRepository  _partnerRepository;
+        public PartnerGrpcService(ILogger<PartnerGrpcService> logger, IPartnerRepository partnerRepository)
         {
             _logger = logger;
-            _tagService = tagService;
+            _partnerRepository = partnerRepository;
         }
 
-        public override async Task<PartnerListGm> GetAll(EmptyPartner request, ServerCallContext context)
+        private Guid getUserId(ServerCallContext context)
+        {
+            return Guid.Parse(context.GetHttpContext().User.Identity.Name);
+        }
+        private string getPartnetId(ServerCallContext context)
+        {
+            return "bff3b2dd-e89d-46fc-a868-aab93a3efbbe";
+        }
+        public override async Task<PartnerListGm> GetAll(PartnerQueryFilter request, ServerCallContext context)
         {
             PartnerListGm response = new PartnerListGm();
 
-            Console.WriteLine(context.GetHttpContext().User.Identity.Name);
-            var categories = from prd in await _tagService.GetAll()
+            IQueryable<Partner> query = _partnerRepository.GetQuery();
+
+
+            response.CurrentPage = request.PageId;
+            response.ItemCount = await _partnerRepository.GetCount(query);
+            response.PageCount = (response.ItemCount / request.PageSize) + 1;
+
+
+            var categories = from prd in await _partnerRepository.GetAll(query, request.PageId, request.PageSize)
             select new PartnerGm()
             {
-                PartnerId = prd.PartnerId.ToString(),
+                Id = prd.PartnerId.ToString(),
                 Name = prd.Name,
                 Logo = prd.Logo,
                 WebSiteUrl = prd.WebSiteUrl,
@@ -45,10 +63,10 @@ namespace AcceptsCoin.Services.CoreServer
 
         public override async Task<PartnerGm> GetById(PartnerIdFilter request,ServerCallContext context)
         {
-            var Partner =await _tagService.Find(Guid.Parse(request.PartnerId));
+            var Partner =await _partnerRepository.Find(Guid.Parse(request.PartnerId));
             var searchedPartner = new PartnerGm()
             {
-               PartnerId=Partner.PartnerId.ToString(),
+               Id=Partner.PartnerId.ToString(),
                 Name = Partner.Name,
                 Logo = Partner.Logo,
                 WebSiteUrl = Partner.WebSiteUrl,
@@ -76,17 +94,17 @@ namespace AcceptsCoin.Services.CoreServer
                 Manager = request.Manager,
                 Owner = request.Owner,
                 LanguageId = Guid.Parse(request.LanguageId),
-                CreatedById = Guid.Parse("999bb90f-3167-4f81-83bb-0c76d1d3ace5"),
+                CreatedById = getUserId(context),
                 CreatedDate = DateTime.Now,
                 Published = true,
                 Deleted = false,
             };
 
-            var res = await _tagService.Add(prdAdded);
+            var res = await _partnerRepository.Add(prdAdded);
 
             var response = new PartnerGm()
             {
-                PartnerId = res.PartnerId.ToString(),
+                Id = res.PartnerId.ToString(),
                 Name = res.Name,
                 Logo = res.Logo,
                 WebSiteUrl = res.WebSiteUrl,
@@ -103,7 +121,7 @@ namespace AcceptsCoin.Services.CoreServer
         public override async Task<PartnerGm> Put(PartnerGm request,
            ServerCallContext context)
         {
-            Partner prd = await _tagService.Find(Guid.Parse(request.PartnerId));
+            Partner prd = await _partnerRepository.Find(Guid.Parse(request.Id));
             if (prd == null)
             {
                 return await Task.FromResult<PartnerGm>(null);
@@ -117,17 +135,17 @@ namespace AcceptsCoin.Services.CoreServer
             prd.Manager = request.Manager;
             prd.Owner = request.Owner;
             prd.LanguageId = Guid.Parse(request.LanguageId);
-            prd.UpdatedById = Guid.Parse("999bb90f-3167-4f81-83bb-0c76d1d3ace5");
+            prd.UpdatedById = getUserId(context);
             prd.UpdatedDate = DateTime.Now;
             
 
 
 
 
-            await _tagService.Update(prd);
+            await _partnerRepository.Update(prd);
             return await Task.FromResult<PartnerGm>(new PartnerGm()
             {
-                PartnerId = prd.PartnerId.ToString(),
+                Id = prd.PartnerId.ToString(),
                 Name = prd.Name,
                 Logo = prd.Logo,
                 WebSiteUrl = prd.WebSiteUrl,
@@ -143,13 +161,51 @@ namespace AcceptsCoin.Services.CoreServer
         
         public override async Task<EmptyPartner> Delete(PartnerIdFilter request, ServerCallContext context)
         {
-            Partner prd = await _tagService.Find(Guid.Parse(request.PartnerId));
+            Partner prd = await _partnerRepository.Find(Guid.Parse(request.PartnerId));
             if (prd == null)
             {
                 return await Task.FromResult<EmptyPartner>(null);
             }
 
-            await _tagService.Delete(prd);
+            await _partnerRepository.Delete(prd);
+            return await Task.FromResult<EmptyPartner>(new EmptyPartner());
+        }
+
+        public override async Task<EmptyPartner> SoftDelete(PartnerIdFilter request, ServerCallContext context)
+        {
+            Partner partner = await _partnerRepository.Find(Guid.Parse(request.PartnerId));
+
+            if (partner == null)
+            {
+                return await Task.FromResult<EmptyPartner>(null);
+            }
+
+            partner.Deleted = true;
+            partner.UpdatedById = getUserId(context);
+            partner.UpdatedDate = DateTime.Now;
+
+            await _partnerRepository.Update(partner);
+            return await Task.FromResult<EmptyPartner>(new EmptyPartner());
+        }
+        public override async Task<EmptyPartner> SoftDeleteCollection(PartnerDeleteCollectionGm request, ServerCallContext context)
+        {
+
+            foreach (var item in request.Items)
+            {
+                Partner partner = await _partnerRepository.Find(Guid.Parse(item.PartnerId));
+
+                if (partner == null)
+                {
+                    return await Task.FromResult<EmptyPartner>(null);
+                }
+
+                partner.Deleted = true;
+                partner.UpdatedById = getUserId(context);
+                partner.UpdatedDate = DateTime.Now;
+
+                await _partnerRepository.Update(partner);
+            }
+
             return await Task.FromResult<EmptyPartner>(new EmptyPartner());
         }
     }

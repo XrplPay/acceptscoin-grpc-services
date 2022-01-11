@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using AcceptsCoin.Services.CoreServer.Core.Interfaces;
+using AcceptsCoin.Services.CoreServer.Domain.Interfaces;
 using AcceptsCoin.Services.CoreServer.Domain.Models;
 using AcceptsCoin.Services.CoreServer.Protos;
 using Grpc.Core;
@@ -15,23 +16,37 @@ namespace AcceptsCoin.Services.CoreServer
     public class TagGrpcService : TagAppService.TagAppServiceBase
     {
         private readonly ILogger<TagGrpcService> _logger;
-        private ITagService _tagService;
-        public TagGrpcService(ILogger<TagGrpcService> logger, ITagService tagService)
+        private ITagRepository  _tagRepository;
+        public TagGrpcService(ILogger<TagGrpcService> logger, ITagRepository tagRepository)
         {
             _logger = logger;
-            _tagService = tagService;
+            _tagRepository = tagRepository;
         }
 
-        
-        public override async Task<TagListGm> GetAll(EmptyTag request, ServerCallContext context)
+        private Guid getUserId(ServerCallContext context)
+        {
+            return Guid.Parse(context.GetHttpContext().User.Identity.Name);
+        }
+        private string getPartnetId(ServerCallContext context)
+        {
+            return "bff3b2dd-e89d-46fc-a868-aab93a3efbbe";
+        }
+        public override async Task<TagListGm> GetAll(TagQueryFilter request, ServerCallContext context)
         {
             TagListGm response = new TagListGm();
 
-            Console.WriteLine(context.GetHttpContext().User.Identity.Name);
-            var categories = from prd in await _tagService.GetAll()
+            IQueryable<Tag> query = _tagRepository.GetQuery();
+
+
+            response.CurrentPage = request.PageId;
+            response.ItemCount = await _tagRepository.GetCount(query);
+            response.PageCount = (response.ItemCount / request.PageSize) + 1;
+
+
+            var categories = from prd in await _tagRepository.GetAll()
             select new TagGm()
             {
-                TagId = prd.TagId.ToString(),
+                Id = prd.TagId.ToString(),
                 Title = prd.Title,
                                         
             };
@@ -41,10 +56,10 @@ namespace AcceptsCoin.Services.CoreServer
      
         public override async Task<TagGm> GetById(TagIdFilter request,ServerCallContext context)
         {
-            var Tag =await _tagService.Find(Guid.Parse(request.TagId));
+            var Tag =await _tagRepository.Find(Guid.Parse(request.TagId));
             var searchedTag = new TagGm()
             {
-               TagId=Tag.TagId.ToString(),
+               Id=Tag.TagId.ToString(),
                Title=Tag.Title,
                
             };
@@ -58,17 +73,17 @@ namespace AcceptsCoin.Services.CoreServer
             {
                 TagId = Guid.NewGuid(),
                 Title = request.Title,                
-                CreatedById = Guid.Parse("999bb90f-3167-4f81-83bb-0c76d1d3ace5"),
+                CreatedById = getUserId(context),
                 CreatedDate = DateTime.Now,
                 Published = true,
                 Deleted = false,
             };
 
-            var res = await _tagService.Add(prdAdded);
+            var res = await _tagRepository.Add(prdAdded);
 
             var response = new TagGm()
             {
-                TagId = res.TagId.ToString(),
+                Id = res.TagId.ToString(),
                 Title = res.Title,
             };
             return await Task.FromResult(response);
@@ -78,7 +93,7 @@ namespace AcceptsCoin.Services.CoreServer
         public override async Task<TagGm> Put(TagGm request,
            ServerCallContext context)
         {
-            Tag prd = await _tagService.Find(Guid.Parse(request.TagId));
+            Tag prd = await _tagRepository.Find(Guid.Parse(request.Id));
             if (prd == null)
             {
                 return await Task.FromResult<TagGm>(null);
@@ -86,17 +101,17 @@ namespace AcceptsCoin.Services.CoreServer
 
 
             prd.Title = request.Title;
-            prd.UpdatedById = Guid.Parse("999bb90f-3167-4f81-83bb-0c76d1d3ace5");
+            prd.UpdatedById = getUserId(context);
             prd.UpdatedDate = DateTime.Now;
             
 
 
 
 
-            await _tagService.Update(prd);
+            await _tagRepository.Update(prd);
             return await Task.FromResult<TagGm>(new TagGm()
             {
-                TagId = prd.TagId.ToString(),
+                Id = prd.TagId.ToString(),
                 Title = prd.Title,
             });
         }
@@ -105,13 +120,51 @@ namespace AcceptsCoin.Services.CoreServer
         
         public override async Task<EmptyTag> Delete(TagIdFilter request, ServerCallContext context)
         {
-            Tag prd = await _tagService.Find(Guid.Parse(request.TagId));
+            Tag prd = await _tagRepository.Find(Guid.Parse(request.TagId));
             if (prd == null)
             {
                 return await Task.FromResult<EmptyTag>(null);
             }
 
-            await _tagService.Delete(prd);
+            await _tagRepository.Delete(prd);
+            return await Task.FromResult<EmptyTag>(new EmptyTag());
+        }
+
+        public override async Task<EmptyTag> SoftDelete(TagIdFilter request, ServerCallContext context)
+        {
+            Tag tag = await _tagRepository.Find(Guid.Parse(request.TagId));
+
+            if (tag == null)
+            {
+                return await Task.FromResult<EmptyTag>(null);
+            }
+
+            tag.Deleted = true;
+            tag.UpdatedById = getUserId(context);
+            tag.UpdatedDate = DateTime.Now;
+
+            await _tagRepository.Update(tag);
+            return await Task.FromResult<EmptyTag>(new EmptyTag());
+        }
+        public override async Task<EmptyTag> SoftDeleteCollection(TagDeleteCollectionGm request, ServerCallContext context)
+        {
+
+            foreach (var item in request.Items)
+            {
+                Tag tag = await _tagRepository.Find(Guid.Parse(item.TagId));
+
+                if (tag == null)
+                {
+                    return await Task.FromResult<EmptyTag>(null);
+                }
+
+                tag.Deleted = true;
+                tag.UpdatedById = getUserId(context);
+                tag.UpdatedDate = DateTime.Now;
+
+                await _tagRepository.Update(tag);
+            }
+
             return await Task.FromResult<EmptyTag>(new EmptyTag());
         }
     }
