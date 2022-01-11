@@ -45,9 +45,11 @@
     <None Remove="Protos\category.proto" />
     <None Remove="Domain\Interfaces\" />
     <None Remove="Data\Repository\" />
+    <None Remove="Migrations\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Data\Context\" />
+    <Folder Include="Migrations\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Common\AcceptsCoin.Common\AcceptsCoin.Common.csproj" />

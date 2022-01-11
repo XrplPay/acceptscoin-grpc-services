@@ -5,10 +5,13 @@ using System.Threading.Tasks;
 using AcceptsCoin.ApiGateway.Core.Dtos;
 using AcceptsCoin.ApiGateway.Core.Views;
 using AcceptsCoin.Services.CoreServer;
+using Grpc.Core;
 using Grpc.Net.Client;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Net.Http.Headers;
+using AcceptsCoin.Services.CoreServer.Protos;
 
 namespace AcceptsCoin.ApiGateway.Controllers.v1.Core
 {
@@ -24,15 +27,22 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Core
         {
 
         }
+        private Metadata GetHeader()
+        {
+            var accessToken = Request.Headers[HeaderNames.Authorization];
 
-        [HttpGet("GetCategoryList")]
-        public async Task<ActionResult> GetCategoryList([FromQuery] int pageId = 1, [FromQuery] int pageSize = 10)
+            var header = new Metadata();
+            header.Add("Authorization", accessToken);
+            return header;
+        }
+        [HttpGet("GetAll")]
+        public async Task<ActionResult> GetAll([FromQuery] int pageId = 1, [FromQuery] int pageSize = 10)
         {
             try
             {
                 var channel = GrpcChannel.ForAddress(channelUrl);
                 var client = new CategoryAppService.CategoryAppServiceClient(channel);
-                var reply = await client.GetAllAsync(new Empty());
+                var reply = await client.GetAllAsync(new CategoryQueryFilter { PageId = pageId, PageSize = pageSize }, headers: GetHeader());
 
                 return Ok(reply);
             }
@@ -55,7 +65,7 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Core
             {
                 var channel = GrpcChannel.ForAddress(channelUrl);
                 var client = new CategoryAppService.CategoryAppServiceClient(channel);
-                var reply = await client.GetByIdAsync(new CategoryIdFilter { CategoryId = id.ToString() });
+                var reply = await client.GetByIdAsync(new CategoryIdFilter { CategoryId = id.ToString() }, headers: GetHeader());
 
                 return Ok(reply);
             }
@@ -79,8 +89,8 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Core
             {
                 var channel = GrpcChannel.ForAddress(channelUrl);
                 var client = new CategoryAppService.CategoryAppServiceClient(channel);
-                var reply = await client.PostAsync(new CategoryGm { CategoryId = "", Name = createCategory.Name, Icon = createCategory.Icon
-                    , Logo = createCategory.Logo, Priority = createCategory.Priority });
+                var reply = await client.PostAsync(new CategoryGm { Id = "", Name = createCategory.Name, Icon = createCategory.Icon
+                    , Logo = createCategory.Logo, Priority = createCategory.Priority }, headers: GetHeader());
 
                 return Ok(reply);
             }
@@ -106,13 +116,13 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Core
                 var client = new CategoryAppService.CategoryAppServiceClient(channel);
                 var reply = await client.PutAsync(new CategoryGm
                 {
-                    CategoryId = id.ToString(),
+                    Id = id.ToString(),
                     Name = updateCategory.Name,
                     Icon = updateCategory.Icon
                     ,
                     Logo = updateCategory.Logo,
                     Priority = updateCategory.Priority
-                });
+                }, headers: GetHeader());
 
                 return Ok(reply);
             }
@@ -136,7 +146,7 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Core
             {
                 var channel = GrpcChannel.ForAddress(channelUrl);
                 var client = new CategoryAppService.CategoryAppServiceClient(channel);
-                var reply = await client.DeleteAsync(new CategoryIdFilter { CategoryId = id.ToString() });
+                var reply = await client.DeleteAsync(new CategoryIdFilter { CategoryId = id.ToString() }, headers: GetHeader());
 
                 return Ok(reply);
             }
@@ -152,5 +162,36 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Core
             }
 
         }
+        [HttpDelete("DeleteCollection")]
+        public async Task<ActionResult> DeleteCollection([FromBody] DeleteCollectionTokenDto items)
+        {
+            try
+            {
+                var channel = GrpcChannel.ForAddress(channelUrl);
+                var client = new CategoryAppService.CategoryAppServiceClient(channel);
+
+                CategoryDeleteCollectionGm collectionGm = new CategoryDeleteCollectionGm();
+                foreach (var item in items.Items)
+                {
+                    collectionGm.Items.Add(new CategoryIdFilter { CategoryId = item.Id.ToString() });
+                }
+
+                var reply = await client.SoftDeleteCollectionAsync(collectionGm, headers: GetHeader());
+
+                return Ok(reply);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new WebApiErrorMessageResponse()
+                {
+                    Errors = new List<string>() {
+                            ex.Message
+                    },
+                    Success = false
+                });
+            }
+
+        }
+
     }
 }

@@ -13,7 +13,7 @@ service CategoryAppService{
     rpc Put (CategoryGm) returns (CategoryGm);
     rpc Delete (CategoryIdFilter) returns (Empty);
     rpc SoftDelete (CategoryIdFilter) returns (Empty);
-    rpc SoftDeleteCollection (DeleteCollectionGm) returns (Empty);
+    rpc SoftDeleteCollection (CategoryDeleteCollectionGm) returns (Empty);
 }
 message Empty{
 }
@@ -25,12 +25,12 @@ message CategoryQueryFilter {
 message CategoryIdFilter {
  string categoryId = 1;
 }
-message DeleteCollectionGm {
+message CategoryDeleteCollectionGm {
  repeated CategoryIdFilter items = 1;
 }
 
 message CategoryGm {
-    string categoryId = 1;
+    string Id = 1;
     string name = 2;
     string icon = 3;
     string logo = 4;

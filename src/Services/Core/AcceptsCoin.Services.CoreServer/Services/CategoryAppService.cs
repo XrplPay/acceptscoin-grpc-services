@@ -44,7 +44,7 @@ namespace AcceptsCoin.Services.CoreServer
             var categories = from prd in await _categoryRepository.GetAll()
             select new CategoryGm()
             {
-                CategoryId = prd.CategoryId.ToString(),
+                Id = prd.CategoryId.ToString(),
                 Icon = prd.Icon,
                 Logo = prd.Logo,
                 Name = prd.Name,
@@ -60,7 +60,7 @@ namespace AcceptsCoin.Services.CoreServer
             var category =await _categoryRepository.Find(request.CategoryId);
             var searchedCategory = new CategoryGm()
             {
-               CategoryId=category.CategoryId.ToString(),
+               Id=category.CategoryId.ToString(),
                Icon=category.Icon,
                Name=category.Name,
                Logo=category.Logo,
@@ -87,7 +87,7 @@ namespace AcceptsCoin.Services.CoreServer
 
             var response = new CategoryGm()
             {
-                CategoryId = res.CategoryId.ToString(),
+                Id = res.CategoryId.ToString(),
                 Name = res.Name,
                 Icon = res.Icon,
                 Logo = res.Logo,
@@ -101,7 +101,7 @@ namespace AcceptsCoin.Services.CoreServer
         public override async Task<CategoryGm> Put(CategoryGm request,
            ServerCallContext context)
         {
-            Category prd = await _categoryRepository.Find(request.CategoryId);
+            Category prd = await _categoryRepository.Find(request.Id);
             if (prd == null)
             {
                 return await Task.FromResult<CategoryGm>(null);
@@ -121,7 +121,7 @@ namespace AcceptsCoin.Services.CoreServer
             await _categoryRepository.Update(prd);
             return await Task.FromResult<CategoryGm>(new CategoryGm()
             {
-                CategoryId = prd.CategoryId.ToString(),
+                Id = prd.CategoryId.ToString(),
                 Icon = prd.Icon,
                 Logo = prd.Logo,
                 Name = prd.Name,
@@ -157,7 +157,7 @@ namespace AcceptsCoin.Services.CoreServer
             await _categoryRepository.Update(category);
             return await Task.FromResult<Empty>(new Empty());
         }
-        public override async Task<Empty> SoftDeleteCollection(DeleteCollectionGm request, ServerCallContext context)
+        public override async Task<Empty> SoftDeleteCollection(CategoryDeleteCollectionGm request, ServerCallContext context)
         {
 
             foreach (var item in request.Items)
