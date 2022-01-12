@@ -9,7 +9,6 @@
 *.user
 *.userosscache
 *.sln.docstates
-
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
@@ -328,6 +327,7 @@ __pycache__/
 # Telerik's JustMock configuration file
 *.jmconfig
 
+
 # BizTalk build output
 *.btp.cs
 *.btm.cs
@@ -443,7 +443,6 @@ $RECYCLE.BIN/
 # JetBrains Rider
 .idea/
 *.sln.iml
-
 ##
 ## Visual Studio Code
 ##

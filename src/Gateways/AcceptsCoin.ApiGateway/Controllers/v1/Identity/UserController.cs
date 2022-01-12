@@ -23,7 +23,7 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Identity
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class UserController : ControllerBase
     {
-        const string channelUrl = "http://localhost:5052";
+        const string channelUrl = "http://localhost:5051";
         public UserController()
         {
 

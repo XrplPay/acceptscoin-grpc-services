@@ -44,7 +44,7 @@ namespace AcceptsCoin.Services.IdentityServer
 
             services.AddGrpc();
             services.AddJwt(Configuration);
-
+            services.AddAuthorization();
             services.AddCors(options => {
                 options.AddPolicy("cors", policy => {
                     policy.AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin().WithExposedHeaders("Grpc-Status", "Grpc-Message", "Grpc-Encoding", "Grpc-Accept-Encoding"); ;
@@ -64,13 +64,19 @@ namespace AcceptsCoin.Services.IdentityServer
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseAuthentication();
             app.UseRouting();
+
+            app.UseAuthorization();
             app.UseCors("cors");
             app.UseGrpcWeb();
             app.UseEndpoints(endpoints =>
             {
                 //endpoints.MapGrpcService<GreeterService>();
                 endpoints.MapGrpcService<AuthService>().EnableGrpcWeb()
+                                                .RequireCors("cors");
+
+                endpoints.MapGrpcService<UserGrpcService>().EnableGrpcWeb()
                                                 .RequireCors("cors");
 
                 endpoints.MapGet("/", async context =>
