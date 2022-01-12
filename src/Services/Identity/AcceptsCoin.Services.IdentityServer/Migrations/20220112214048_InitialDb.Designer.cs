@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AcceptsCoin.Services.IdentityServer.Migrations
 {
     [DbContext(typeof(AcceptsCoinIdentityDbContext))]
-    [Migration("20220109154052_InitialDb")]
+    [Migration("20220112214048_InitialDb")]
     partial class InitialDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -63,7 +63,7 @@ namespace AcceptsCoin.Services.IdentityServer.Migrations
                         {
                             RoleId = new Guid("27fc6d20-b661-43c5-b48d-93eca8185ece"),
                             CreatedById = new Guid("999bb90f-3167-4f81-83bb-0c76d1d3ace5"),
-                            CreatedDate = new DateTime(2022, 1, 9, 18, 40, 51, 920, DateTimeKind.Local).AddTicks(3820),
+                            CreatedDate = new DateTime(2022, 1, 13, 0, 40, 47, 86, DateTimeKind.Local).AddTicks(6790),
                             Deleted = false,
                             Name = "Administrator",
                             Published = true
@@ -72,7 +72,7 @@ namespace AcceptsCoin.Services.IdentityServer.Migrations
                         {
                             RoleId = new Guid("90000f34-509f-4a81-877c-0c0cafadb573"),
                             CreatedById = new Guid("999bb90f-3167-4f81-83bb-0c76d1d3ace5"),
-                            CreatedDate = new DateTime(2022, 1, 9, 18, 40, 51, 920, DateTimeKind.Local).AddTicks(7910),
+                            CreatedDate = new DateTime(2022, 1, 13, 0, 40, 47, 87, DateTimeKind.Local).AddTicks(2830),
                             Deleted = false,
                             Name = "Business",
                             Published = true
@@ -81,7 +81,7 @@ namespace AcceptsCoin.Services.IdentityServer.Migrations
                         {
                             RoleId = new Guid("553ca261-6db1-4413-af03-4c1549a4d1de"),
                             CreatedById = new Guid("999bb90f-3167-4f81-83bb-0c76d1d3ace5"),
-                            CreatedDate = new DateTime(2022, 1, 9, 18, 40, 51, 920, DateTimeKind.Local).AddTicks(7940),
+                            CreatedDate = new DateTime(2022, 1, 13, 0, 40, 47, 87, DateTimeKind.Local).AddTicks(2880),
                             Deleted = false,
                             Name = "Partner",
                             Published = true
@@ -90,7 +90,7 @@ namespace AcceptsCoin.Services.IdentityServer.Migrations
                         {
                             RoleId = new Guid("25b3c861-2fd3-4b6e-a623-d24010a9500f"),
                             CreatedById = new Guid("999bb90f-3167-4f81-83bb-0c76d1d3ace5"),
-                            CreatedDate = new DateTime(2022, 1, 9, 18, 40, 51, 920, DateTimeKind.Local).AddTicks(7940),
+                            CreatedDate = new DateTime(2022, 1, 13, 0, 40, 47, 87, DateTimeKind.Local).AddTicks(2900),
                             Deleted = false,
                             Name = "User",
                             Published = true
@@ -159,7 +159,7 @@ namespace AcceptsCoin.Services.IdentityServer.Migrations
                             UserId = new Guid("999bb90f-3167-4f81-83bb-0c76d1d3ace5"),
                             Activated = true,
                             CreatedById = new Guid("999bb90f-3167-4f81-83bb-0c76d1d3ace5"),
-                            CreatedDate = new DateTime(2022, 1, 9, 18, 40, 51, 884, DateTimeKind.Local).AddTicks(1070),
+                            CreatedDate = new DateTime(2022, 1, 13, 0, 40, 47, 48, DateTimeKind.Local).AddTicks(8030),
                             Deleted = false,
                             Email = "info@acceptscoin.com",
                             Name = "Super Admin",

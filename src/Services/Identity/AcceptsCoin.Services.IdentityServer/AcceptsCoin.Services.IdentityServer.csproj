@@ -33,7 +33,6 @@
     <None Remove="Protos\" />
     <None Remove="Protos\auth.proto" />
     <None Remove="Services\" />
-    <None Remove="Migrations\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Domain\Models\Business.cs" />
@@ -46,8 +45,5 @@
   </ItemGroup>
   <ItemGroup>
     <Protobuf Include="Protos\auth.proto" GrpcServices="Server" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Migrations\" />
   </ItemGroup>
 </Project>

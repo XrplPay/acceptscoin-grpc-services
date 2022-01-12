@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AcceptsCoin.Services.TokenServer.Migrations
 {
     [DbContext(typeof(AcceptsCoinTokenDbContext))]
-    [Migration("20220110170949_InitialDb")]
+    [Migration("20220112214302_InitialDb")]
     partial class InitialDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

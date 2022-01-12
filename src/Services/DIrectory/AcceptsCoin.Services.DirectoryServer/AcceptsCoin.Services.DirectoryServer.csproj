@@ -34,7 +34,6 @@
     <None Remove="Microsoft.EntityFrameworkCore" />
     <None Remove="Core\" />
     <None Remove="Data\" />
-    <None Remove="Migrations\" />
     <None Remove="Core\Interfaces\" />
     <None Remove="Core\Services\" />
     <None Remove="Data\Context\" />
@@ -55,7 +54,6 @@
     <Folder Include="Domain\Models\" />
     <Folder Include="Core\" />
     <Folder Include="Data\" />
-    <Folder Include="Migrations\" />
     <Folder Include="Core\Interfaces\" />
     <Folder Include="Core\Services\" />
     <Folder Include="Data\Context\" />

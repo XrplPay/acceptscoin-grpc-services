@@ -101,17 +101,17 @@ namespace AcceptsCoin.Services.IdentityServer.Migrations
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "UserId", "Activated", "CreatedById", "CreatedDate", "Deleted", "Email", "Name", "Password", "Published", "SubscribedNewsLetter", "UpdatePassword", "UpdatedById", "UpdatedDate", "UserName" },
-                values: new object[] { new Guid("999bb90f-3167-4f81-83bb-0c76d1d3ace5"), true, new Guid("999bb90f-3167-4f81-83bb-0c76d1d3ace5"), new DateTime(2022, 1, 9, 18, 40, 51, 884, DateTimeKind.Local).AddTicks(1070), false, "info@acceptscoin.com", "Super Admin", "superAdmin@123", true, true, true, null, null, "info@acceptscoin.com" });
+                values: new object[] { new Guid("999bb90f-3167-4f81-83bb-0c76d1d3ace5"), true, new Guid("999bb90f-3167-4f81-83bb-0c76d1d3ace5"), new DateTime(2022, 1, 13, 0, 40, 47, 48, DateTimeKind.Local).AddTicks(8030), false, "info@acceptscoin.com", "Super Admin", "superAdmin@123", true, true, true, null, null, "info@acceptscoin.com" });
 
             migrationBuilder.InsertData(
                 table: "Roles",
                 columns: new[] { "RoleId", "CreatedById", "CreatedDate", "Deleted", "Name", "Published", "UpdatedById", "UpdatedDate" },
                 values: new object[,]
                 {
-                    { new Guid("27fc6d20-b661-43c5-b48d-93eca8185ece"), new Guid("999bb90f-3167-4f81-83bb-0c76d1d3ace5"), new DateTime(2022, 1, 9, 18, 40, 51, 920, DateTimeKind.Local).AddTicks(3820), false, "Administrator", true, null, null },
-                    { new Guid("90000f34-509f-4a81-877c-0c0cafadb573"), new Guid("999bb90f-3167-4f81-83bb-0c76d1d3ace5"), new DateTime(2022, 1, 9, 18, 40, 51, 920, DateTimeKind.Local).AddTicks(7910), false, "Business", true, null, null },
-                    { new Guid("553ca261-6db1-4413-af03-4c1549a4d1de"), new Guid("999bb90f-3167-4f81-83bb-0c76d1d3ace5"), new DateTime(2022, 1, 9, 18, 40, 51, 920, DateTimeKind.Local).AddTicks(7940), false, "Partner", true, null, null },
-                    { new Guid("25b3c861-2fd3-4b6e-a623-d24010a9500f"), new Guid("999bb90f-3167-4f81-83bb-0c76d1d3ace5"), new DateTime(2022, 1, 9, 18, 40, 51, 920, DateTimeKind.Local).AddTicks(7940), false, "User", true, null, null }
+                    { new Guid("27fc6d20-b661-43c5-b48d-93eca8185ece"), new Guid("999bb90f-3167-4f81-83bb-0c76d1d3ace5"), new DateTime(2022, 1, 13, 0, 40, 47, 86, DateTimeKind.Local).AddTicks(6790), false, "Administrator", true, null, null },
+                    { new Guid("90000f34-509f-4a81-877c-0c0cafadb573"), new Guid("999bb90f-3167-4f81-83bb-0c76d1d3ace5"), new DateTime(2022, 1, 13, 0, 40, 47, 87, DateTimeKind.Local).AddTicks(2830), false, "Business", true, null, null },
+                    { new Guid("553ca261-6db1-4413-af03-4c1549a4d1de"), new Guid("999bb90f-3167-4f81-83bb-0c76d1d3ace5"), new DateTime(2022, 1, 13, 0, 40, 47, 87, DateTimeKind.Local).AddTicks(2880), false, "Partner", true, null, null },
+                    { new Guid("25b3c861-2fd3-4b6e-a623-d24010a9500f"), new Guid("999bb90f-3167-4f81-83bb-0c76d1d3ace5"), new DateTime(2022, 1, 13, 0, 40, 47, 87, DateTimeKind.Local).AddTicks(2900), false, "User", true, null, null }
                 });
 
             migrationBuilder.InsertData(
