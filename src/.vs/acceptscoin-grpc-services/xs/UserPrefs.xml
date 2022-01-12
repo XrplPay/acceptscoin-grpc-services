@@ -1,38 +1,22 @@
 ﻿<Properties StartupConfiguration="Multiple Projects">
   <MonoDevelop.Ide.ItemProperties.src.Services.DIrectory.AcceptsCoin.Services.DirectoryServer PreferredExecutionTarget="/Applications/Google Chrome.app" />
   <MonoDevelop.Ide.ItemProperties.src.Services.Token.AcceptsCoin.Services.TokenServer PreferredExecutionTarget="/Applications/Google Chrome.app" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Services/Core/AcceptsCoin.Services.CoreServer/.gitignore">
+  <MonoDevelop.Ide.Workbench ActiveDocument=".gitignore">
     <Files>
       <File FileName="Gateways/AcceptsCoin.ApiGateway/Controllers/v1/Identity/UserController.cs" Line="50" Column="1" />
       <File FileName="Services/Identity/AcceptsCoin.Services.IdentityServer/Startup.cs" Line="70" Column="36" />
       <File FileName="Services/Core/AcceptsCoin.Services.CoreServer/Startup.cs" Line="84" Column="12" />
       <File FileName="Services/Identity/AcceptsCoin.Services.IdentityServer/Services/UserAppService.cs" Line="40" Column="1" />
-      <File FileName="Gateways/AcceptsCoin.ApiGateway/.gitignore" Line="453" Column="25" />
+      <File FileName="Gateways/AcceptsCoin.ApiGateway/.gitignore" Line="6" Column="9" />
       <File FileName="Services/Identity/AcceptsCoin.Services.IdentityServer/.gitignore" Line="37" Column="78" />
-      <File FileName="Services/Core/AcceptsCoin.Services.CoreServer/.gitignore" Line="1" Column="1" />
+      <File FileName="Services/Core/AcceptsCoin.Services.CoreServer/.gitignore" Line="7" Column="5" />
+      <File FileName=".gitignore" Line="6" Column="7" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="acceptscoin-grpc-services" expanded="True">
-            <Node name="src" expanded="True">
-              <Node name="Gateways" expanded="True">
-                <Node name="AcceptsCoin.ApiGateway" expanded="True" />
-              </Node>
-              <Node name="Services" expanded="True">
-                <Node name="Core" expanded="True">
-                  <Node name="AcceptsCoin.Services.CoreServer" expanded="True">
-                    <Node name=".gitignore" selected="True" />
-                  </Node>
-                </Node>
-                <Node name="DIrectory" expanded="True" />
-                <Node name="Identity" expanded="True">
-                  <Node name="AcceptsCoin.Services.IdentityServer" expanded="True">
-                    <Node name="Protos" expanded="True" />
-                  </Node>
-                </Node>
-              </Node>
-            </Node>
+            <Node name="src" expanded="True" selected="True" />
           </Node>
         </State>
       </Pad>
