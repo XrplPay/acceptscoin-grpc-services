@@ -8,6 +8,7 @@ package business;
 service BusinessAppService{
     rpc GetAll (BusinessQueryFilter) returns (BusinessListGm);
     rpc GetById (BusinessIdFilter) returns (BusinessGm);
+    rpc GetByUserId (BusinessQueryFilter) returns (BusinessListGm);
     rpc Post (BusinessGm) returns (BusinessGm);
     rpc Put (BusinessGm) returns (BusinessGm);
     rpc Delete (BusinessIdFilter) returns (Empty);
@@ -61,3 +62,4 @@ message BusinessListGm {
     repeated BusinessGm items = 1;
     PaginationGm pagination = 2;
 }
+

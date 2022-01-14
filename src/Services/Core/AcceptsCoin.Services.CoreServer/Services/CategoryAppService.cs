@@ -55,6 +55,105 @@ namespace AcceptsCoin.Services.CoreServer
             return await Task.FromResult(response);
 
         }
+        //public override async Task<CategoryChildrenListGm> GetChild(CategoryIdFilter request, ServerCallContext context)
+        //{
+        //    CategoryChildrenListGm response = new CategoryChildrenListGm();
+
+        //    var categories = from prd in await _categoryRepository.GetAll(Guid.Parse(request.CategoryId))
+        //                     select new CategoryChildGm()
+        //                     {
+        //                         Id = prd.CategoryId.ToString(),
+        //                         Name = prd.Name,
+        //                     };
+
+        //    response.Items.AddRange(categories.ToArray());
+        //    return await Task.FromResult(response);
+        //}
+        //public override async Task<CategoryChildrenListGm> GetTree(Empty request, ServerCallContext context)
+        //{
+        //    CategoryChildrenListGm response = new CategoryChildrenListGm();
+
+        //    var categories = from prd in await _categoryRepository.GetAll(null)
+        //                     select new CategoryChildGm()
+        //                     {
+        //                         Id = prd.CategoryId.ToString(),
+        //                         Name = prd.Name,
+        //                     };
+
+        //    response.Items.AddRange(categories.ToArray());
+        //    return await Task.FromResult(response);
+
+        //}
+
+        private async Task<IEnumerable<CategoryChildGm>> GetBt(string parentId)
+        {
+            var categories = from prd in await _categoryRepository.GetAll(Guid.Parse(parentId))
+                             select new CategoryChildGm()
+                             {
+                                 Id = prd.CategoryId.ToString(),
+                                 Name = prd.Name,
+                             };
+            //foreach (var item in categories)
+            //{
+                
+            //    categories.Where(x => x.Id == item.Id).First().Children.AddRange(categories);
+            //    await GetBt(item.Id);
+            //}
+            return await Task.FromResult(categories);
+
+        }
+
+        public override async Task<CategoryChildrenListGm> GetTree(Empty request, ServerCallContext context)
+        {
+            CategoryChildrenListGm response = new CategoryChildrenListGm();
+
+            var categories = from prd in await _categoryRepository.GetAll(null)
+                             select new CategoryChildGm()
+                             {
+                                 Id = prd.CategoryId.ToString(),
+                                 Name = prd.Name,
+                             };
+
+            foreach (var item in categories)
+            {
+                var resault = await GetBt(item.Id);
+                categories.Where(x => x.Id == item.Id).First().Children.AddRange(resault);
+            }
+            response.Items.AddRange(categories.ToArray());
+            return await Task.FromResult(response);
+
+        }
+
+        private async Task<IEnumerable<Category>> GetCategoryChilds(Guid parentId)
+        {
+            IEnumerable<Category> categories = await _categoryRepository.GetAll(parentId);
+
+            foreach (var item in categories)
+            {
+
+               var childs = await GetCategoryChilds(item.CategoryId);
+                foreach (var child in childs)
+                {
+                    categories.Where(x => x.CategoryId == item.CategoryId).First().Children.Add(child);
+                }
+                await GetCategoryChilds(item.CategoryId);
+            }
+            return categories;
+        }
+        private async Task<IEnumerable<Category>> GetCategories()
+        {
+            IEnumerable<Category> categories = await _categoryRepository.GetAll(null);
+
+            foreach (var item in categories)
+            {
+                var childs = await GetCategoryChilds(item.CategoryId);
+                foreach (var child in childs)
+                {
+                    categories.Where(x => x.CategoryId == item.CategoryId).First().Children.Add(child);
+                }
+            }
+            return categories;
+        }
         public override async Task<CategoryGm> GetById(CategoryIdFilter request,ServerCallContext context)
         {
             var category =await _categoryRepository.Find(request.CategoryId);

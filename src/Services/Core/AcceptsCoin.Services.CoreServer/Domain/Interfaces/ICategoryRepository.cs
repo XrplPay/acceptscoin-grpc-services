@@ -10,6 +10,8 @@ namespace AcceptsCoin.Services.CoreServer.Domain.Interfaces
 {
     public interface ICategoryRepository
     {
+        Task<IEnumerable<Category>> GetAll(Guid? parentId);
+
         IQueryable<Category> GetQuery();
 
         Task<int> GetCount(IQueryable<Category> query);

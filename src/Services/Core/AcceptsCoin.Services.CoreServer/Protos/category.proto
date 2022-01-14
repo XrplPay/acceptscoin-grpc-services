@@ -8,6 +8,7 @@ package category;
 
 service CategoryAppService{
     rpc GetAll (CategoryQueryFilter) returns (CategoryListGm);
+    rpc GetTree (Empty) returns (CategoryChildrenListGm);
     rpc GetById (CategoryIdFilter) returns (CategoryGm);
     rpc Post (CategoryGm) returns (CategoryGm);
     rpc Put (CategoryGm) returns (CategoryGm);
@@ -41,4 +42,13 @@ message CategoryListGm {
     int32 currentPage = 2;
     int32 itemCount = 3;
     int32 pageCount = 4;
+}
+
+message CategoryChildGm {
+    string Id = 1;
+    string name = 2;
+    repeated CategoryChildGm Children = 3;
+}
+message CategoryChildrenListGm {
+    repeated CategoryChildGm items = 1;
 }

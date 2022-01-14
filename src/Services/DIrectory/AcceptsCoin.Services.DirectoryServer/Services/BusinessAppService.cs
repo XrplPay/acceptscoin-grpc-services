@@ -75,6 +75,49 @@ namespace AcceptsCoin.Services.DirectoryServer
             return await Task.FromResult(response);
 
         }
+        public override async Task<BusinessListGm> GetByUserId(BusinessQueryFilter request, ServerCallContext context)
+        {
+            BusinessListGm response = new BusinessListGm();
+            PaginationGm pagination = new PaginationGm();
+
+            IQueryable<Business> query = _businessRepository.GetQuery();
+
+            query = query.Where(x => x.CreatedById == getUserId(context));
+
+            pagination.CurrentPage = request.PageId;
+            pagination.ItemCount = await _businessRepository.GetCount(query);
+            pagination.PageCount = (pagination.ItemCount / request.PageSize) + 1;
+
+
+
+            var businesses = from business in await _businessRepository.GetAll(query, request.PageId, request.PageSize)
+                             select new BusinessGm()
+                             {
+                                 Id = business.BusinessId.ToString(),
+                                 Email = business.Email,
+                                 WebSiteUrl = business.WebSiteUrl,
+                                 ContactNumber = business.ContactNumber,
+                                 Logo = business.Logo,
+                                 Owner = business.Owner,
+                                 Manager = business.Manager,
+                                 Twitter = business.Twitter,
+                                 FaceBook = business.FaceBook,
+                                 Instagram = business.Instagram,
+                                 Verified = business.Verified,
+                                 Latitude = business.Latitude,
+                                 Longitude = business.Longitude,
+                                 Description = business.Description,
+                                 Address = business.Address,
+                                 OfferedServices = business.OfferedServices,
+                                 CategoryId = business.CategoryId.ToString(),
+                                 PartnerId = business.PartnerId.ToString(),
+                             };
+
+            response.Items.AddRange(businesses.ToArray());
+            response.Pagination = pagination;
+            return await Task.FromResult(response);
+
+        }
         public override async Task<BusinessGm> GetById(BusinessIdFilter request, ServerCallContext context)
         {
             var business = await _businessRepository.Find(request.BusinessId);

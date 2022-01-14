@@ -1,37 +1,54 @@
-﻿<Properties StartupConfiguration="{955D6221-A5B1-4918-BF0B-F06CC916B2F5}|Default">
+﻿<Properties StartupConfiguration="Multiple Projects">
   <MonoDevelop.Ide.ItemProperties.src.Services.DIrectory.AcceptsCoin.Services.DirectoryServer PreferredExecutionTarget="/Applications/Google Chrome.app" />
   <MonoDevelop.Ide.ItemProperties.src.Services.Token.AcceptsCoin.Services.TokenServer PreferredExecutionTarget="/Applications/Google Chrome.app" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Services/Token/AcceptsCoin.Services.TokenServer/appsettings.json">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Gateways/AcceptsCoin.ApiGateway/Controllers/v1/Directory/BusinessController.cs">
     <Files>
-      <File FileName="Gateways/AcceptsCoin.ApiGateway/Controllers/v1/Identity/UserController.cs" Line="50" Column="1" />
-      <File FileName="Services/Identity/AcceptsCoin.Services.IdentityServer/Startup.cs" />
-      <File FileName="Services/Core/AcceptsCoin.Services.CoreServer/Startup.cs" />
-      <File FileName="Services/Identity/AcceptsCoin.Services.IdentityServer/Services/UserAppService.cs" />
-      <File FileName="Services/Token/AcceptsCoin.Services.TokenServer/Protos/test.proto" Line="1" Column="1" />
-      <File FileName="Services/Token/AcceptsCoin.Services.TokenServer/Protos/token.proto" Line="1" Column="1" />
-      <File FileName="Services/Storage/AcceptsCoin.Services.StorageServer/Protos/storage.proto" Line="1" Column="1" />
-      <File FileName="Services/Core/AcceptsCoin.Services.CoreServer/appsettings.json" Line="7" Column="18" />
-      <File FileName="Services/DIrectory/AcceptsCoin.Services.DirectoryServer/appsettings.json" Line="4" Column="156" />
-      <File FileName="Services/Identity/AcceptsCoin.Services.IdentityServer/appsettings.json" Line="11" Column="155" />
-      <File FileName="Services/Storage/AcceptsCoin.Services.StorageServer/appsettings.json" Line="1" Column="1" />
-      <File FileName="Services/Token/AcceptsCoin.Services.TokenServer/appsettings.json" Line="4" Column="152" />
+      <File FileName="Services/DIrectory/AcceptsCoin.Services.DirectoryServer/Protos/business.proto" Line="11" Column="41" />
+      <File FileName="Services/DIrectory/AcceptsCoin.Services.DirectoryServer/Services/BusinessAppService.cs" Line="86" Column="1" />
+      <File FileName="Gateways/AcceptsCoin.ApiGateway/Controllers/v1/Directory/BusinessController.cs" Line="65" Column="25" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="acceptscoin-grpc-services" expanded="True">
             <Node name="src" expanded="True">
-              <Node name="Gateways" expanded="True" />
+              <Node name="Common" expanded="True">
+                <Node name="AcceptsCoin.Common" expanded="True">
+                  <Node name="Auth" expanded="True" />
+                </Node>
+              </Node>
+              <Node name="Gateways" expanded="True">
+                <Node name="AcceptsCoin.ApiGateway" expanded="True">
+                  <Node name="Controllers" expanded="True">
+                    <Node name="v1" expanded="True">
+                      <Node name="Directory" expanded="True">
+                        <Node name="BusinessController.cs" selected="True" />
+                      </Node>
+                      <Node name="Identity" expanded="True" />
+                      <Node name="Token" expanded="True" />
+                    </Node>
+                  </Node>
+                  <Node name="Core" expanded="True">
+                    <Node name="Views" expanded="True" />
+                  </Node>
+                </Node>
+              </Node>
               <Node name="Services" expanded="True">
                 <Node name="Core" expanded="True" />
-                <Node name="DIrectory" expanded="True" />
-                <Node name="Identity" expanded="True" />
-                <Node name="Storage" expanded="True">
-                  <Node name="AcceptsCoin.Services.StorageServer" expanded="True" />
+                <Node name="DIrectory" expanded="True">
+                  <Node name="AcceptsCoin.Services.DirectoryServer" expanded="True">
+                    <Node name="Core" expanded="True" />
+                    <Node name="Protos" expanded="True" />
+                    <Node name="Services" expanded="True" />
+                  </Node>
+                </Node>
+                <Node name="Identity" expanded="True">
+                  <Node name="AcceptsCoin.Services.IdentityServer" expanded="True" />
                 </Node>
                 <Node name="Token" expanded="True">
                   <Node name="AcceptsCoin.Services.TokenServer" expanded="True">
-                    <Node name="appsettings.json" selected="True" />
+                    <Node name="Protos" expanded="True" />
+                    <Node name="Services" expanded="True" />
                   </Node>
                 </Node>
               </Node>

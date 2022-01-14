@@ -22,12 +22,14 @@ namespace AcceptsCoin.Services.CoreServer.Domain.Models
         public int Priority { get; set; }
 
 
-        //[ForeignKey(nameof(ServiceType))]
-        //public Guid? ParentId { get; set; }
-        //public ServiceType Parent { get; set; }
+        [ForeignKey(nameof(Category))]
+        public Guid? ParentId { get; set; }
+        public Category Parent { get; set; }
 
        // public ICollection<Business> Businesses { get; set; }
 
         public ICollection<PartnerCategory> PartnerCategories { get; set; }
+
+        public ICollection<Category> Children { get; set; }
     }
 }

@@ -66,6 +66,18 @@ namespace AcceptsCoin.Services.IdentityServer.Services
             };
             return await Task.FromResult(searchedUser);
         }
+        public override async Task<UserProfileGm> GetProfile(EmptyUser request, ServerCallContext context)
+        {
+            var user = await _userRepository.Find(getUserId(context));
+            var userProfile = new UserProfileGm()
+            {
+                Name = user.Name,
+                Email = user.Email,
+            };
+            return await Task.FromResult(userProfile);
+        }
+
+        
 
         public override async Task<UserGm> Post(UserGm request, ServerCallContext context)
         {

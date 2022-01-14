@@ -70,6 +70,29 @@ namespace AcceptsCoin.Services.TokenServer
             return await Task.FromResult(response);
 
         }
+        [AllowAnonymous]
+        public override async Task<TokenFrontListGm> GetFrontTokenList(Empty request, ServerCallContext context)
+        {
+            TokenFrontListGm response = new TokenFrontListGm();
+
+            //PaginationGm pagination = new PaginationGm();
+
+            IQueryable<Token> query = _tokenRepository.GetQuery();
+
+
+
+            var coins = from coin in await _tokenRepository.GetAll()
+                        select new TokenFrontGm()
+                        {
+                            Coin = coin.Name,
+                            Img = coin.Logo,
+                            TotalCoin = 100,
+                        };
+            response.Items.AddRange(coins.ToArray());
+            //response.Pagination = pagination;
+            return await Task.FromResult(response);
+
+        }
         public override async Task<TokenGm> GetById(TokenIdFilter request,ServerCallContext context)
         {
             var Token =await _tokenService.Find(Guid.Parse(request.TokenId));

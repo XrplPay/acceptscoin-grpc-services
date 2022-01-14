@@ -3,15 +3,17 @@ using System;
 using AcceptsCoin.Services.CoreServer.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace AcceptsCoin.Services.CoreServer.Migrations
 {
     [DbContext(typeof(AcceptsCoinCoreDbContext))]
-    partial class AcceptsCoinCoreDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220113005943_UpdateCategory")]
+    partial class UpdateCategory
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -45,9 +47,6 @@ namespace AcceptsCoin.Services.CoreServer.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid?>("ParentId")
-                        .HasColumnType("uuid");
-
                     b.Property<int>("Priority")
                         .HasColumnType("integer");
 
@@ -64,8 +63,6 @@ namespace AcceptsCoin.Services.CoreServer.Migrations
 
                     b.HasIndex("CreatedById");
 
-                    b.HasIndex("ParentId");
-
                     b.HasIndex("UpdatedById");
 
                     b.ToTable("Categories");
@@ -75,7 +72,7 @@ namespace AcceptsCoin.Services.CoreServer.Migrations
                         {
                             CategoryId = new Guid("711425a4-07b9-4396-bb33-942a73ba6354"),
                             CreatedById = new Guid("999bb90f-3167-4f81-83bb-0c76d1d3ace5"),
-                            CreatedDate = new DateTime(2022, 1, 13, 4, 3, 59, 222, DateTimeKind.Local).AddTicks(8360),
+                            CreatedDate = new DateTime(2022, 1, 13, 3, 59, 41, 808, DateTimeKind.Local).AddTicks(6700),
                             Deleted = false,
                             Icon = "",
                             Logo = "",
@@ -87,7 +84,7 @@ namespace AcceptsCoin.Services.CoreServer.Migrations
                         {
                             CategoryId = new Guid("ba626277-b49c-4e2b-9410-16ca496f278d"),
                             CreatedById = new Guid("999bb90f-3167-4f81-83bb-0c76d1d3ace5"),
-                            CreatedDate = new DateTime(2022, 1, 13, 4, 3, 59, 230, DateTimeKind.Local).AddTicks(2080),
+                            CreatedDate = new DateTime(2022, 1, 13, 3, 59, 41, 817, DateTimeKind.Local).AddTicks(3610),
                             Deleted = false,
                             Icon = "",
                             Logo = "",
@@ -152,7 +149,7 @@ namespace AcceptsCoin.Services.CoreServer.Migrations
                             LanguageId = new Guid("9934b846-e3f1-406a-9207-04926e553d1b"),
                             Code = "en",
                             CreatedById = new Guid("999bb90f-3167-4f81-83bb-0c76d1d3ace5"),
-                            CreatedDate = new DateTime(2022, 1, 13, 4, 3, 59, 230, DateTimeKind.Local).AddTicks(6990),
+                            CreatedDate = new DateTime(2022, 1, 13, 3, 59, 41, 817, DateTimeKind.Local).AddTicks(8930),
                             Deleted = false,
                             Icon = "",
                             Logo = "",
@@ -237,7 +234,7 @@ namespace AcceptsCoin.Services.CoreServer.Migrations
                             ApiKey = new Guid("a96b2fa5-fbf2-4173-92eb-c5c9ce77e7dc"),
                             ContactNumber = "0000",
                             CreatedById = new Guid("999bb90f-3167-4f81-83bb-0c76d1d3ace5"),
-                            CreatedDate = new DateTime(2022, 1, 13, 4, 3, 59, 231, DateTimeKind.Local).AddTicks(220),
+                            CreatedDate = new DateTime(2022, 1, 13, 3, 59, 41, 818, DateTimeKind.Local).AddTicks(2500),
                             Deleted = false,
                             Email = "info@acceptscoin.com",
                             LanguageId = new Guid("9934b846-e3f1-406a-9207-04926e553d1b"),
@@ -417,17 +414,11 @@ namespace AcceptsCoin.Services.CoreServer.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AcceptsCoin.Services.CoreServer.Domain.Models.Category", "Parent")
-                        .WithMany("Children")
-                        .HasForeignKey("ParentId");
-
                     b.HasOne("AcceptsCoin.Services.CoreServer.Domain.Models.User", "UpdatedBy")
                         .WithMany()
                         .HasForeignKey("UpdatedById");
 
                     b.Navigation("CreatedBy");
-
-                    b.Navigation("Parent");
 
                     b.Navigation("UpdatedBy");
                 });
@@ -576,8 +567,6 @@ namespace AcceptsCoin.Services.CoreServer.Migrations
 
             modelBuilder.Entity("AcceptsCoin.Services.CoreServer.Domain.Models.Category", b =>
                 {
-                    b.Navigation("Children");
-
                     b.Navigation("PartnerCategories");
                 });
 

@@ -59,6 +59,32 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Token
             }
         }
 
+
+        [AllowAnonymous]
+        [HttpGet("GetFrontTokenList")]
+        public async Task<ActionResult> GetFrontTokenList()
+        {
+            try
+            {
+                var channel = GrpcChannel.ForAddress(channelUrl);
+                var client = new TokenAppService.TokenAppServiceClient(channel);
+                var reply = await client.GetFrontTokenListAsync(new Empty());
+
+                return Ok(reply);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new WebApiErrorMessageResponse()
+                {
+                    Errors = new List<string>() {
+                            ex.Message
+                    },
+                    Success = false
+                });
+            }
+        }
+
+
         [HttpGet("{id}")]
         public async Task<ActionResult> Get(Guid id)
         {
