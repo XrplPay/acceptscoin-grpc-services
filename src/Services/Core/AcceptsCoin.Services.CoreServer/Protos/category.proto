@@ -9,6 +9,7 @@ package category;
 service CategoryAppService{
     rpc GetAll (CategoryQueryFilter) returns (CategoryListGm);
     rpc GetTree (Empty) returns (CategoryChildrenListGm);
+    rpc GetFrontTree (Empty) returns (CategoryChildrenListGm);
     rpc GetById (CategoryIdFilter) returns (CategoryGm);
     rpc Post (CategoryGm) returns (CategoryGm);
     rpc Put (CategoryGm) returns (CategoryGm);

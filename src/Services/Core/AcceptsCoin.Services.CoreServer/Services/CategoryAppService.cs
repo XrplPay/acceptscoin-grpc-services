@@ -124,6 +124,28 @@ namespace AcceptsCoin.Services.CoreServer
 
         }
 
+        [AllowAnonymous]
+        public override async Task<CategoryChildrenListGm> GetFrontTree(Empty request, ServerCallContext context)
+        {
+            CategoryChildrenListGm response = new CategoryChildrenListGm();
+
+            var categories = from prd in await _categoryRepository.GetAll(null)
+                             select new CategoryChildGm()
+                             {
+                                 Id = prd.CategoryId.ToString(),
+                                 Name = prd.Name,
+                             };
+
+            foreach (var item in categories)
+            {
+                var resault = await GetBt(item.Id);
+                categories.Where(x => x.Id == item.Id).First().Children.AddRange(resault);
+            }
+            response.Items.AddRange(categories.ToArray());
+            return await Task.FromResult(response);
+
+        }
+
         private async Task<IEnumerable<Category>> GetCategoryChilds(Guid parentId)
         {
             IEnumerable<Category> categories = await _categoryRepository.GetAll(parentId);

@@ -102,6 +102,32 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Core
             }
         }
 
+
+        [AllowAnonymous]
+        [HttpGet("GetFrontTree")]
+        public async Task<ActionResult> GetFrontTree()
+        {
+            try
+            {
+                var channel = GrpcChannel.ForAddress(channelUrl);
+                var client = new CategoryAppService.CategoryAppServiceClient(channel);
+                var reply = await client.GetFrontTreeAsync(new Empty { });
+
+              
+                return Ok(reply);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new WebApiErrorMessageResponse()
+                {
+                    Errors = new List<string>() {
+                            ex.Message
+                    },
+                    Success = false
+                });
+            }
+        }
+
         [HttpGet("{id}")]
         public async Task<ActionResult> Get(Guid id)
         {
