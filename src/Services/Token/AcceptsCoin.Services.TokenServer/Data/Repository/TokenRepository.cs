@@ -54,7 +54,7 @@ namespace AcceptsCoin.Services.TokenServer.Data.Repository
 
         public async Task<IEnumerable<Token>> GetAll()
         {
-            return await _context.Tokens.ToListAsync();
+            return await _context.Tokens.Where(x => x.Deleted == false).ToListAsync();
         }
 
         public async Task<Token> Update(Token entity)

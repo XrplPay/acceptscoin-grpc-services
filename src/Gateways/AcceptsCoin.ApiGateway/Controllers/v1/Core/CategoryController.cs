@@ -58,6 +58,76 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Core
             }
         }
 
+
+        //private async Task<CategoryChildrenListGm> GetChild(string Id)
+        //{
+
+        //    var channel = GrpcChannel.ForAddress(channelUrl);
+        //    var client = new CategoryAppService.CategoryAppServiceClient(channel);
+
+        //    var categories = await client.GetChildAsync(new CategoryIdFilter { CategoryId = Id.ToString() }, headers: GetHeader());
+
+        //    return categories;
+
+        //}
+
+        [HttpGet("GetTree")]
+        public async Task<ActionResult> GetTree()
+        {
+            try
+            {
+                var channel = GrpcChannel.ForAddress(channelUrl);
+                var client = new CategoryAppService.CategoryAppServiceClient(channel);
+                var reply = await client.GetTreeAsync(new Empty { }, headers: GetHeader());
+
+                //var categories = reply.Items.ToList();
+
+                //foreach (var item in categories)
+                //{
+                //    var children = await GetChild(item.Id);
+
+                //    categories.Where(x => x.Id == item.Id).First().Children.AddRange(children.Items.ToList());
+                //}
+                return Ok(reply);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new WebApiErrorMessageResponse()
+                {
+                    Errors = new List<string>() {
+                            ex.Message
+                    },
+                    Success = false
+                });
+            }
+        }
+
+
+        [AllowAnonymous]
+        [HttpGet("GetFrontTree")]
+        public async Task<ActionResult> GetFrontTree()
+        {
+            try
+            {
+                var channel = GrpcChannel.ForAddress(channelUrl);
+                var client = new CategoryAppService.CategoryAppServiceClient(channel);
+                var reply = await client.GetFrontTreeAsync(new Empty { });
+
+              
+                return Ok(reply);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new WebApiErrorMessageResponse()
+                {
+                    Errors = new List<string>() {
+                            ex.Message
+                    },
+                    Success = false
+                });
+            }
+        }
+
         [HttpGet("{id}")]
         public async Task<ActionResult> Get(Guid id)
         {

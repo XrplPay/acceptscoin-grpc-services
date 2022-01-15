@@ -9,6 +9,7 @@ package token;
 service TokenAppService{
     rpc GetAll (TokenQueryFilter) returns (TokenListGm);
     rpc GetById (TokenIdFilter) returns (TokenGm);
+    rpc GetFrontTokenList (Empty) returns (TokenFrontListGm);
     rpc Post (TokenGm) returns (TokenGm);
     rpc Put (TokenGm) returns (TokenGm);
     rpc Delete (TokenIdFilter) returns (Empty);
@@ -49,4 +50,13 @@ message TokenListGm {
     int32 itemCount = 3;
     int32 pageCount = 4;
 
+}
+
+message TokenFrontGm {
+    string Coin = 1;
+    int32 TotalCoin = 2;
+    string Img = 3;
+}
+message TokenFrontListGm {
+    repeated TokenFrontGm items = 1;
 }

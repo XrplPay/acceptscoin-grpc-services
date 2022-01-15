@@ -39,6 +39,13 @@ namespace AcceptsCoin.Services.CoreServer.Data.Repository
 
         }
 
+        public async Task<IEnumerable<Category>> GetAll(Guid? parentId)
+        {
+            return await _context.Categories.Where(x => x.Deleted == false && x.ParentId == parentId).ToListAsync();
+        }
+
+     
+
 
         public async Task<Category> Add(Category entity)
         {

@@ -80,6 +80,29 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Identity
             }
         }
 
+        [HttpGet("GetProfile")]
+        public async Task<ActionResult> GetProfile()
+        {
+            try
+            {
+                var channel = GrpcChannel.ForAddress(channelUrl);
+                var client = new UserAppService.UserAppServiceClient(channel);
+                var reply = await client.GetProfileAsync(new EmptyUser(), headers: GetHeader());
+
+                return Ok(reply);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new WebApiErrorMessageResponse()
+                {
+                    Errors = new List<string>() {
+                            ex.Message
+                    },
+                    Success = false
+                });
+            }
+        }
+
 
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] CreateUserDto entity)

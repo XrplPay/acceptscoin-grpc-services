@@ -62,6 +62,30 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Directory
             }
         }
 
+        [HttpGet("GetByUserId")]
+        public async Task<ActionResult> GetByUserId([FromQuery] int pageId = 1, [FromQuery] int pageSize = 10)
+        {
+            try
+            {
+                var channel = GrpcChannel.ForAddress(channelUrl);
+                var client = new BusinessAppService.BusinessAppServiceClient(channel);
+                var reply = await client.GetByUserIdAsync(new BusinessQueryFilter { PageId = pageId, PageSize = pageSize }, headers: GetHeader());
+
+                return Ok(reply);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new WebApiErrorMessageResponse()
+                {
+                    Errors = new List<string>() {
+                            ex.Message
+                    },
+                    Success = false
+                });
+            }
+        }
+
+
         [HttpGet("{id}")]
         public async Task<ActionResult> Get(Guid id)
         {
