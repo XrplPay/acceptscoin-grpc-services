@@ -25,9 +25,7 @@ namespace AcceptsCoin.ApiGateway.Core.Dtos.Directory
         public string ContactNumber { get; set; }
 
 
-        [Required]
-        public string Logo { get; set; }
-
+        
 
         [Required]
         public string Owner { get; set; }
@@ -63,12 +61,6 @@ namespace AcceptsCoin.ApiGateway.Core.Dtos.Directory
         public string OfferedServices { get; set; }
 
         public Guid CategoryId { get; set; }
-
-
-         public Guid PartnerId { get; set; }
-
-
-
     }
     public class UpdateBusinessDto
     {
@@ -92,8 +84,6 @@ namespace AcceptsCoin.ApiGateway.Core.Dtos.Directory
         public string ContactNumber { get; set; }
 
 
-        [Required]
-        public string Logo { get; set; }
 
 
         [Required]
@@ -130,9 +120,6 @@ namespace AcceptsCoin.ApiGateway.Core.Dtos.Directory
         public string OfferedServices { get; set; }
 
         public Guid CategoryId { get; set; }
-
-
-        public Guid PartnerId { get; set; }
 
 
 

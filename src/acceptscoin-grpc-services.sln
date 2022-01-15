@@ -29,7 +29,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AcceptsCoin.Services.CoreSe
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Storage", "Storage", "{812E2ED8-44C3-4A94-A011-0998E204A090}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AcceptsCoin.Services.StorageServer", "Services\Storage\AcceptsCoin.Services.StorageServer\AcceptsCoin.Services.StorageServer.csproj", "{491A65C8-556A-4941-A013-0FB597CB3D04}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AcceptsCoin.Services.StorageServer", "Services\Storage\AcceptsCoin.Services.StorageServer\AcceptsCoin.Services.StorageServer.csproj", "{491A65C8-556A-4941-A013-0FB597CB3D04}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{22F230DB-B649-4094-9B24-3162C2BEB4AE}"
 EndProject

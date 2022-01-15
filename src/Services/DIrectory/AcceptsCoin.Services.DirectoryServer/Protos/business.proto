@@ -43,7 +43,7 @@ message BusinessGm {
     string email = 3;
     string webSiteUrl = 4;
     string contactNumber = 5;
-    string logo = 6;
+    optional string logo = 6;
     string owner = 7;
     string manager = 8;
     string twitter = 9;
@@ -56,7 +56,6 @@ message BusinessGm {
     string address = 16;
     string offeredServices = 17;
     string categoryId = 18;
-    string partnerId = 19;
 }
 message BusinessListGm {
     repeated BusinessGm items = 1;

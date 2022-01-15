@@ -5,15 +5,32 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Grpc.AspNetCore" Version="2.34.0" />
+		<PackageReference Include="Grpc.AspNetCore" Version="2.34.0" />
+		<PackageReference Include="Grpc.AspNetCore.Web" Version="2.40.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.13" />
   </ItemGroup>
 
   <ItemGroup>
     <None Remove="Services\" />
     <None Remove="Protos\" />
+    <None Remove="Microsoft.AspNetCore.Authentication.JwtBearer" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Services\" />
     <Folder Include="Protos\" />
+    <Folder Include="wwwroot\" />
+    <Folder Include="wwwroot\files\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Protobuf Include="Protos\fileupload.proto" GrpcServices="Server" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Common\AcceptsCoin.Common\AcceptsCoin.Common.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="wwwroot\" />
+    <Content Remove="wwwroot\files\" />
   </ItemGroup>
 </Project>

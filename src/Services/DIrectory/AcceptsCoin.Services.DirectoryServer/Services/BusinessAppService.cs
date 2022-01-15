@@ -18,10 +18,12 @@ namespace AcceptsCoin.Services.DirectoryServer
     {
         private readonly ILogger<BusinessGrpcService> _logger;
         private IBusinessRepository _businessRepository;
-        public BusinessGrpcService(ILogger<BusinessGrpcService> logger, IBusinessRepository businessRepository)
+        private ICategoryRepository  _categoryRepository;
+        public BusinessGrpcService(ILogger<BusinessGrpcService> logger, IBusinessRepository businessRepository, ICategoryRepository categoryRepository)
         {
             _logger = logger;
             _businessRepository = businessRepository;
+            _categoryRepository = categoryRepository;
         }
 
         private Guid getUserId(ServerCallContext context)
@@ -67,7 +69,6 @@ namespace AcceptsCoin.Services.DirectoryServer
                                  Address = business.Address,
                                  OfferedServices = business.OfferedServices,
                                  CategoryId = business.CategoryId.ToString(),
-                                 PartnerId = business.PartnerId.ToString(),
                              };
 
             response.Items.AddRange(businesses.ToArray());
@@ -110,7 +111,6 @@ namespace AcceptsCoin.Services.DirectoryServer
                                  Address = business.Address,
                                  OfferedServices = business.OfferedServices,
                                  CategoryId = business.CategoryId.ToString(),
-                                 PartnerId = business.PartnerId.ToString(),
                              };
 
             response.Items.AddRange(businesses.ToArray());
@@ -140,13 +140,20 @@ namespace AcceptsCoin.Services.DirectoryServer
                 Address = business.Address,
                 OfferedServices = business.OfferedServices,
                 CategoryId = business.CategoryId.ToString(),
-                PartnerId = business.PartnerId.ToString(),
             };
             return await Task.FromResult(searchedBusiness);
         }
 
         public override async Task<BusinessGm> Post(BusinessGm request, ServerCallContext context)
         {
+
+            var category = await _categoryRepository.Find(request.CategoryId);
+
+            if (category == null)
+            {
+                await _categoryRepository.Add(new Category { CategoryId = Guid.Parse(request.CategoryId) });
+            }
+
             var business = new Business()
             {
                 BusinessId = Guid.NewGuid(),
@@ -159,13 +166,13 @@ namespace AcceptsCoin.Services.DirectoryServer
                 Email = request.Email,
                 WebSiteUrl = request.WebSiteUrl,
                 ContactNumber = request.ContactNumber,
-                Logo = request.Logo,
+                Logo = "",
                 Owner = request.Owner,
                 Manager = request.Manager,
                 Twitter = request.Twitter,
                 FaceBook = request.FaceBook,
                 Instagram = request.Instagram,
-                Verified = request.Verified,
+                Verified = false,
                 Latitude = request.Latitude,
                 Longitude = request.Longitude,
                 Description = request.Description,
@@ -195,7 +202,6 @@ namespace AcceptsCoin.Services.DirectoryServer
                 Address = res.Address,
                 OfferedServices = res.OfferedServices,
                 CategoryId = res.CategoryId.ToString(),
-                PartnerId = res.PartnerId.ToString(),
             };
             return await Task.FromResult(response);
         }
@@ -253,7 +259,6 @@ namespace AcceptsCoin.Services.DirectoryServer
                 Address = business.Address,
                 OfferedServices = business.OfferedServices,
                 CategoryId = business.CategoryId.ToString(),
-                PartnerId = business.PartnerId.ToString(),
             });
         }
         public override async Task<Empty> Delete(BusinessIdFilter request, ServerCallContext context)
