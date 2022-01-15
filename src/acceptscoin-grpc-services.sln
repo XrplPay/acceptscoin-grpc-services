@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30114.105
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{B30993B3-138F-4153-9787-A2F1D919A05D}"
 EndProject
@@ -11,7 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{91
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AcceptsCoin.ApiGateway", "Gateways\AcceptsCoin.ApiGateway\AcceptsCoin.ApiGateway.csproj", "{B07C6662-7092-48F9-BB54-DED3D63BD7C9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AcceptsCoin.Services.IdentityServer", "Services\Identity\AcceptsCoin.Services.IdentityServer\AcceptsCoin.Services.IdentityServer.csproj", "{D71199E1-D428-41DE-A3D9-51D418297555}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AcceptsCoin.Services.IdentityServer", "Services\Identity\AcceptsCoin.Services.IdentityServer\AcceptsCoin.Services.IdentityServer.csproj", "{D71199E1-D428-41DE-A3D9-51D418297555}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Identity", "Identity", "{E88EA179-E926-4B9C-B8B7-20D5E751FEFD}"
 EndProject
@@ -21,7 +21,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Token", "Token", "{7F73FC98
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AcceptsCoin.Services.DirectoryServer", "Services\DIrectory\AcceptsCoin.Services.DirectoryServer\AcceptsCoin.Services.DirectoryServer.csproj", "{86ACF861-29CC-467E-B42C-AA231DE7148E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AcceptsCoin.Services.TokenServer", "Services\Token\AcceptsCoin.Services.TokenServer\AcceptsCoin.Services.TokenServer.csproj", "{4099B9B4-3909-4DB5-A11D-205188195D4B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AcceptsCoin.Services.TokenServer", "Services\Token\AcceptsCoin.Services.TokenServer\AcceptsCoin.Services.TokenServer.csproj", "{4099B9B4-3909-4DB5-A11D-205188195D4B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{94095B3D-38F5-4249-A8DA-CDCA38FCA9A9}"
 EndProject
@@ -34,8 +34,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{22F230DB-B649-4094-9B24-3162C2BEB4AE}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AcceptsCoin.Common", "Common\AcceptsCoin.Common\AcceptsCoin.Common.csproj", "{0CAFD544-9A2A-48E5-8672-8FDDB971E1E3}"
-EndProject
-Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{CC6A1591-2CDB-4AEA-8B53-01CBC2B34B47}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -131,18 +129,6 @@ Global
 		{0CAFD544-9A2A-48E5-8672-8FDDB971E1E3}.Release|x64.Build.0 = Release|Any CPU
 		{0CAFD544-9A2A-48E5-8672-8FDDB971E1E3}.Release|x86.ActiveCfg = Release|Any CPU
 		{0CAFD544-9A2A-48E5-8672-8FDDB971E1E3}.Release|x86.Build.0 = Release|Any CPU
-		{CC6A1591-2CDB-4AEA-8B53-01CBC2B34B47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CC6A1591-2CDB-4AEA-8B53-01CBC2B34B47}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CC6A1591-2CDB-4AEA-8B53-01CBC2B34B47}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{CC6A1591-2CDB-4AEA-8B53-01CBC2B34B47}.Debug|x64.Build.0 = Debug|Any CPU
-		{CC6A1591-2CDB-4AEA-8B53-01CBC2B34B47}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{CC6A1591-2CDB-4AEA-8B53-01CBC2B34B47}.Debug|x86.Build.0 = Debug|Any CPU
-		{CC6A1591-2CDB-4AEA-8B53-01CBC2B34B47}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CC6A1591-2CDB-4AEA-8B53-01CBC2B34B47}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CC6A1591-2CDB-4AEA-8B53-01CBC2B34B47}.Release|x64.ActiveCfg = Release|Any CPU
-		{CC6A1591-2CDB-4AEA-8B53-01CBC2B34B47}.Release|x64.Build.0 = Release|Any CPU
-		{CC6A1591-2CDB-4AEA-8B53-01CBC2B34B47}.Release|x86.ActiveCfg = Release|Any CPU
-		{CC6A1591-2CDB-4AEA-8B53-01CBC2B34B47}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
