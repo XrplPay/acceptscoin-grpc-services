@@ -27,8 +27,8 @@ namespace AcceptsCoin.ApiGateway
                       webBuilder.ConfigureKestrel(options =>
                       {
                           // Setup a HTTP/2 endpoint without TLS.
-                         // options.ListenLocalhost(5050, o => o.Protocols =
-                           //  HttpProtocols.Http2);
+                          //options.ListenLocalhost(5050, o => o.Protocols =
+                            // HttpProtocols.Http1AndHttp2AndHttp3);
                       });
                   }
                   webBuilder.UseStartup<Startup>().UseUrls("http://*:5050");

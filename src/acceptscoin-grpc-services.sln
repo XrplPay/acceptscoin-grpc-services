@@ -19,7 +19,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DIrectory", "DIrectory", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Token", "Token", "{7F73FC98-C85A-484E-B355-8A60B6BC3300}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AcceptsCoin.Services.DirectoryServer", "Services\DIrectory\AcceptsCoin.Services.DirectoryServer\AcceptsCoin.Services.DirectoryServer.csproj", "{86ACF861-29CC-467E-B42C-AA231DE7148E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AcceptsCoin.Services.DirectoryServer", "Services\DIrectory\AcceptsCoin.Services.DirectoryServer\AcceptsCoin.Services.DirectoryServer.csproj", "{86ACF861-29CC-467E-B42C-AA231DE7148E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AcceptsCoin.Services.TokenServer", "Services\Token\AcceptsCoin.Services.TokenServer\AcceptsCoin.Services.TokenServer.csproj", "{4099B9B4-3909-4DB5-A11D-205188195D4B}"
 EndProject

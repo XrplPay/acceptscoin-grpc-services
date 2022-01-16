@@ -1,0 +1,46 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "AcceptsCoin.Services.DirectoryServer.Protos";
+
+package businessgallery;
+
+import "google/protobuf/empty.proto";
+
+service BusinessGalleryAppService{
+    rpc GetAll (BusinessGalleryQueryFilter) returns (BusinessGalleryListGm);
+    rpc GetById (BusinessGalleryIdFilter) returns (BusinessGalleryGm);
+    rpc GetByUserId (BusinessGalleryQueryFilter) returns (BusinessGalleryListGm);
+    rpc Post (BusinessGalleryGm) returns (BusinessGalleryGm);
+    rpc Put (BusinessGalleryGm) returns (BusinessGalleryGm);
+    rpc Delete (BusinessGalleryIdFilter) returns (google.protobuf.Empty);
+    rpc SoftDelete (BusinessGalleryIdFilter) returns (google.protobuf.Empty);
+    rpc SoftDeleteCollection (BusinessGalleryDeleteCollectionGm) returns (google.protobuf.Empty);
+}
+
+
+
+
+message BusinessGalleryIdFilter {
+ string BusinessGalleryId = 1;
+}
+message BusinessGalleryDeleteCollectionGm {
+ repeated BusinessGalleryIdFilter items = 1;
+}
+message BusinessGalleryQueryFilter {
+ int32 pageId = 1;
+ int32 pageSize = 2;
+}
+
+
+message BusinessGalleryGm {
+    string Id = 1;
+    string name = 2;
+    string extension = 3;
+}
+message BusinessGalleryListGm {
+    repeated BusinessGalleryGm items = 1;
+    int32 currentPage = 2;
+    int32 itemCount = 3;
+    int32 pageCount = 4;
+}
+

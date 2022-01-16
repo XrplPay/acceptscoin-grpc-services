@@ -42,7 +42,7 @@ namespace AcceptsCoin.Services.StorageServer
             services.AddJwt(Configuration);
             services.AddAuthorization();
             services.AddGrpc();
-
+            services.AddDirectoryBrowser();
 
             services.AddCors(options =>
             {
@@ -62,13 +62,6 @@ namespace AcceptsCoin.Services.StorageServer
                 app.UseDeveloperExceptionPage();
             }
             app.UseStaticFiles();
-
-            app.UseStaticFiles(new StaticFileOptions()
-            {
-                FileProvider = new PhysicalFileProvider(
-                            Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot/files")),
-                RequestPath = new PathString("/app-images")
-            });
 
             app.UseAuthentication();
             app.UseRouting();

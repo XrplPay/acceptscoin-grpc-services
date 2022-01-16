@@ -77,7 +77,10 @@ namespace AcceptsCoin.Services.DirectoryServer
                 endpoints.MapGrpcService<BusinessGrpcService>()
                 .EnableGrpcWeb().RequireCors("cors");
 
-               
+                endpoints.MapGrpcService<BusinessGalleryGrpcService>()
+                 .EnableGrpcWeb().RequireCors("cors");
+
+
 
                 endpoints.MapGet("/", async context =>
                 {

@@ -99,7 +99,7 @@ namespace AcceptsCoin.Services.DirectoryServer.Domain.Models
 
         public ICollection<BusinessTag> BusinessTags { get; set; }
 
-       // public ICollection<Gallery> Gallerys { get; set; }
+       public ICollection<BusinessGallery> BusinessGalleries { get; set; }
 
     }
 }
