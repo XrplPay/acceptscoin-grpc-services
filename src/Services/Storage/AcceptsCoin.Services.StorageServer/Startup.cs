@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using AcceptsCoin.Common.Auth;
@@ -9,6 +10,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 
 namespace AcceptsCoin.Services.StorageServer
@@ -25,23 +27,27 @@ namespace AcceptsCoin.Services.StorageServer
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-        //    var PGSQL_CONNECTION_STRING = Environment.GetEnvironmentVariable("ACCEPTSCOIN_PGSQL_CONNECTION_STRING");
+            //    var PGSQL_CONNECTION_STRING = Environment.GetEnvironmentVariable("ACCEPTSCOIN_PGSQL_CONNECTION_STRING");
 
-      //      if (PGSQL_CONNECTION_STRING == null)
-    //        {
-  //              PGSQL_CONNECTION_STRING = Configuration.GetConnectionString("ACCEPTSCOIN_PGSQL_CONNECTION_STRING");
-//            }
+            //      if (PGSQL_CONNECTION_STRING == null)
+            //        {
+            //              PGSQL_CONNECTION_STRING = Configuration.GetConnectionString("ACCEPTSCOIN_PGSQL_CONNECTION_STRING");
+            //            }
 
-           // services.AddDbContext<AcceptsCoinDirectoryDbContext>(option =>
-             //   option.UseNpgsql(PGSQL_CONNECTION_STRING, x => x.UseNetTopologySuite())
-           // );
+            // services.AddDbContext<AcceptsCoinDirectoryDbContext>(option =>
+            //   option.UseNpgsql(PGSQL_CONNECTION_STRING, x => x.UseNetTopologySuite())
+            // );
+            services.AddControllers();
+
             services.AddJwt(Configuration);
             services.AddAuthorization();
             services.AddGrpc();
 
 
-            services.AddCors(options => {
-                options.AddPolicy("cors", policy => {
+            services.AddCors(options =>
+            {
+                options.AddPolicy("cors", policy =>
+                {
                     policy.AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin().WithExposedHeaders("Grpc-Status", "Grpc-Message", "Grpc-Encoding", "Grpc-Accept-Encoding"); ;
                 });
             });
@@ -56,14 +62,29 @@ namespace AcceptsCoin.Services.StorageServer
                 app.UseDeveloperExceptionPage();
             }
             app.UseStaticFiles();
+
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(
+                            Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot/files")),
+                RequestPath = new PathString("/app-images")
+            });
+
+            app.UseAuthentication();
             app.UseRouting();
+            app.UseAuthorization();
+
+            app.UseCors("cors");
+            app.UseGrpcWeb();
 
             app.UseEndpoints(endpoints =>
             {
                 //endpoints.MapGrpcService<GreeterService>();
 
                 endpoints.MapGrpcService<FileUploadGrpcService>()
-               .EnableGrpcWeb().RequireCors("cors");
+                .EnableGrpcWeb().RequireCors("cors");
+
+
 
                 endpoints.MapGet("/", async context =>
                 {

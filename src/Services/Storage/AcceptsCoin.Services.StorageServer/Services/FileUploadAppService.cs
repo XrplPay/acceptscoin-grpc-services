@@ -57,13 +57,14 @@ namespace AcceptsCoin.Services.StorageServer.Services
 
                     await fileStream.WriteAsync(buffer, 0, requestStream.Current.ReadedByte);
 
-                    Console.WriteLine($"{Math.Round(((chunkSize += requestStream.Current.ReadedByte) * 100) / requestStream.Current.FileSize)}%");
+                   Console.WriteLine($"{Math.Round(((chunkSize += requestStream.Current.ReadedByte) * 100) / requestStream.Current.FileSize)}%");
                 }
-                Console.WriteLine("Yüklendi...");
+               Console.WriteLine("Finish...");
 
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
             }
             await fileStream.DisposeAsync();
             fileStream.Close();

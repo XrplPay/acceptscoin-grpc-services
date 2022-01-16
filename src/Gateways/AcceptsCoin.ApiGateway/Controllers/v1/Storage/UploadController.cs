@@ -10,6 +10,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using AcceptsCoin.Services.StorageServer.Protos;
 using Google.Protobuf;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Grpc.Core;
+using Microsoft.Net.Http.Headers;
 
 namespace AcceptsCoin.ApiGateway.Controllers.v1.Storage
 {
@@ -17,6 +21,8 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Storage
     [ApiVersion("1.0")]
     [ApiExplorerSettings(GroupName = "v1")]
     [Route("api/v1/[controller]")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+
     public class UploadController : Controller
     {
         const string channelUrl = "http://localhost:5054";
@@ -25,6 +31,14 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Storage
         {
             
             _environment = environment;
+        }
+        private Metadata GetHeader()
+        {
+            var accessToken = Request.Headers[HeaderNames.Authorization];
+
+            var header = new Metadata();
+            header.Add("Authorization", accessToken);
+            return header;
         }
         public class ModelFile
         {
@@ -68,8 +82,6 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Storage
                 _environment.WebRootPath = Path.Combine(path, "wwwroot");
             }
 
-            var uploads = Path.Combine(_environment.WebRootPath, "uploads");
-
 
             var channel = GrpcChannel.ForAddress(channelUrl);
             var client = new UploadFileAppService.UploadFileAppServiceClient(channel);
@@ -79,39 +91,52 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Storage
             {
                 if (file.Length > 0)
                 {
+                    //StreamWriter sw = null;
+                    //StreamReader sr = null;
+
                     var index = file.FileName.IndexOf(".");
                     var extension = file.FileName.Substring(index, file.FileName.Length - index);
-                    var newName = Guid.NewGuid().ToString() + extension;
-                    using (var ms = new MemoryStream())
+                    var newName = Guid.NewGuid().ToString();
+
+                    //await file.CopyToAsync(fileStream);
+
+                    //await file.CopyToAsync(ms);
+
+                    //sw = new StreamWriter(ms);
+                    //sr = new StreamReader(ms);
+
+                    MemoryStream ms = new MemoryStream();
+                    await file.CopyToAsync(ms);
+
+                    var content = new BytesContent
                     {
-                        //await file.CopyToAsync(fileStream);
+                        FileSize = ms.Length,
+                        ReadedByte = 0,
+                        Info = new FileInfod { FileName = newName, FileExtension = extension }
 
-                        file.CopyTo(ms);
+                    };
 
-                        var content = new BytesContent
-                        {
-                            FileSize = ms.Length,
-                            ReadedByte = 0,
-                            Info = new FileInfod { FileName = newName, FileExtension = extension }
-                        };
+                    var upload = client.FileUpLoad(headers: GetHeader());
 
-                        var upload = client.FileUpLoad();
-
-
-                        byte[] buffer = new byte[2048];
-
-                        while ((content.ReadedByte = await ms.ReadAsync(buffer, 0, buffer.Length)) > 0)
-                        {
-                            content.Buffer = ByteString.CopyFrom(buffer);
-                            await upload.RequestStream.WriteAsync(content);
-                        }
-                        await upload.RequestStream.CompleteAsync();
-
-                        ms.Close();
-                    }
-
-
+                    ms.Position = 0;
                     
+
+
+
+                    byte[] buffer = new byte[2048];
+
+                    while ((content.ReadedByte =await ms.ReadAsync(buffer, 0, buffer.Length)) > 0)
+                    {
+                        content.Buffer = ByteString.CopyFrom(buffer);
+                        await upload.RequestStream.WriteAsync(content);
+                    }
+                    await upload.RequestStream.CompleteAsync();
+
+                    file.OpenReadStream().Close();
+
+
+
+
 
                     //GalleryCreateDto galleryCreateDto = new GalleryCreateDto
                     //{
