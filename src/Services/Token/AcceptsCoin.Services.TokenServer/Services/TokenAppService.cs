@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AcceptsCoin.Services.TokenServer.Core.Interfaces;
 using AcceptsCoin.Services.TokenServer.Domain.Interfaces;
 using AcceptsCoin.Services.TokenServer.Domain.Models;
+using AcceptsCoin.Services.TokenServer.Migrations;
 using AcceptsCoin.Services.TokenServer.Protos;
 using Grpc.Core;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -21,15 +22,19 @@ namespace AcceptsCoin.Services.TokenServer
         private readonly ILogger<TokenGrpcService> _logger;
         private ITokenService _tokenService;
         private ITokenRepository _tokenRepository;
-        public TokenGrpcService(ILogger<TokenGrpcService> logger, ITokenService tokenService, ITokenRepository tokenRepository)
+        private IPartnerTokenRepository _partnerTokenRepository;
+        private IPartnerRepository  _partnerRepository;
+        public TokenGrpcService(ILogger<TokenGrpcService> logger, ITokenService tokenService, ITokenRepository tokenRepository, IPartnerTokenRepository partnerTokenRepository, IPartnerRepository partnerRepository)
         {
             _logger = logger;
             _tokenService = tokenService;
             _tokenRepository = tokenRepository;
+            _partnerTokenRepository = partnerTokenRepository;
+            _partnerRepository = partnerRepository;
         }
-        private string getUserId(ServerCallContext context)
+        private Guid getUserId(ServerCallContext context)
         {
-            return context.GetHttpContext().User.Identity.Name;
+            return Guid.Parse(context.GetHttpContext().User.Identity.Name);
         }
         private string getPartnetId(ServerCallContext context)
         {
@@ -43,6 +48,41 @@ namespace AcceptsCoin.Services.TokenServer
 
             IQueryable<Token> query = _tokenRepository.GetQuery();
 
+
+            response.CurrentPage = request.PageId;
+            response.ItemCount = await _tokenRepository.GetCount(query);
+            response.PageCount = (response.ItemCount / request.PageSize) + 1;
+
+
+            var tokens = from prd in await _tokenRepository.GetAll(query, request.PageId, request.PageSize)
+                         select new TokenGm()
+                         {
+                             Id = prd.TokenId.ToString(),
+                             Description = prd.Description,
+                             Link = prd.Link,
+                             Symbol = prd.Symbol,
+                             Icon = prd.Icon,
+                             Logo = prd.Logo,
+                             Name = prd.Name,
+                             Priority = prd.Priority,
+                         };
+
+
+
+
+            response.Items.AddRange(tokens.ToArray());
+            //response.Pagination = pagination;
+            return await Task.FromResult(response);
+
+        }
+        public override async Task<TokenListGm> GetByPartnerId(PartnerTokenQueryFilter request, ServerCallContext context)
+        {
+            TokenListGm response = new TokenListGm();
+
+            //PaginationGm pagination = new PaginationGm();
+
+            IQueryable<Token> query = _tokenRepository.GetQuery();
+            query = query.Where(x => x.PartnerTokens.Any(c => c.PartnerId == Guid.Parse(request.PartnerId)));
 
             response.CurrentPage = request.PageId;
             response.ItemCount = await _tokenRepository.GetCount(query);
@@ -120,7 +160,7 @@ namespace AcceptsCoin.Services.TokenServer
                 Icon = request.Icon,
                 Logo = request.Logo,
                 Priority = request.Priority,
-                CreatedById = Guid.Parse("999bb90f-3167-4f81-83bb-0c76d1d3ace5"),
+                CreatedById = getUserId(context),
                 CreatedDate = DateTime.Now,
                 Published = true,
                 Symbol=request.Symbol,
@@ -147,6 +187,50 @@ namespace AcceptsCoin.Services.TokenServer
         }
 
 
+        public override async Task<Empty> SavePartnerToken(PartnerTokenGm request, ServerCallContext context)
+        {
+            var partner =await _partnerRepository.Find(request.PartnerId);
+
+            if(partner==null)
+            {
+               await _partnerRepository.Add(new Partner { PartnerId = Guid.Parse(request.PartnerId) });
+            }
+            PartnerToken item = await _partnerTokenRepository.Find(Guid.Parse(request.TokenId), Guid.Parse(request.PartnerId));
+
+            if (item == null)
+            {
+                var partnerToken = new PartnerToken()
+                {
+                    CreatedById = getUserId(context),
+
+                    CreatedDate = DateTime.Now,
+                    Deleted = false,
+                    PartnerId = Guid.Parse(request.PartnerId),
+                    TokenId = Guid.Parse(request.TokenId),
+                    Published = true,
+                };
+
+                await _partnerTokenRepository.Add(partnerToken);
+            }
+            else
+            {
+                await _partnerTokenRepository.Delete(item);
+            }
+
+            return await Task.FromResult<Empty>(new Empty());
+        }
+
+        public override async Task<Empty> DeletePartnerToken(PartnerTokenGm request, ServerCallContext context)
+        {
+            PartnerToken partnerToken = await _partnerTokenRepository.Find(Guid.Parse(request.TokenId), Guid.Parse(request.PartnerId));
+            if (partnerToken == null)
+            {
+                return await Task.FromResult<Empty>(null);
+            }
+            await _partnerTokenRepository.Delete(partnerToken);
+            return await Task.FromResult<Empty>(new Empty());
+        }
+
         public override async Task<TokenGm> Put(TokenGm request,
            ServerCallContext context)
         {
@@ -162,7 +246,7 @@ namespace AcceptsCoin.Services.TokenServer
             token.Icon = request.Icon;
             token.Priority = request.Priority;
             token.Description = request.Description;
-            token.UpdatedById = Guid.Parse(getUserId(context));
+            token.UpdatedById = getUserId(context);
             token.UpdatedDate = DateTime.Now;
             token.Symbol = request.Symbol;
             token.Icon = request.Icon;
@@ -208,7 +292,7 @@ namespace AcceptsCoin.Services.TokenServer
             }
 
             token.Deleted = true;
-            token.UpdatedById = Guid.Parse(getUserId(context));
+            token.UpdatedById = getUserId(context);
             token.UpdatedDate = DateTime.Now;
 
             await _tokenRepository.Update(token);
@@ -227,7 +311,7 @@ namespace AcceptsCoin.Services.TokenServer
                 }
 
                 token.Deleted = true;
-                token.UpdatedById = Guid.Parse(getUserId(context));
+                token.UpdatedById = getUserId(context);
                 token.UpdatedDate = DateTime.Now;
 
                 await _tokenRepository.Update(token);

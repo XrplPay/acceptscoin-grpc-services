@@ -44,9 +44,9 @@ namespace AcceptsCoin.Services.IdentityServer.Domain.Models
         public DateTime? UpdatedDate { get; set; }
 
 
-        //[ForeignKey(nameof(Partner))]
-        //public Guid? PartnerId { get; set; }
-        //public Partner Partner { get; set; }
+        [ForeignKey(nameof(Partner))]
+        public Guid? PartnerId { get; set; }
+        public Partner Partner { get; set; }
 
         //public ICollection<Partner> PartnerCreatorUser { get; set; }
         //public ICollection<Partner> PartnerUpdaterUser { get; set; }

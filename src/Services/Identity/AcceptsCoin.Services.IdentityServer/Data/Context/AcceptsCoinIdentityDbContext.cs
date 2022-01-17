@@ -14,6 +14,8 @@ namespace AcceptsCoin.Services.IdentityServer.Data.Context
 
         public DbSet<User> Users { get; set; }
 
+        public DbSet<Partner> Partners { get; set; }
+
         public DbSet<UserRole> UserRoles { get; set; }
 
        
@@ -135,6 +137,15 @@ namespace AcceptsCoin.Services.IdentityServer.Data.Context
                 //Published = true,
                 //CreatedDate = DateTime.Now,
                 //Deleted = false,
+            });
+
+            #endregion
+
+            #region PartnerSeed
+
+            modelBuilder.Entity<Partner>().HasData(new Partner
+            {
+                PartnerId = Guid.Parse("bff3b2dd-e89d-46fc-a868-aab93a3efbbe"),
             });
 
             #endregion

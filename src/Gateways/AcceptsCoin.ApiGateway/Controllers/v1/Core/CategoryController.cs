@@ -12,6 +12,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
 using AcceptsCoin.Services.CoreServer.Protos;
+using System.IO;
+using Google.Protobuf;
+using AcceptsCoin.Services.StorageServer.Protos;
+using Microsoft.AspNetCore.Http;
 
 namespace AcceptsCoin.ApiGateway.Controllers.v1.Core
 {
@@ -22,6 +26,7 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Core
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class CategoryController : ControllerBase
     {
+        const string channelUrlStorage = "http://localhost:5054";
         const string channelUrl = "http://localhost:5052";
         public CategoryController()
         {
@@ -151,16 +156,68 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Core
             }
         }
 
+        private async Task<string> Upload(IFormFile file)
+        {
+            var userId = Guid.Parse("999bb90f-3167-4f81-83bb-0c76d1d3ace5");
+            //var gallery = new Gallery();
 
+
+
+            var channel = GrpcChannel.ForAddress(channelUrlStorage);
+            var client = new UploadFileAppService.UploadFileAppServiceClient(channel);
+
+            var fileUrl = "";
+
+            if (file.Length > 0)
+            {
+                var index = file.FileName.IndexOf(".");
+                var extension = file.FileName.Substring(index, file.FileName.Length - index);
+                var newName = Guid.NewGuid().ToString();
+                fileUrl = newName + extension;
+
+
+                MemoryStream ms = new MemoryStream();
+                await file.CopyToAsync(ms);
+
+                var content = new BytesContent
+                {
+                    FileSize = ms.Length,
+                    ReadedByte = 0,
+                    Info = new FileInfod { FileName = newName, FileExtension = extension }
+
+                };
+
+                var upload = client.FileUpLoad(headers: GetHeader());
+
+                ms.Position = 0;
+
+
+
+
+                byte[] buffer = new byte[2048];
+
+                while ((content.ReadedByte = await ms.ReadAsync(buffer, 0, buffer.Length)) > 0)
+                {
+                    content.Buffer = ByteString.CopyFrom(buffer);
+                    await upload.RequestStream.WriteAsync(content);
+                }
+                await upload.RequestStream.CompleteAsync();
+
+                file.OpenReadStream().Close();
+            }
+
+            return fileUrl;
+        }
         [HttpPost]
-        public async Task<ActionResult> Post([FromBody] CreateCategoryDto createCategory)
+        public async Task<ActionResult> Post([FromForm] CreateCategoryDto createCategory)
         {
             try
             {
                 var channel = GrpcChannel.ForAddress(channelUrl);
                 var client = new CategoryAppService.CategoryAppServiceClient(channel);
+                var logo = await Upload(createCategory.File);
                 var reply = await client.PostAsync(new CategoryGm { Id = "", Name = createCategory.Name, Icon = createCategory.Icon
-                    , Logo = createCategory.Logo, Priority = createCategory.Priority }, headers: GetHeader());
+                    , Logo = logo, Priority = createCategory.Priority }, headers: GetHeader());
 
                 return Ok(reply);
             }

@@ -51,6 +51,8 @@ namespace AcceptsCoin.Services.TokenServer
             services.AddJwt(Configuration);
             services.AddAuthorization();
 
+            services.AddScoped<IPartnerRepository, PartnerRepository>();
+            services.AddScoped<IPartnerTokenRepository, PartnerTokenRepository>();
             services.AddScoped<ITokenRepository, TokenRepository>();
             services.AddScoped<ITokenService, TokenService>();
         }

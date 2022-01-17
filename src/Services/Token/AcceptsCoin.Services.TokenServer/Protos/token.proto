@@ -9,14 +9,28 @@ package token;
 service TokenAppService{
     rpc GetAll (TokenQueryFilter) returns (TokenListGm);
     rpc GetById (TokenIdFilter) returns (TokenGm);
+    rpc GetByPartnerId (PartnerTokenQueryFilter) returns (TokenListGm);
     rpc GetFrontTokenList (Empty) returns (TokenFrontListGm);
     rpc Post (TokenGm) returns (TokenGm);
     rpc Put (TokenGm) returns (TokenGm);
     rpc Delete (TokenIdFilter) returns (Empty);
     rpc SoftDelete (TokenIdFilter) returns (Empty);
     rpc SoftDeleteCollection (DeleteCollectionGm) returns (Empty);
+    rpc SavePartnerToken (PartnerTokenGm) returns (Empty);
+    rpc DeletePartnerToken (PartnerTokenGm) returns (Empty);
+
 }
 message Empty{
+}
+message PartnerTokenGm {
+ string TokenId = 1;
+ string PartnerId = 2;
+}
+
+message PartnerTokenQueryFilter {
+ int32 pageId = 1;
+ int32 pageSize = 2;
+string PartnerId = 3;
 }
 message TokenIdFilter {
  string TokenId = 1;

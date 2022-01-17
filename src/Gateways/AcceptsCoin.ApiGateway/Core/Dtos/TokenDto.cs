@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace AcceptsCoin.ApiGateway.Core.Dtos
 {
@@ -15,6 +16,14 @@ namespace AcceptsCoin.ApiGateway.Core.Dtos
         public int Priority { get; set; }
 
         public string Link { get; set; }
+
+        public IFormFile File { get; set; }
+    }
+    public class PartnerTokenDto
+    {
+        public Guid TokenId { get; set; }
+
+        public Guid PartnerId { get; set; }
     }
     public class UpdateTokenDto
     {

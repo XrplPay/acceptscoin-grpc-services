@@ -3,15 +3,17 @@ using System;
 using AcceptsCoin.Services.IdentityServer.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace AcceptsCoin.Services.IdentityServer.Migrations
 {
     [DbContext(typeof(AcceptsCoinIdentityDbContext))]
-    partial class AcceptsCoinIdentityDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220116234230_Partner")]
+    partial class Partner
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

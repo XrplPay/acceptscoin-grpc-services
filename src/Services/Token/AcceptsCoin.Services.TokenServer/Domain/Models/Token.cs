@@ -29,7 +29,7 @@ namespace AcceptsCoin.Services.TokenServer.Domain.Models
 
         public int Priority { get; set; }
 
-        //public ICollection<PartnerCoin> PartnerCoins { get; set; }
+        public ICollection<PartnerToken> PartnerTokens { get; set; }
 
         //public ICollection<WalletCoin> WalletCoins { get; set; }
 

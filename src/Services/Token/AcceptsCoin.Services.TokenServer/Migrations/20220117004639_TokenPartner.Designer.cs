@@ -3,15 +3,17 @@ using System;
 using AcceptsCoin.Services.TokenServer.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace AcceptsCoin.Services.TokenServer.Migrations
 {
     [DbContext(typeof(AcceptsCoinTokenDbContext))]
-    partial class AcceptsCoinTokenDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220117004639_TokenPartner")]
+    partial class TokenPartner
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

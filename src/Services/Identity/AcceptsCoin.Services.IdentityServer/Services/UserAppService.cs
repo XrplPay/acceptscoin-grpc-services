@@ -17,10 +17,12 @@ namespace AcceptsCoin.Services.IdentityServer.Services
     {
         private readonly ILogger<UserGrpcService> _logger;
         private IUserRepository _userRepository;
-        public UserGrpcService(ILogger<UserGrpcService> logger, IUserRepository userRepository)
+        private IPartnerRepository _partnerRepository;
+        public UserGrpcService(ILogger<UserGrpcService> logger, IUserRepository userRepository, IPartnerRepository partnerRepository)
         {
             _logger = logger;
             _userRepository = userRepository;
+            _partnerRepository = partnerRepository;
         }
 
         private Guid getUserId(ServerCallContext context)
@@ -38,6 +40,37 @@ namespace AcceptsCoin.Services.IdentityServer.Services
 
             IQueryable<User> query = _userRepository.GetQuery();
 
+
+            response.CurrentPage = request.PageId;
+            response.ItemCount = await _userRepository.GetCount(query);
+            response.PageCount = (response.ItemCount / request.PageSize) + 1;
+
+
+            var users = from user in await _userRepository.GetAll(query, request.PageId, request.PageSize)
+                        select new UserGm()
+                        {
+                            Id = user.UserId.ToString(),
+                            Name = user.Name,
+                            Email = user.Email,
+
+                        };
+            response.Items.AddRange(users.ToArray());
+            return await Task.FromResult(response);
+        }
+        public override async Task<UserListGm> GetByPartnerId(UserPartnerIdQueryFilter request, ServerCallContext context)
+        {
+
+            var partner = _partnerRepository.Find(request.PartnerId);
+
+            if (partner == null)
+            {
+                await _partnerRepository.Add(new Partner { PartnerId = Guid.Parse(request.PartnerId) });
+            }
+
+            UserListGm response = new UserListGm();
+
+            IQueryable<User> query = _userRepository.GetQuery();
+            query = query.Where(x => x.PartnerId == Guid.Parse(request.PartnerId));
 
             response.CurrentPage = request.PageId;
             response.ItemCount = await _userRepository.GetCount(query);

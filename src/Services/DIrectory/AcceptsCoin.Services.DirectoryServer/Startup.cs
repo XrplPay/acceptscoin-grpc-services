@@ -54,6 +54,8 @@ namespace AcceptsCoin.Services.DirectoryServer
 
 
 
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<IBusinessGalleryRepository, BusinessGalleryRepository>();
             services.AddScoped<IBusinessRepository, BusinessRepository>();
             services.AddScoped<IBusinessService, BusinessService>();
         }
