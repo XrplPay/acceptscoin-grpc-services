@@ -16,6 +16,12 @@ namespace AcceptsCoin.ApiGateway.Core.Dtos
         public IFormFile File { get; set; }
 
     }
+    public class PartnerCategoryDto
+    {
+        public Guid CategoryId { get; set; }
+
+        public Guid PartnerId { get; set; }
+    }
     public class UpdateCategoryDto
     {
         public string Name { get; set; }

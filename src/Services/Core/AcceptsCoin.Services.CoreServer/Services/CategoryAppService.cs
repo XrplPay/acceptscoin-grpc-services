@@ -16,10 +16,12 @@ namespace AcceptsCoin.Services.CoreServer
     {
         private readonly ILogger<CategoryService> _logger;
         private ICategoryRepository _categoryRepository;
-        public CategoryService(ILogger<CategoryService> logger, ICategoryRepository categoryRepository)
+        private IPartnerCategoryRepository _partnerCategoryRepository;
+        public CategoryService(ILogger<CategoryService> logger, ICategoryRepository categoryRepository, IPartnerCategoryRepository partnerCategoryRepository)
         {
             _logger = logger;
             _categoryRepository = categoryRepository;
+            _partnerCategoryRepository = partnerCategoryRepository;
         }
 
         private Guid getUserId(ServerCallContext context)
@@ -54,6 +56,58 @@ namespace AcceptsCoin.Services.CoreServer
             response.Items.AddRange(categories.ToArray());
             return await Task.FromResult(response);
 
+        }
+        public override async Task<CategoryListGm> GetByPartnerId(PartnerCategoryQueryFilter request, ServerCallContext context)
+        {
+            CategoryListGm response = new CategoryListGm();
+
+            IQueryable<Category> query = _categoryRepository.GetQuery();
+            query = query.Where(x => x.PartnerCategories.Any(c => c.PartnerId == Guid.Parse(request.PartnerId)));
+
+
+            response.CurrentPage = request.PageId;
+            response.ItemCount = await _categoryRepository.GetCount(query);
+            response.PageCount = (response.ItemCount / request.PageSize) + 1;
+
+            var categories = from prd in await _categoryRepository.GetAll(query, request.PageId, request.PageSize)
+                             select new CategoryGm()
+                             {
+                                 Id = prd.CategoryId.ToString(),
+                                 Icon = prd.Icon,
+                                 Logo = prd.Logo,
+                                 Name = prd.Name,
+                                 Priority = prd.Priority,
+                             };
+
+            response.Items.AddRange(categories.ToArray());
+            return await Task.FromResult(response);
+        }
+        public override async Task<Empty> SavePartnerCategory(PartnerCategoryGm request, ServerCallContext context)
+        {
+
+            PartnerCategory item = await _partnerCategoryRepository.Find(Guid.Parse(request.CategoryId), Guid.Parse(request.PartnerId));
+
+            if (item == null)
+            {
+                var partnerToken = new PartnerCategory()
+                {
+                    CreatedById = getUserId(context),
+
+                    CreatedDate = DateTime.Now,
+                    Deleted = false,
+                    PartnerId = Guid.Parse(request.PartnerId),
+                    CategoryId = Guid.Parse(request.CategoryId),
+                    Published = true,
+                };
+
+                await _partnerCategoryRepository.Add(partnerToken);
+            }
+            else
+            {
+                await _partnerCategoryRepository.Delete(item);
+            }
+
+            return await Task.FromResult<Empty>(new Empty());
         }
         //public override async Task<CategoryChildrenListGm> GetChild(CategoryIdFilter request, ServerCallContext context)
         //{

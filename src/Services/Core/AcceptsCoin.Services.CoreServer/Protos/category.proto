@@ -9,6 +9,7 @@ package category;
 service CategoryAppService{
     rpc GetAll (CategoryQueryFilter) returns (CategoryListGm);
     rpc GetTree (Empty) returns (CategoryChildrenListGm);
+    rpc GetByPartnerId (PartnerCategoryQueryFilter) returns (CategoryListGm); 
     rpc GetFrontTree (Empty) returns (CategoryChildrenListGm);
     rpc GetById (CategoryIdFilter) returns (CategoryGm);
     rpc Post (CategoryGm) returns (CategoryGm);
@@ -16,7 +17,20 @@ service CategoryAppService{
     rpc Delete (CategoryIdFilter) returns (Empty);
     rpc SoftDelete (CategoryIdFilter) returns (Empty);
     rpc SoftDeleteCollection (CategoryDeleteCollectionGm) returns (Empty);
+    rpc SavePartnerCategory (PartnerCategoryGm) returns (Empty);
 }
+
+message PartnerCategoryGm {
+ string CategoryId = 1;
+ string PartnerId = 2;
+}
+
+message PartnerCategoryQueryFilter {
+ int32 pageId = 1;
+ int32 pageSize = 2;
+string PartnerId = 3;
+}
+
 message Empty{
 }
 

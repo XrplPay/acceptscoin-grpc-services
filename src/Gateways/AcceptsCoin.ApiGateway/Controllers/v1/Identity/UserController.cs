@@ -30,6 +30,7 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Identity
         }
 
 
+
         [HttpGet("GetAll")]
         public async Task<ActionResult> GetAll([FromQuery] int pageId = 1, [FromQuery] int pageSize = 10)
         {
@@ -42,6 +43,33 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Identity
                 var channel = GrpcChannel.ForAddress(channelUrl);
                 var client = new UserAppService.UserAppServiceClient(channel);
                 var reply = await client.GetAllAsync(new UserQueryFilter { PageId = pageId, PageSize = pageSize }, headers: GetHeader());
+
+                return Ok(reply);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new WebApiErrorMessageResponse()
+                {
+                    Errors = new List<string>() {
+                            ex.Message
+                    },
+                    Success = false
+                });
+            }
+        }
+
+        [HttpGet("GetByPartnerId")]
+        public async Task<ActionResult> GetByPartnerId([FromQuery] int partnerId = 1, [FromQuery] int pageId = 1, [FromQuery] int pageSize = 10)
+        {
+            try
+            {
+                var accessToken = Request.Headers[HeaderNames.Authorization];
+
+                //var header = new Metadata();
+                //header.Add("Authorization", accessToken);
+                var channel = GrpcChannel.ForAddress(channelUrl);
+                var client = new UserAppService.UserAppServiceClient(channel);
+                var reply = await client.GetByPartnerIdAsync(new UserPartnerIdQueryFilter {PartnerId= partnerId.ToString(), PageId = pageId, PageSize = pageSize }, headers: GetHeader());
 
                 return Ok(reply);
             }

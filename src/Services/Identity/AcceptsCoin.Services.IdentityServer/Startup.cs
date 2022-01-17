@@ -7,6 +7,7 @@ using AcceptsCoin.Services.CoreServer.Data.Repository;
 using AcceptsCoin.Services.IdentityServer.Core.Interfaces;
 using AcceptsCoin.Services.IdentityServer.Core.Services;
 using AcceptsCoin.Services.IdentityServer.Data.Context;
+using AcceptsCoin.Services.IdentityServer.Data.Repository;
 using AcceptsCoin.Services.IdentityServer.Domain.Interfaces;
 using AcceptsCoin.Services.IdentityServer.Services;
 using Microsoft.AspNetCore.Builder;
@@ -54,6 +55,7 @@ namespace AcceptsCoin.Services.IdentityServer
 
             services.AddScoped<IUserServices, UserServices>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IPartnerRepository, PartnerRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

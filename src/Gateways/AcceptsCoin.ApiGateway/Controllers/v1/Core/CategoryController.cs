@@ -64,6 +64,53 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Core
         }
 
 
+
+        [HttpGet("GetByPartnerId")]
+        public async Task<ActionResult> GetByPartnerId([FromQuery] Guid partnerId, [FromQuery] int pageId = 1, [FromQuery] int pageSize = 10)
+        {
+            try
+            {
+                var channel = GrpcChannel.ForAddress(channelUrl);
+                var client = new CategoryAppService.CategoryAppServiceClient(channel);
+                var reply = await client.GetByPartnerIdAsync(new PartnerCategoryQueryFilter { PartnerId = partnerId.ToString(), PageId = pageId, PageSize = pageSize }, headers: GetHeader());
+
+                return Ok(reply);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new WebApiErrorMessageResponse()
+                {
+                    Errors = new List<string>() {
+                            ex.Message
+                    },
+                    Success = false
+                });
+            }
+        }
+
+        [HttpPost("SavePartnerCategory")]
+        public async Task<ActionResult> SavePartnerToken([FromBody] PartnerCategoryDto  partnerCategory)
+        {
+            try
+            {
+                var channel = GrpcChannel.ForAddress(channelUrl);
+                var client = new CategoryAppService.CategoryAppServiceClient(channel);
+                await client.SavePartnerCategoryAsync(new PartnerCategoryGm { PartnerId = partnerCategory.PartnerId.ToString(), CategoryId = partnerCategory.CategoryId.ToString() }, headers: GetHeader());
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new WebApiErrorMessageResponse()
+                {
+                    Errors = new List<string>() {
+                            ex.Message
+                    },
+                    Success = false
+                });
+            }
+        }
+
         //private async Task<CategoryChildrenListGm> GetChild(string Id)
         //{
 
