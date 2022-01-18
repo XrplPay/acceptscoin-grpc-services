@@ -34,6 +34,7 @@ namespace AcceptsCoin.Services.DirectoryServer
         {
             return "bff3b2dd-e89d-46fc-a868-aab93a3efbbe";
         }
+        [AllowAnonymous]
         public override async Task<BusinessListFrontGm> GetFrontBusinessList(BusinessFrontQueryFilter request, ServerCallContext context)
         {
             BusinessListFrontGm response = new BusinessListFrontGm();

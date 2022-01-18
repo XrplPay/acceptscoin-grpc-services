@@ -39,6 +39,8 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Directory
             return header;
         }
 
+
+        [AllowAnonymous]
         [HttpGet("GetFrontBusinessList")]
         public async Task<ActionResult> GetFrontBusinessList([FromQuery] int pageId = 1, [FromQuery] int pageSize = 10)
         {
