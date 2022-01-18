@@ -42,8 +42,6 @@ namespace AcceptsCoin.Services.StorageServer
             services.AddJwt(Configuration);
             services.AddAuthorization();
             services.AddGrpc();
-            services.AddDirectoryBrowser();
-
             services.AddCors(options =>
             {
                 options.AddPolicy("cors", policy =>
@@ -66,7 +64,6 @@ namespace AcceptsCoin.Services.StorageServer
             app.UseAuthentication();
             app.UseRouting();
             app.UseAuthorization();
-
             app.UseCors("cors");
             app.UseGrpcWeb();
 
@@ -78,11 +75,11 @@ namespace AcceptsCoin.Services.StorageServer
                 .EnableGrpcWeb().RequireCors("cors");
 
 
-
-                endpoints.MapGet("/", async context =>
-                {
-                    await context.Response.WriteAsync("Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");
-                });
+                             
+                //endpoints.MapGet("/", async context =>
+                //{
+                //    await context.Response.WriteAsync("Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");
+                //});
             });
         }
     }
