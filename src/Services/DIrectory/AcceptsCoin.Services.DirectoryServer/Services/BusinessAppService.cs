@@ -18,7 +18,7 @@ namespace AcceptsCoin.Services.DirectoryServer
     {
         private readonly ILogger<BusinessGrpcService> _logger;
         private IBusinessRepository _businessRepository;
-        private ICategoryRepository  _categoryRepository;
+        private ICategoryRepository _categoryRepository;
         public BusinessGrpcService(ILogger<BusinessGrpcService> logger, IBusinessRepository businessRepository, ICategoryRepository categoryRepository)
         {
             _logger = logger;
@@ -33,6 +33,50 @@ namespace AcceptsCoin.Services.DirectoryServer
         private string getPartnetId(ServerCallContext context)
         {
             return "bff3b2dd-e89d-46fc-a868-aab93a3efbbe";
+        }
+
+
+
+        [AllowAnonymous]
+        public override async Task<SingleBusinessFrontGm> GetFrontById(BusinessIdFilter request, ServerCallContext context)
+        {
+            var business = await _businessRepository.Find(request.BusinessId);
+            SingleBusinessFrontGm response = new SingleBusinessFrontGm();
+
+
+            response.Id = business.BusinessId.ToString();
+            response.Latitude = business.Latitude;
+            response.Longitude = business.Longitude;
+            response.Icon = "icon";
+
+            response.ImageUrl = business.BusinessGalleries.Count > 0 ?
+                business.BusinessGalleries.FirstOrDefault().Name
+                :
+                "https://img.grouponcdn.com/deal/28PbQPC6SSX8BASL8NRkTSK4Ayoe/28-1200x720/v1/c870x524.webp";
+
+            response.LocationName = "United state";
+            response.Rate = 5;
+            response.Subtitle = business.Description;
+            response.Title = business.Name;
+            response.TotalRate = 100;
+
+
+            var images = from image in business.BusinessGalleries
+                         select new BusinessGalleryFrontGm()
+                         {
+                             Id = image.BusinessGalleryId.ToString(),
+                             Name = image.Name,
+                             Extension = image.Extension,
+                         };
+            response.Images.AddRange(images.ToArray());
+
+
+
+
+
+
+
+            return await Task.FromResult(response);
         }
         [AllowAnonymous]
         public override async Task<BusinessListFrontGm> GetFrontBusinessList(BusinessFrontQueryFilter request, ServerCallContext context)
@@ -55,7 +99,8 @@ namespace AcceptsCoin.Services.DirectoryServer
                                  Latitude = business.Latitude,
                                  Longitude = business.Longitude,
                                  Icon = "icon",
-                                 ImageUrl = "https://img.grouponcdn.com/deal/28PbQPC6SSX8BASL8NRkTSK4Ayoe/28-1200x720/v1/c870x524.webp",
+                                 //ImageUrl = "https://img.grouponcdn.com/deal/28PbQPC6SSX8BASL8NRkTSK4Ayoe/28-1200x720/v1/c870x524.webp",
+                                 ImageUrl = business.BusinessGalleries.Count > 0 ? business.BusinessGalleries.FirstOrDefault().Name : "https://img.grouponcdn.com/deal/28PbQPC6SSX8BASL8NRkTSK4Ayoe/28-1200x720/v1/c870x524.webp",
                                  LocationName = "United state",
                                  Rate = 5,
                                  Subtitle = business.Description,
@@ -366,7 +411,7 @@ namespace AcceptsCoin.Services.DirectoryServer
         public override async Task<Empty> SoftDelete(BusinessIdFilter request, ServerCallContext context)
         {
             Business business = await _businessRepository.Find(request.BusinessId);
-            
+
             if (business == null)
             {
                 return await Task.FromResult<Empty>(null);

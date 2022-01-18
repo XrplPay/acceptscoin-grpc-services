@@ -10,6 +10,7 @@ service BusinessAppService{
     rpc GetByPartnerId (BusinessPartnerIdQueryFilter) returns (BusinessListGm);
     rpc GetFrontBusinessList (BusinessFrontQueryFilter) returns (BusinessListFrontGm);
     rpc GetById (BusinessIdFilter) returns (BusinessGm);
+    rpc GetFrontById (BusinessIdFilter) returns (SingleBusinessFrontGm);
     rpc GetByUserId (BusinessQueryFilter) returns (BusinessListGm);
     rpc Post (BusinessGm) returns (BusinessGm);
     rpc Put (BusinessGm) returns (BusinessGm);
@@ -89,7 +90,6 @@ message BusinessFrontGm {
     string icon = 9;
     string imageUrl = 10;
     repeated BusinessTokenFrontGm token = 11;
-
 }
 message BusinessListFrontGm {
     repeated BusinessFrontGm items = 1;
@@ -98,3 +98,28 @@ message BusinessListFrontGm {
     int32 pageCount = 4;
 }
 
+message SingleBusinessFrontGm {
+    message BusinessTokenFrontGm {
+    string Id = 1;
+    string coin = 2;
+    int32 totalCoin = 3;
+    string img = 4;
+    }
+    string Id = 1;
+    string title = 2;
+    string locationName = 3;
+    int32 rate = 4;
+    int32 totalRate = 5;
+    string subtitle = 6;
+    double latitude = 7;
+    double longitude = 8;
+    string icon = 9;
+    string imageUrl = 10;
+    repeated BusinessTokenFrontGm token = 11;
+    repeated BusinessGalleryFrontGm images = 12;
+}
+message BusinessGalleryFrontGm {
+    string Id = 1;
+    string name = 2;
+    string extension = 3;
+}
