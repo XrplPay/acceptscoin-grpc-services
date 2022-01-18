@@ -65,6 +65,8 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Token
             }
         }
 
+       
+
         [HttpGet("GetByPartnerId")]
         public async Task<ActionResult> GetByPartnerId([FromQuery] Guid partnerId, [FromQuery] int pageId = 1, [FromQuery] int pageSize = 10)
         {

@@ -34,7 +34,55 @@ namespace AcceptsCoin.Services.DirectoryServer
         {
             return "bff3b2dd-e89d-46fc-a868-aab93a3efbbe";
         }
+        public override async Task<BusinessListFrontGm> GetFrontBusinessList(BusinessFrontQueryFilter request, ServerCallContext context)
+        {
+            BusinessListFrontGm response = new BusinessListFrontGm();
 
+            IQueryable<Business> query = _businessRepository.GetQuery();
+
+
+            response.CurrentPage = request.PageId;
+            response.ItemCount = await _businessRepository.GetCount(query);
+            response.PageCount = (response.ItemCount / request.PageSize) + 1;
+
+            var buinessList = await _businessRepository.GetAll(query, request.PageId, request.PageSize);
+
+            var businesses = from business in buinessList
+                             select new BusinessFrontGm()
+                             {
+                                 Id = business.BusinessId.ToString(),
+
+                                 Latitude = business.Latitude,
+                                 Longitude = business.Longitude,
+                                 Icon = "icon",
+                                 ImageUrl = "",
+                                 LocationName = "",
+                                 Rate = 5,
+                                 Subtitle = "",
+                                 Title = "",
+                                 TotalRate = 100,
+
+                             };
+
+            response.Items.AddRange(businesses.ToArray());
+
+            for (int i = 0; i < businesses.Count() - 1; i++)
+            {
+                var tokens = from token in buinessList
+                             select new BusinessFrontGm.Types.BusinessTokenFrontGm()
+                             {
+                                 Id = Guid.NewGuid().ToString(),
+                                 Coin = "Token",
+                                 Img = "/coin/xrplpay.png",
+                                 TotalCoin = 10,
+                             };
+                //businesses.ElementAt(i).Token.Concat(tokens.ToArray());
+                response.Items[i].Token.AddRange(tokens.ToArray());
+            }
+            
+            
+            return await Task.FromResult(response);
+        }
         public override async Task<BusinessListGm> GetAll(BusinessQueryFilter request, ServerCallContext context)
         {
             BusinessListGm response = new BusinessListGm();

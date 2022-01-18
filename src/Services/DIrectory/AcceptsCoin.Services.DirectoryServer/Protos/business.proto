@@ -8,6 +8,7 @@ package business;
 service BusinessAppService{
     rpc GetAll (BusinessQueryFilter) returns (BusinessListGm);
     rpc GetByPartnerId (BusinessPartnerIdQueryFilter) returns (BusinessListGm);
+    rpc GetFrontBusinessList (BusinessFrontQueryFilter) returns (BusinessListFrontGm);
     rpc GetById (BusinessIdFilter) returns (BusinessGm);
     rpc GetByUserId (BusinessQueryFilter) returns (BusinessListGm);
     rpc Post (BusinessGm) returns (BusinessGm);
@@ -36,7 +37,10 @@ message BusinessPartnerIdQueryFilter {
  int32 pageSize = 2;
  string partnerId=3; 
 }
-
+message BusinessFrontQueryFilter {
+ int32 pageId = 1;
+ int32 pageSize = 2;
+}
 message PaginationGm{
     int32 currentPage = 1;
     int32 itemCount = 2;
@@ -65,5 +69,32 @@ message BusinessGm {
 message BusinessListGm {
     repeated BusinessGm items = 1;
     PaginationGm pagination = 2;
+}
+
+message BusinessFrontGm {
+    message BusinessTokenFrontGm {
+    string Id = 1;
+    string coin = 2;
+    int32 totalCoin = 3;
+    string img = 4;
+    }
+    string Id = 1;
+    string title = 2;
+    string locationName = 3;
+    int32 rate = 4;
+    int32 totalRate = 5;
+    string subtitle = 6;
+    double latitude = 7;
+    double longitude = 8;
+    string icon = 9;
+    string imageUrl = 10;
+    repeated BusinessTokenFrontGm token = 11;
+
+}
+message BusinessListFrontGm {
+    repeated BusinessFrontGm items = 1;
+    int32 currentPage = 2;
+    int32 itemCount = 3;
+    int32 pageCount = 4;
 }
 
