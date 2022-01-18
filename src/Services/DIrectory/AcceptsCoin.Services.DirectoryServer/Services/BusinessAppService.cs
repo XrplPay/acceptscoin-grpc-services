@@ -52,7 +52,6 @@ namespace AcceptsCoin.Services.DirectoryServer
                              select new BusinessFrontGm()
                              {
                                  Id = business.BusinessId.ToString(),
-
                                  Latitude = business.Latitude,
                                  Longitude = business.Longitude,
                                  Icon = "icon",
@@ -60,7 +59,7 @@ namespace AcceptsCoin.Services.DirectoryServer
                                  LocationName = "United state",
                                  Rate = 5,
                                  Subtitle = business.Description,
-                                 Title =business.Name,
+                                 Title = business.Name,
                                  TotalRate = 100,
 
                              };
@@ -80,8 +79,8 @@ namespace AcceptsCoin.Services.DirectoryServer
                 //businesses.ElementAt(i).Token.Concat(tokens.ToArray());
                 response.Items[i].Token.AddRange(tokens.ToArray());
             }
-            
-            
+
+
             return await Task.FromResult(response);
         }
         public override async Task<BusinessListGm> GetAll(BusinessQueryFilter request, ServerCallContext context)

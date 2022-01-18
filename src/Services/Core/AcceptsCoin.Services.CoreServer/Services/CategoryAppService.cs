@@ -123,6 +123,98 @@ namespace AcceptsCoin.Services.CoreServer
         //    response.Items.AddRange(categories.ToArray());
         //    return await Task.FromResult(response);
         //}
+
+        [AllowAnonymous]
+        private async Task<IEnumerable<CategoryChildGm>> GetBt(string parentId)
+        {
+            var categories = from prd in await _categoryRepository.GetAll(Guid.Parse(parentId))
+                             select new CategoryChildGm()
+                             {
+                                 Id = prd.CategoryId.ToString(),
+                                 Name = prd.Name,
+                             };
+
+
+            for (int i = 0; i < categories.Count() - 1; i++)
+            {
+                var child = await GetBt(categories.ElementAt(i).Id);
+                categories.ElementAt(i).Children.AddRange(child.ToArray());
+            }
+            return categories;
+        }
+
+
+
+        [AllowAnonymous]
+        public override async Task<CategoryChildrenListGm> GetTree(Empty request, ServerCallContext context)
+        {
+            CategoryChildrenListGm response = new CategoryChildrenListGm();
+
+            var categories = from prd in await _categoryRepository.GetAll(null)
+                             select new CategoryChildGm()
+                             {
+                                 Id = prd.CategoryId.ToString(),
+                                 Name = prd.Name,
+                                 
+                             };
+
+            response.Items.AddRange(categories.ToArray());
+
+            for (int i = 0; i < response.Items.Count - 1; i++)
+            {
+                var childs = await GetBt(response.Items[i].Id);
+                response.Items[i].Children.AddRange(childs.ToArray());
+            }
+            return await Task.FromResult(response);
+        }
+
+
+
+        [AllowAnonymous]
+        public override async Task<CategoryMenuList> GetMenu(Empty request, ServerCallContext context)
+        {
+            CategoryMenuList response = new CategoryMenuList();
+
+            var categories = from category in await _categoryRepository.GetAll(null)
+                             select new CategoryMenu()
+                             {
+                                 Id = category.CategoryId.ToString(),
+                                 Title = category.Name,
+
+                             };
+
+            response.Items.AddRange(categories.ToArray());
+
+            for (int i = 0; i < response.Items.Count - 1; i++)
+            {
+                var level2 = from category in await _categoryRepository.GetAll(Guid.Parse(response.Items[i].Id))
+                                 select new CategoryMenuLevelTwo()
+                                 {
+                                     Id = category.CategoryId.ToString(),
+                                     Title = category.Name,
+                                 };
+                response.Items[i].Menu.AddRange(level2.ToArray());
+
+            }
+
+            for (int i = 0; i < response.Items.Count - 1; i++)
+            {
+                for (int j = 0; j < response.Items[i].Menu.Count - 1; j++)
+                {
+                    var level3 = from category in await _categoryRepository.GetAll(Guid.Parse(response.Items[i].Menu[j].Id))
+                                 select new CategoryMenuLevelThree()
+                                 {
+                                     Id = category.CategoryId.ToString(),
+                                     Title = category.Name,
+                                     LengthItem = i * 7,
+                                 };
+                    response.Items[i].Menu[j].Menu.AddRange(level3.ToArray());
+                }
+            }
+            return await Task.FromResult(response);
+        }
+
+
         //public override async Task<CategoryChildrenListGm> GetTree(Empty request, ServerCallContext context)
         //{
         //    CategoryChildrenListGm response = new CategoryChildrenListGm();
@@ -134,49 +226,15 @@ namespace AcceptsCoin.Services.CoreServer
         //                         Name = prd.Name,
         //                     };
 
+        //    foreach (var item in categories)
+        //    {
+        //        var resault = await GetBt(item.Id);
+        //        categories.Where(x => x.Id == item.Id).First().Children.AddRange(resault);
+        //    }
         //    response.Items.AddRange(categories.ToArray());
         //    return await Task.FromResult(response);
 
         //}
-
-        private async Task<IEnumerable<CategoryChildGm>> GetBt(string parentId)
-        {
-            var categories = from prd in await _categoryRepository.GetAll(Guid.Parse(parentId))
-                             select new CategoryChildGm()
-                             {
-                                 Id = prd.CategoryId.ToString(),
-                                 Name = prd.Name,
-                             };
-            //foreach (var item in categories)
-            //{
-                
-            //    categories.Where(x => x.Id == item.Id).First().Children.AddRange(categories);
-            //    await GetBt(item.Id);
-            //}
-            return await Task.FromResult(categories);
-
-        }
-
-        public override async Task<CategoryChildrenListGm> GetTree(Empty request, ServerCallContext context)
-        {
-            CategoryChildrenListGm response = new CategoryChildrenListGm();
-
-            var categories = from prd in await _categoryRepository.GetAll(null)
-                             select new CategoryChildGm()
-                             {
-                                 Id = prd.CategoryId.ToString(),
-                                 Name = prd.Name,
-                             };
-
-            foreach (var item in categories)
-            {
-                var resault = await GetBt(item.Id);
-                categories.Where(x => x.Id == item.Id).First().Children.AddRange(resault);
-            }
-            response.Items.AddRange(categories.ToArray());
-            return await Task.FromResult(response);
-
-        }
 
         [AllowAnonymous]
         public override async Task<CategoryChildrenListGm> GetFrontTree(Empty request, ServerCallContext context)

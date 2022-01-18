@@ -9,6 +9,7 @@ package category;
 service CategoryAppService{
     rpc GetAll (CategoryQueryFilter) returns (CategoryListGm);
     rpc GetTree (Empty) returns (CategoryChildrenListGm);
+    rpc GetMenu (Empty) returns (CategoryMenuList);
     rpc GetByPartnerId (PartnerCategoryQueryFilter) returns (CategoryListGm); 
     rpc GetFrontTree (Empty) returns (CategoryChildrenListGm);
     rpc GetById (CategoryIdFilter) returns (CategoryGm);
@@ -66,4 +67,24 @@ message CategoryChildGm {
 }
 message CategoryChildrenListGm {
     repeated CategoryChildGm items = 1;
+}
+
+message CategoryMenuList {
+    repeated CategoryMenu items=1;
+}
+message CategoryMenu {
+    string id=1;
+    string title=2;
+    repeated CategoryMenuLevelTwo menu=3;
+}
+message CategoryMenuLevelTwo {
+    string id=1;
+    string title=2;
+    repeated CategoryMenuLevelThree menu=3;
+}
+
+message CategoryMenuLevelThree{
+    string id=1;
+    string title=2;
+    int32 lengthItem=3;
 }
