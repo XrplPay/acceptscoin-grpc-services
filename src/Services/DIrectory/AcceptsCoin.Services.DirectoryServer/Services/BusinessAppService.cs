@@ -146,6 +146,7 @@ namespace AcceptsCoin.Services.DirectoryServer
                              select new BusinessGm()
                              {
                                  Id = business.BusinessId.ToString(),
+                                 Name=business.Name,
                                  Email = business.Email,
                                  WebSiteUrl = business.WebSiteUrl,
                                  ContactNumber = business.ContactNumber,
@@ -189,6 +190,7 @@ namespace AcceptsCoin.Services.DirectoryServer
                              {
                                  Id = business.BusinessId.ToString(),
                                  Email = business.Email,
+                                 Name = business.Name,
                                  WebSiteUrl = business.WebSiteUrl,
                                  ContactNumber = business.ContactNumber,
                                  Logo = business.Logo,
@@ -234,6 +236,7 @@ namespace AcceptsCoin.Services.DirectoryServer
                                  WebSiteUrl = business.WebSiteUrl,
                                  ContactNumber = business.ContactNumber,
                                  Logo = business.Logo,
+                                 Name = business.Name,
                                  Owner = business.Owner,
                                  Manager = business.Manager,
                                  Twitter = business.Twitter,
@@ -262,6 +265,7 @@ namespace AcceptsCoin.Services.DirectoryServer
                 Email = business.Email,
                 WebSiteUrl = business.WebSiteUrl,
                 ContactNumber = business.ContactNumber,
+                Name = business.Name,
                 Logo = business.Logo,
                 Owner = business.Owner,
                 Manager = business.Manager,
@@ -327,6 +331,7 @@ namespace AcceptsCoin.Services.DirectoryServer
                 Logo = res.Logo,
                 Owner = res.Owner,
                 Manager = res.Manager,
+                Name = business.Name,
                 Twitter = res.Twitter,
                 FaceBook = res.FaceBook,
                 Instagram = res.Instagram,
@@ -352,6 +357,7 @@ namespace AcceptsCoin.Services.DirectoryServer
             }
 
 
+            business.Name = request.Name;
             business.Email = request.Email;
             business.WebSiteUrl = request.WebSiteUrl;
             business.ContactNumber = request.ContactNumber;
@@ -383,6 +389,7 @@ namespace AcceptsCoin.Services.DirectoryServer
                 ContactNumber = business.ContactNumber,
                 Logo = business.Logo,
                 Owner = business.Owner,
+                Name=business.Name,
                 Manager = business.Manager,
                 Twitter = business.Twitter,
                 FaceBook = business.FaceBook,

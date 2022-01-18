@@ -59,7 +59,7 @@ namespace AcceptsCoin.Services.IdentityServer.Services
 
         public override async Task<RoleGm> GetById(RoleIdFilter request, ServerCallContext context)
         {
-            var role = await _roleRepository.Find(request.RoleId);
+            var role = await _roleRepository.Find(Guid.Parse(request.RoleId));
             var searchedRole = new RoleGm()
             {
                 Id = role.RoleId.ToString(),
