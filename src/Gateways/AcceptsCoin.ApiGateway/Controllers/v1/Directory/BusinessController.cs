@@ -48,7 +48,7 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Directory
             {
                 var channel = GrpcChannel.ForAddress(channelUrl);
                 var client = new BusinessAppService.BusinessAppServiceClient(channel);
-                var reply = await client.GetFrontBusinessListAsync(new BusinessFrontQueryFilter { PageId = pageId, PageSize = pageSize }, headers: GetHeader());
+                var reply = await client.GetFrontBusinessListAsync(new BusinessFrontQueryFilter { PageId = pageId, PageSize = pageSize });
 
                 return Ok(reply);
             }
