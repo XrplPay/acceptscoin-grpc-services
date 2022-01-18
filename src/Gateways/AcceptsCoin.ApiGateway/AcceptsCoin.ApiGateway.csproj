@@ -65,34 +65,34 @@
     <ProjectReference Include="..\..\Common\AcceptsCoin.Common\AcceptsCoin.Common.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Protobuf Include="..\..\Services\Core\AcceptsCoin.Services.CoreServer\Protos\category.proto" GrpcServices="Client" ProtoCompile="true">
+    <Protobuf Include="..\..\Services\Core\AcceptsCoin.Services.CoreServer\Protos\category.proto" GrpcServices="Client">
       <Link>Protos\category.proto</Link>
     </Protobuf>
-    <Protobuf Include="..\..\Services\Core\AcceptsCoin.Services.CoreServer\Protos\language.proto" GrpcServices="Client" ProtoCompile="true">
+    <Protobuf Include="..\..\Services\Core\AcceptsCoin.Services.CoreServer\Protos\language.proto" GrpcServices="Client">
       <Link>Protos\language.proto</Link>
     </Protobuf>
-    <Protobuf Include="..\..\Services\Core\AcceptsCoin.Services.CoreServer\Protos\partner.proto" GrpcServices="Client" ProtoCompile="true">
+    <Protobuf Include="..\..\Services\Core\AcceptsCoin.Services.CoreServer\Protos\partner.proto" GrpcServices="Client">
       <Link>Protos\partner.proto</Link>
     </Protobuf>
-    <Protobuf Include="..\..\Services\Core\AcceptsCoin.Services.CoreServer\Protos\tag.proto" GrpcServices="Client" ProtoCompile="true">
+    <Protobuf Include="..\..\Services\Core\AcceptsCoin.Services.CoreServer\Protos\tag.proto" GrpcServices="Client" >
       <Link>Protos\tag.proto</Link>
     </Protobuf>
-    <Protobuf Include="..\..\Services\Identity\AcceptsCoin.Services.IdentityServer\Protos\auth.proto" GrpcServices="Client" ProtoCompile="true">
+    <Protobuf Include="..\..\Services\Identity\AcceptsCoin.Services.IdentityServer\Protos\auth.proto" GrpcServices="Client" >
       <Link>Protos\auth.proto</Link>
     </Protobuf>
-    <Protobuf Include="..\..\Services\Token\AcceptsCoin.Services.TokenServer\Protos\token.proto" GrpcServices="Client" ProtoCompile="true">
+    <Protobuf Include="..\..\Services\Token\AcceptsCoin.Services.TokenServer\Protos\token.proto" GrpcServices="Client">
       <Link>Protos\token.proto</Link>
     </Protobuf>
-    <Protobuf Include="..\..\Services\DIrectory\AcceptsCoin.Services.DirectoryServer\Protos\business.proto" GrpcServices="Client" ProtoCompile="true">
+    <Protobuf Include="..\..\Services\DIrectory\AcceptsCoin.Services.DirectoryServer\Protos\business.proto" GrpcServices="Client">
       <Link>Protos\business.proto</Link>
     </Protobuf>
-    <Protobuf Include="..\..\Services\Identity\AcceptsCoin.Services.IdentityServer\Protos\user.proto" GrpcServices="Client" ProtoCompile="true">
+    <Protobuf Include="..\..\Services\Identity\AcceptsCoin.Services.IdentityServer\Protos\user.proto" GrpcServices="Client">
       <Link>Protos\user.proto</Link>
     </Protobuf>
-    <Protobuf Include="..\..\Services\Storage\AcceptsCoin.Services.StorageServer\Protos\fileupload.proto" GrpcServices="Client" ProtoCompile="true">
+    <Protobuf Include="..\..\Services\Storage\AcceptsCoin.Services.StorageServer\Protos\fileupload.proto" GrpcServices="Client">
       <Link>Protos\fileupload.proto</Link>
     </Protobuf>
-    <Protobuf Include="..\..\Services\Identity\AcceptsCoin.Services.IdentityServer\Protos\role.proto" GrpcServices="Client" ProtoCompile="true">
+    <Protobuf Include="..\..\Services\Identity\AcceptsCoin.Services.IdentityServer\Protos\role.proto" GrpcServices="Client">
       <Link>Protos\role.proto</Link>
     </Protobuf>
   </ItemGroup>

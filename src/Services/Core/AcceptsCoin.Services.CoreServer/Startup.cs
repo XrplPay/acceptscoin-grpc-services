@@ -58,6 +58,7 @@ namespace AcceptsCoin.Services.CoreServer
             
 
 
+            services.AddScoped<IPartnerCategoryRepository, PartnerCategoryRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<ILanguageRepository, LanguageRepository>();
             services.AddScoped<ILanguageService, LanguageService>();

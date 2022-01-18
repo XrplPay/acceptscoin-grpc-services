@@ -40,8 +40,7 @@ namespace AcceptsCoin.Services.IdentityServer.Core.Services
             var user = await _userRepository.Find(userName);
             if (user == null)
             {
-                // throw new ActioExeption("invalid_credentials",
-                //    $"Invalid User");
+                 throw new Exception("invalid_credentials");
             }
 
 

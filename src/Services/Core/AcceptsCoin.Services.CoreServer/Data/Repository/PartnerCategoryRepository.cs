@@ -7,7 +7,7 @@ using AcceptsCoin.Services.CoreServer.Domain.Interfaces;
 using AcceptsCoin.Services.CoreServer.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace AcceptsCoin.Services.TokenServer.Data.Repository
+namespace AcceptsCoin.Services.CoreServer.Data.Repository
 {
     public class PartnerCategoryRepository : IPartnerCategoryRepository
     {
