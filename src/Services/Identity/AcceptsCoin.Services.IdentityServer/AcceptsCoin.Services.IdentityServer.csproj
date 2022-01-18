@@ -49,6 +49,9 @@
     <Protobuf Include="Protos\auth.proto" GrpcServices="Server" />
   </ItemGroup>
   <ItemGroup>
+    <Protobuf Include="Protos\role.proto" GrpcServices="Server" />
+  </ItemGroup>
+  <ItemGroup>
     <Folder Include="Core\Dtos\" />
     <Folder Include="Core\Views\" />
   </ItemGroup>

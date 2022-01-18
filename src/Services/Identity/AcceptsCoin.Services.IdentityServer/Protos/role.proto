@@ -1,0 +1,50 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "AcceptsCoin.Services.IdentityServer.Protos";
+
+
+package role;
+
+
+service RoleAppService{
+    rpc GetAll (RoleQueryFilter) returns (RoleListGm);
+    rpc GetById (RoleIdFilter) returns (RoleGm);
+    rpc Post (RoleGm) returns (RoleGm);
+    rpc Put (RoleGm) returns (RoleGm);
+    rpc Delete (RoleIdFilter) returns (EmptyRole);
+    rpc SoftDelete (RoleIdFilter) returns (EmptyRole);
+    rpc SoftDeleteCollection (RoleDeleteCollectionGm) returns (EmptyRole);
+
+}
+
+message EmptyRole{
+}
+
+
+message RoleIdFilter {
+ string RoleId = 1;
+}
+message RoleDeleteCollectionGm {
+ repeated RoleIdFilter items = 1;
+}
+
+message RoleQueryFilter {
+ int32 pageId = 1;
+ int32 pageSize = 2;
+}
+
+
+message RoleGm {
+    string id=1;
+    string name = 2;
+}
+message RoleListGm {
+    repeated RoleGm items = 1;
+    int32 currentPage = 2;
+    int32 itemCount = 3;
+    int32 pageCount = 4;
+}
+
+
+
+

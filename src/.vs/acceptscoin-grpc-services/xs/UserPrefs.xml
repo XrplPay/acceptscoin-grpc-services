@@ -1,18 +1,22 @@
 ﻿<Properties StartupConfiguration="Multiple Projects">
   <MonoDevelop.Ide.ItemProperties.src.Services.DIrectory.AcceptsCoin.Services.DirectoryServer PreferredExecutionTarget="/Applications/Google Chrome.app" />
   <MonoDevelop.Ide.ItemProperties.src.Services.Token.AcceptsCoin.Services.TokenServer PreferredExecutionTarget="/Applications/Google Chrome.app" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Gateways/AcceptsCoin.ApiGateway/AcceptsCoin.ApiGateway.csproj">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Services/Identity/AcceptsCoin.Services.IdentityServer/Startup.cs">
     <Files>
-      <File FileName="Services/Token/AcceptsCoin.Services.TokenServer/Services/TokenAppService.cs" Line="221" Column="10" />
-      <File FileName="Services/Core/AcceptsCoin.Services.CoreServer/Protos/category.proto" />
-      <File FileName="Services/Core/AcceptsCoin.Services.CoreServer/Services/CategoryAppService.cs" />
-      <File FileName="Services/Core/AcceptsCoin.Services.CoreServer/Domain/Interfaces/IPartnerCategoryRepository.cs" />
-      <File FileName="Services/Core/AcceptsCoin.Services.CoreServer/AcceptsCoin.Services.CoreServer.csproj" />
-      <File FileName="Gateways/AcceptsCoin.ApiGateway/Controllers/v1/Token/TokenController.cs" />
-      <File FileName="Gateways/AcceptsCoin.ApiGateway/Controllers/v1/Core/CategoryController.cs" Line="98" Column="73" />
-      <File FileName="Gateways/AcceptsCoin.ApiGateway/Core/Dtos/TokenDto.cs" />
-      <File FileName="Gateways/AcceptsCoin.ApiGateway/Core/Dtos/CategoryDto.cs" />
-      <File FileName="Gateways/AcceptsCoin.ApiGateway/AcceptsCoin.ApiGateway.csproj" Line="68" Column="5" />
+      <File FileName="Services/Identity/AcceptsCoin.Services.IdentityServer/Domain/Models/Role.cs" Line="22" Column="1" />
+      <File FileName="Services/Identity/AcceptsCoin.Services.IdentityServer/Protos/user.proto" />
+      <File FileName="Services/Identity/AcceptsCoin.Services.IdentityServer/Protos/role.proto" />
+      <File FileName="Services/Identity/AcceptsCoin.Services.IdentityServer/Services/RoleAppService.cs" Line="121" Column="36" />
+      <File FileName="Services/Identity/AcceptsCoin.Services.IdentityServer/Services/UserAppService.cs" />
+      <File FileName="Services/Identity/AcceptsCoin.Services.IdentityServer/Domain/Interfaces/IRoleRepository.cs" />
+      <File FileName="Services/Identity/AcceptsCoin.Services.IdentityServer/Data/Repository/RoleRepository.cs" />
+      <File FileName="Services/Identity/AcceptsCoin.Services.IdentityServer/AcceptsCoin.Services.IdentityServer.csproj" />
+      <File FileName="Gateways/AcceptsCoin.ApiGateway/Controllers/v1/Identity/RoleController.cs" Line="47" Column="1" />
+      <File FileName="Gateways/AcceptsCoin.ApiGateway/Controllers/v1/Identity/UserController.cs" Line="1" Column="1" />
+      <File FileName="Gateways/AcceptsCoin.ApiGateway/AcceptsCoin.ApiGateway.csproj" Line="95" Column="144" />
+      <File FileName="Gateways/AcceptsCoin.ApiGateway/Core/Dtos/Identity/UserDto.cs" Line="1" Column="1" />
+      <File FileName="Gateways/AcceptsCoin.ApiGateway/Core/Dtos/Identity/RoleDto.cs" Line="17" Column="28" />
+      <File FileName="Services/Identity/AcceptsCoin.Services.IdentityServer/Startup.cs" Line="56" Column="26" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -20,51 +24,48 @@
           <Node name="acceptscoin-grpc-services" expanded="True">
             <Node name="src" expanded="True">
               <Node name="Common" expanded="True">
-                <Node name="AcceptsCoin.Common" expanded="True" />
+                <Node name="AcceptsCoin.Common" expanded="True">
+                  <Node name="Dependencies" expanded="True">
+                    <Node name="PackageDependencies" expanded="True" />
+                  </Node>
+                </Node>
               </Node>
               <Node name="Gateways" expanded="True">
-                <Node name="AcceptsCoin.ApiGateway" expanded="True" selected="True">
+                <Node name="AcceptsCoin.ApiGateway" expanded="True">
+                  <Node name="ConnectedServicesFolder" expanded="True" />
                   <Node name="Controllers" expanded="True">
                     <Node name="v1" expanded="True">
-                      <Node name="Core" expanded="True" />
                       <Node name="Identity" expanded="True" />
-                      <Node name="Token" expanded="True" />
                     </Node>
                   </Node>
                   <Node name="Core" expanded="True">
-                    <Node name="Dtos" expanded="True" />
+                    <Node name="Dtos" expanded="True">
+                      <Node name="Identity" expanded="True" />
+                    </Node>
                   </Node>
                 </Node>
               </Node>
               <Node name="Services" expanded="True">
                 <Node name="Core" expanded="True">
-                  <Node name="AcceptsCoin.Services.CoreServer" expanded="True">
+                  <Node name="AcceptsCoin.Services.CoreServer" expanded="True" />
+                </Node>
+                <Node name="DIrectory" expanded="True" />
+                <Node name="Identity" expanded="True">
+                  <Node name="AcceptsCoin.Services.IdentityServer" expanded="True">
                     <Node name="Data" expanded="True">
                       <Node name="Repository" expanded="True" />
                     </Node>
                     <Node name="Domain" expanded="True">
                       <Node name="Interfaces" expanded="True" />
+                      <Node name="Models" expanded="True" />
                     </Node>
                     <Node name="Protos" expanded="True" />
                     <Node name="Services" expanded="True" />
+                    <Node name="Startup.cs" selected="True" />
                   </Node>
-                </Node>
-                <Node name="DIrectory" expanded="True">
-                  <Node name="AcceptsCoin.Services.DirectoryServer" expanded="True" />
                 </Node>
                 <Node name="Storage" expanded="True" />
-                <Node name="Token" expanded="True">
-                  <Node name="AcceptsCoin.Services.TokenServer" expanded="True">
-                    <Node name="Data" expanded="True">
-                      <Node name="Repository" expanded="True" />
-                    </Node>
-                    <Node name="Domain" expanded="True">
-                      <Node name="Interfaces" expanded="True" />
-                    </Node>
-                    <Node name="Protos" expanded="True" />
-                    <Node name="Services" expanded="True" />
-                  </Node>
-                </Node>
+                <Node name="Token" expanded="True" />
               </Node>
             </Node>
           </Node>
@@ -86,6 +87,7 @@
       <Breakpoint file="/Users/amin/Projects/acceptscoin-grpc-services/src/Gateways/AcceptsCoin.ApiGateway/Controllers/v1/Core/PartnerController.cs" relfile="Gateways/AcceptsCoin.ApiGateway/Controllers/v1/Core/PartnerController.cs" line="171" column="1" />
       <Breakpoint file="/Users/amin/Projects/acceptscoin-grpc-services/src/Services/Token/AcceptsCoin.Services.TokenServer/Data/Repository/PartnerRepository.cs" relfile="Services/Token/AcceptsCoin.Services.TokenServer/Data/Repository/PartnerRepository.cs" line="25" column="1" />
       <Breakpoint file="/Users/amin/Projects/acceptscoin-grpc-services/src/Gateways/AcceptsCoin.ApiGateway/Controllers/v1/Core/CategoryController.cs" relfile="Gateways/AcceptsCoin.ApiGateway/Controllers/v1/Core/CategoryController.cs" line="263" column="1" />
+      <Breakpoint file="/Users/amin/Projects/acceptscoin-grpc-services/src/Gateways/AcceptsCoin.ApiGateway/Controllers/v1/Identity/RoleController.cs" relfile="Gateways/AcceptsCoin.ApiGateway/Controllers/v1/Identity/RoleController.cs" line="41" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MultiItemStartupConfigurations>

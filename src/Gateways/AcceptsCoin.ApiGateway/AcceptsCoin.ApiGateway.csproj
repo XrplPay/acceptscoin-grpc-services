@@ -92,5 +92,8 @@
     <Protobuf Include="..\..\Services\Storage\AcceptsCoin.Services.StorageServer\Protos\fileupload.proto" GrpcServices="Client" ProtoCompile="true">
       <Link>Protos\fileupload.proto</Link>
     </Protobuf>
+    <Protobuf Include="..\..\Services\Identity\AcceptsCoin.Services.IdentityServer\Protos\role.proto" GrpcServices="Client" ProtoCompile="true">
+      <Link>Protos\role.proto</Link>
+    </Protobuf>
   </ItemGroup>
 </Project>

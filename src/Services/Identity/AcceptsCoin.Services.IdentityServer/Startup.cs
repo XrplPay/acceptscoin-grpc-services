@@ -56,6 +56,7 @@ namespace AcceptsCoin.Services.IdentityServer
             services.AddScoped<IUserServices, UserServices>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IPartnerRepository, PartnerRepository>();
+            services.AddScoped<IRoleRepository, RoleRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -79,6 +80,9 @@ namespace AcceptsCoin.Services.IdentityServer
                                                 .RequireCors("cors");
 
                 endpoints.MapGrpcService<UserGrpcService>().EnableGrpcWeb()
+                                                .RequireCors("cors");
+
+                endpoints.MapGrpcService<RoleGrpcService>().EnableGrpcWeb()
                                                 .RequireCors("cors");
 
                 endpoints.MapGet("/", async context =>
