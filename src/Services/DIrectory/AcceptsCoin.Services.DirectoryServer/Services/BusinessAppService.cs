@@ -55,11 +55,11 @@ namespace AcceptsCoin.Services.DirectoryServer
                                  Latitude = business.Latitude,
                                  Longitude = business.Longitude,
                                  Icon = "icon",
-                                 ImageUrl = "",
-                                 LocationName = "",
+                                 ImageUrl = "https://img.grouponcdn.com/deal/28PbQPC6SSX8BASL8NRkTSK4Ayoe/28-1200x720/v1/c870x524.webp",
+                                 LocationName = "United state",
                                  Rate = 5,
-                                 Subtitle = "",
-                                 Title = "",
+                                 Subtitle = business.Description,
+                                 Title =business.Name,
                                  TotalRate = 100,
 
                              };
