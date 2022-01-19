@@ -9,18 +9,26 @@ package role;
 service RoleAppService{
     rpc GetAll (RoleQueryFilter) returns (RoleListGm);
     rpc GetById (RoleIdFilter) returns (RoleGm);
+    rpc GetByUserId (UserRoleQueryFilter) returns (RoleListGm);
     rpc Post (RoleGm) returns (RoleGm);
     rpc Put (RoleGm) returns (RoleGm);
     rpc Delete (RoleIdFilter) returns (EmptyRole);
     rpc SoftDelete (RoleIdFilter) returns (EmptyRole);
     rpc SoftDeleteCollection (RoleDeleteCollectionGm) returns (EmptyRole);
 
+
 }
+
 
 message EmptyRole{
 }
 
+message UserRoleQueryFilter {
+ string UserId = 1;
+ int32 pageId = 2;
+ int32 pageSize = 3;
 
+}
 message RoleIdFilter {
  string RoleId = 1;
 }

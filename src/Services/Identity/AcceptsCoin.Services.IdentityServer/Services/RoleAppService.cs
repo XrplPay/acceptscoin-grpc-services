@@ -57,6 +57,29 @@ namespace AcceptsCoin.Services.IdentityServer.Services
             return await Task.FromResult(response);
         }
 
+
+        public override async Task<RoleListGm> GetByUserId(UserRoleQueryFilter request, ServerCallContext context)
+        {
+            RoleListGm response = new RoleListGm();
+
+            //PaginationGm pagination = new PaginationGm();
+
+            IQueryable<Role> query = _roleRepository.GetQuery();
+            query = query.Where(x => x.UserRoles.Any(c => c.UserId == Guid.Parse(request.UserId)));
+
+
+
+            var roles = from role in await _roleRepository.GetAll(query, request.PageId, request.PageSize)
+                        select new RoleGm()
+                        {
+                            Id = role.RoleId.ToString(),
+                            Name = role.Name,
+                        };
+            response.Items.AddRange(roles.ToArray());
+            //response.Pagination = pagination;
+            return await Task.FromResult(response);
+        }
+
         public override async Task<RoleGm> GetById(RoleIdFilter request, ServerCallContext context)
         {
             var role = await _roleRepository.Find(Guid.Parse(request.RoleId));

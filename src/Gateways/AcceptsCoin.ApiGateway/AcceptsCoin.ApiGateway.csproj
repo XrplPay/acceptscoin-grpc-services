@@ -74,10 +74,10 @@
     <Protobuf Include="..\..\Services\Core\AcceptsCoin.Services.CoreServer\Protos\partner.proto" GrpcServices="Client">
       <Link>Protos\partner.proto</Link>
     </Protobuf>
-    <Protobuf Include="..\..\Services\Core\AcceptsCoin.Services.CoreServer\Protos\tag.proto" GrpcServices="Client" >
+    <Protobuf Include="..\..\Services\Core\AcceptsCoin.Services.CoreServer\Protos\tag.proto" GrpcServices="Client">
       <Link>Protos\tag.proto</Link>
     </Protobuf>
-    <Protobuf Include="..\..\Services\Identity\AcceptsCoin.Services.IdentityServer\Protos\auth.proto" GrpcServices="Client" >
+    <Protobuf Include="..\..\Services\Identity\AcceptsCoin.Services.IdentityServer\Protos\auth.proto" GrpcServices="Client">
       <Link>Protos\auth.proto</Link>
     </Protobuf>
     <Protobuf Include="..\..\Services\Token\AcceptsCoin.Services.TokenServer\Protos\token.proto" GrpcServices="Client">
@@ -94,6 +94,9 @@
     </Protobuf>
     <Protobuf Include="..\..\Services\Identity\AcceptsCoin.Services.IdentityServer\Protos\role.proto" GrpcServices="Client">
       <Link>Protos\role.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\..\Services\DIrectory\AcceptsCoin.Services.DirectoryServer\Protos\businessgallery.proto" GrpcServices="Client">
+      <Link>Protos\businessgallery.proto</Link>
     </Protobuf>
   </ItemGroup>
 </Project>

@@ -60,7 +60,35 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Identity
             }
         }
 
-        
+
+
+        [HttpGet("GetByUserId")]
+        public async Task<ActionResult> GetByUserId([FromQuery] Guid userId, [FromQuery] int pageId = 1, [FromQuery] int pageSize = 10)
+        {
+            try
+            {
+                var accessToken = Request.Headers[HeaderNames.Authorization];
+
+                //var header = new Metadata();
+                //header.Add("Authorization", accessToken);
+                var channel = GrpcChannel.ForAddress(channelUrl);
+                var client = new RoleAppService.RoleAppServiceClient(channel);
+                var reply = await client.GetByUserIdAsync(new UserRoleQueryFilter { UserId = userId.ToString(), PageId = pageId, PageSize = pageSize }, headers: GetHeader());
+
+                return Ok(reply);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new WebApiErrorMessageResponse()
+                {
+                    Errors = new List<string>() {
+                            ex.Message
+                    },
+                    Success = false
+                });
+            }
+        }
+
 
         [HttpGet("{id}")]
         public async Task<ActionResult> Get(Guid id)

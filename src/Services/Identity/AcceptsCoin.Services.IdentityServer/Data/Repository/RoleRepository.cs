@@ -7,7 +7,7 @@ using AcceptsCoin.Services.IdentityServer.Domain.Interfaces;
 using AcceptsCoin.Services.IdentityServer.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace AcceptsCoin.Services.CoreServer.Data.Repository
+namespace AcceptsCoin.Services.IdentityServer.Data.Repository
 {
     public class RoleRepository : IRoleRepository
     {

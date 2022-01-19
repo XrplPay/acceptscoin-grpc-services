@@ -1,15 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using AcceptsCoin.ApiGateway.Core.Dtos;
 using AcceptsCoin.ApiGateway.Core.Dtos.Directory;
 using AcceptsCoin.ApiGateway.Core.Views;
 using AcceptsCoin.Services.DirectoryServer.Protos;
+using AcceptsCoin.Services.StorageServer.Protos;
+using Google.Protobuf;
 using Grpc.Core;
 using Grpc.Net.Client;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
 
@@ -24,6 +28,7 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Directory
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class BusinessController : Controller
     {
+        const string channelUrlStorage = "http://localhost:5054";
         const string channelUrl = "http://localhost:5053";
 
         public BusinessController()
@@ -64,7 +69,6 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Directory
             }
         }
 
-
         [AllowAnonymous]
         [HttpGet("GetFrontSingleBusiness")]
         public async Task<ActionResult> GetFrontSingleBusiness([FromQuery] Guid businessId)
@@ -88,8 +92,6 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Directory
                 });
             }
         }
-
-
 
         [HttpGet("GetAll")]
         public async Task<ActionResult> GetAll([FromQuery] int pageId = 1, [FromQuery] int pageSize = 10)
@@ -159,7 +161,6 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Directory
             }
         }
 
-
         [HttpGet("{id}")]
         public async Task<ActionResult> Get(Guid id)
         {
@@ -184,8 +185,69 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Directory
         }
 
 
+        public class FileModel
+        {
+            public string Extension { get; set; }
+            public string Name { get; set; }
+            public string Url { get; set; }
+        }
+
+        private async Task<FileModel> Upload(IFormFile file)
+        {
+            var channel = GrpcChannel.ForAddress(channelUrlStorage);
+            var client = new UploadFileAppService.UploadFileAppServiceClient(channel);
+            FileModel fileModel = new FileModel(); 
+            var fileUrl = "";
+
+            if (file.Length > 0)
+            {
+                var index = file.FileName.IndexOf(".");
+                var extension = file.FileName.Substring(index, file.FileName.Length - index);
+                var newName = Guid.NewGuid().ToString();
+                fileUrl = newName + extension;
+
+                fileModel = new FileModel { Extension = extension, Name = newName, Url = fileUrl };
+
+                MemoryStream ms = new MemoryStream();
+                await file.CopyToAsync(ms);
+
+                var content = new BytesContent
+                {
+                    FileSize = ms.Length,
+                    ReadedByte = 0,
+                    Info = new FileInfod { FileName = newName, FileExtension = extension }
+
+                };
+
+                var upload = client.FileUpLoad(headers: GetHeader());
+
+                ms.Position = 0;
+
+
+
+
+                byte[] buffer = new byte[2048];
+
+                while ((content.ReadedByte = await ms.ReadAsync(buffer, 0, buffer.Length)) > 0)
+                {
+                    content.Buffer = ByteString.CopyFrom(buffer);
+                    await upload.RequestStream.WriteAsync(content);
+                }
+                await upload.RequestStream.CompleteAsync();
+
+                file.OpenReadStream().Close();
+            }
+            
+
+
+
+            
+
+            return fileModel;
+        }
+
         [HttpPost]
-        public async Task<ActionResult> Post([FromBody] CreateBusinessDto entity)
+        public async Task<ActionResult> Post([FromForm] CreateBusinessDto entity)
         {
             try
             {
@@ -212,6 +274,21 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Directory
                     WebSiteUrl = entity.WebSiteUrl,
 
                 }, headers: GetHeader()); ;
+
+                var galleryClient = new BusinessGalleryAppService.BusinessGalleryAppServiceClient(channel);
+
+
+                foreach (var file in entity.Files)
+                {
+                    FileModel fileModel = await Upload(file);
+                    var galleryReply = await galleryClient.PostAsync(new BusinessGalleryGm
+                    {
+                        Extension = fileModel.Extension,
+                        Id = "",
+                        Name = fileModel.Name,
+                        BusinessId = reply.Id,
+                    }, headers: GetHeader());
+                }
 
                 return Ok(reply);
             }
@@ -318,6 +395,7 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Directory
             }
 
         }
+
         [HttpDelete("DeleteCollection")]
         public async Task<ActionResult> DeleteCollection([FromBody] DeleteCollectionTokenDto items)
         {

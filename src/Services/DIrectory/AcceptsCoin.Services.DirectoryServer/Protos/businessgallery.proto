@@ -36,6 +36,7 @@ message BusinessGalleryGm {
     string Id = 1;
     string name = 2;
     string extension = 3;
+    string businessId=4;
 }
 message BusinessGalleryListGm {
     repeated BusinessGalleryGm items = 1;

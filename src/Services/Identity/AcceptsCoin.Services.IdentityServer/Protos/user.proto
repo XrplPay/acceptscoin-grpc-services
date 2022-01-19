@@ -16,9 +16,14 @@ service UserAppService{
     rpc Delete (UserIdFilter) returns (EmptyUser);
     rpc SoftDelete (UserIdFilter) returns (EmptyUser);
     rpc SoftDeleteCollection (UserDeleteCollectionGm) returns (EmptyUser);
+    rpc SaveUserRole (UserRoleGm) returns (EmptyUser);
+
 
 }
-
+message UserRoleGm{
+    string UserId =1;
+    string RoleId=2;
+}
 message EmptyUser{
 }
 
@@ -49,6 +54,10 @@ message UserGm {
     string name = 2;
     string email = 3;
     optional string password = 4;
+    string userName=5;
+    bool activate = 6;
+    bool published = 7;
+    string partner = 8;
 }
 message UserListGm {
     repeated UserGm items = 1;
@@ -56,7 +65,3 @@ message UserListGm {
     int32 itemCount = 3;
     int32 pageCount = 4;
 }
-
-
-
-

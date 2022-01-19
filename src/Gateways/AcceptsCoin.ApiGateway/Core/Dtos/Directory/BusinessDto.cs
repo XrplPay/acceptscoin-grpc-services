@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Http;
 
 namespace AcceptsCoin.ApiGateway.Core.Dtos.Directory
 {
@@ -61,6 +63,8 @@ namespace AcceptsCoin.ApiGateway.Core.Dtos.Directory
         public string OfferedServices { get; set; }
 
         public Guid CategoryId { get; set; }
+
+        public IEnumerable<IFormFile> Files { get; set; }
     }
     public class UpdateBusinessDto
     {

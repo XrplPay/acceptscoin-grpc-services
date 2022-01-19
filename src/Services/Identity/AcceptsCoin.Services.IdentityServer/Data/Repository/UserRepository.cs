@@ -7,7 +7,7 @@ using AcceptsCoin.Services.IdentityServer.Domain.Interfaces;
 using AcceptsCoin.Services.IdentityServer.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace AcceptsCoin.Services.CoreServer.Data.Repository
+namespace AcceptsCoin.Services.IdentityServer.Data.Repository
 {
     public class UserRepository : IUserRepository
     {
@@ -40,7 +40,7 @@ namespace AcceptsCoin.Services.CoreServer.Data.Repository
 
         public async Task<User> Find(Guid Id)
         {
-            return await _context.Users.FindAsync(Id);
+            return await _context.Users.Where(x => x.UserId == Id).FirstOrDefaultAsync();
         }
         public async Task<User> Find(string userName)
         {

@@ -18,11 +18,13 @@ namespace AcceptsCoin.Services.IdentityServer.Services
         private readonly ILogger<UserGrpcService> _logger;
         private IUserRepository _userRepository;
         private IPartnerRepository _partnerRepository;
-        public UserGrpcService(ILogger<UserGrpcService> logger, IUserRepository userRepository, IPartnerRepository partnerRepository)
+        private IUserRoleRepository _userRoleRepository;
+        public UserGrpcService(ILogger<UserGrpcService> logger, IUserRepository userRepository, IPartnerRepository partnerRepository, IUserRoleRepository userRoleRepository)
         {
             _logger = logger;
             _userRepository = userRepository;
             _partnerRepository = partnerRepository;
+            _userRoleRepository = userRoleRepository;
         }
 
         private Guid getUserId(ServerCallContext context)
@@ -52,6 +54,10 @@ namespace AcceptsCoin.Services.IdentityServer.Services
                             Id = user.UserId.ToString(),
                             Name = user.Name,
                             Email = user.Email,
+                            Activate = user.Activated,
+                            Partner = "Partner",
+                            Published = user.Published,
+                            UserName = user.UserName,
 
                         };
             response.Items.AddRange(users.ToArray());
@@ -83,6 +89,10 @@ namespace AcceptsCoin.Services.IdentityServer.Services
                             Id = user.UserId.ToString(),
                             Name = user.Name,
                             Email = user.Email,
+                            Activate = user.Activated,
+                            Partner = "Partner",
+                            Published = user.Published,
+                            UserName = user.UserName,
 
                         };
             response.Items.AddRange(users.ToArray());
@@ -90,12 +100,16 @@ namespace AcceptsCoin.Services.IdentityServer.Services
         }
         public override async Task<UserGm> GetById(UserIdFilter request, ServerCallContext context)
         {
-            var user = await _userRepository.Find(request.UserId);
+            var user = await _userRepository.Find(Guid.Parse(request.UserId));
             var searchedUser = new UserGm()
             {
                 Id = user.UserId.ToString(),
+                Name = user.Name,
                 Email = user.Email,
-                Name=user.Name,
+                Activate = user.Activated,
+                Partner = "Partner",
+                Published = user.Published,
+                UserName = user.UserName,
             };
             return await Task.FromResult(searchedUser);
         }
@@ -109,8 +123,6 @@ namespace AcceptsCoin.Services.IdentityServer.Services
             };
             return await Task.FromResult(userProfile);
         }
-
-        
 
         public override async Task<UserGm> Post(UserGm request, ServerCallContext context)
         {
@@ -131,7 +143,12 @@ namespace AcceptsCoin.Services.IdentityServer.Services
                 Id = res.UserId.ToString(),
 
                 Email = res.Email,
-                Name=res.Name,
+                Name = res.Name,
+
+                Activate = res.Activated,
+                Partner = "Partner",
+                Published = res.Published,
+                UserName = res.UserName,
             };
             return await Task.FromResult(response);
         }
@@ -160,7 +177,11 @@ namespace AcceptsCoin.Services.IdentityServer.Services
             {
                 Id = user.UserId.ToString(),
                 Email = user.Email,
-                Name=user.Name,
+                Name = user.Name,
+                Activate = user.Activated,
+                Partner = "Partner",
+                Published = user.Published,
+                UserName = user.UserName,
             });
         }
         public override async Task<EmptyUser> Delete(UserIdFilter request, ServerCallContext context)
@@ -208,6 +229,28 @@ namespace AcceptsCoin.Services.IdentityServer.Services
                 user.UpdatedDate = DateTime.Now;
 
                 await _userRepository.Update(user);
+            }
+
+            return await Task.FromResult<EmptyUser>(new EmptyUser());
+        }
+
+        public override async Task<EmptyUser> SaveUserRole(UserRoleGm request, ServerCallContext context)
+        {
+            UserRole item = await _userRoleRepository.Find(Guid.Parse(request.UserId), Guid.Parse(request.RoleId));
+
+            if (item == null)
+            {
+                var userRole = new UserRole()
+                {
+                    RoleId = Guid.Parse(request.RoleId),
+                    UserId = Guid.Parse(request.UserId),
+                };
+
+                await _userRoleRepository.Add(userRole);
+            }
+            else
+            {
+                await _userRoleRepository.Delete(item);
             }
 
             return await Task.FromResult<EmptyUser>(new EmptyUser());

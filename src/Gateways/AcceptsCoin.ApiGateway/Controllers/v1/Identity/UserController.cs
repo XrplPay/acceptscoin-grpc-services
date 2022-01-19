@@ -85,6 +85,30 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Identity
             }
         }
 
+
+        [HttpPost("SaveUserRole")]
+        public async Task<ActionResult> SaveUserRole([FromBody] UserRoleDto  userRole)
+        {
+            try
+            {
+                var channel = GrpcChannel.ForAddress(channelUrl);
+                var client = new UserAppService.UserAppServiceClient(channel);
+                await client.SaveUserRoleAsync(new UserRoleGm { UserId = userRole.UserId.ToString(), RoleId = userRole.RoleId.ToString() }, headers: GetHeader());
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new WebApiErrorMessageResponse()
+                {
+                    Errors = new List<string>() {
+                            ex.Message
+                    },
+                    Success = false
+                });
+            }
+        }
+
         [HttpGet("{id}")]
         public async Task<ActionResult> Get(Guid id)
         {
