@@ -66,7 +66,7 @@ namespace AcceptsCoin.Services.IdentityServer.Services
         public override async Task<UserListGm> GetByPartnerId(UserPartnerIdQueryFilter request, ServerCallContext context)
         {
 
-            var partner = _partnerRepository.Find(request.PartnerId);
+            var partner =await _partnerRepository.Find(request.PartnerId);
 
             if (partner == null)
             {
