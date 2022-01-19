@@ -134,6 +134,9 @@ namespace AcceptsCoin.Services.IdentityServer.Services
                 CreatedDate = DateTime.Now,
                 Published = true,
                 Email = request.Email,
+                UserName=request.Email,
+                Password=request.Password,
+                Activated=true,
             };
 
             var res = await _userRepository.Add(user);

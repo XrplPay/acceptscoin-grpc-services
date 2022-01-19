@@ -59,7 +59,7 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Identity
         }
 
         [HttpGet("GetByPartnerId")]
-        public async Task<ActionResult> GetByPartnerId([FromQuery] int partnerId = 1, [FromQuery] int pageId = 1, [FromQuery] int pageSize = 10)
+        public async Task<ActionResult> GetByPartnerId([FromQuery] Guid partnerId , [FromQuery] int pageId = 1, [FromQuery] int pageSize = 10)
         {
             try
             {

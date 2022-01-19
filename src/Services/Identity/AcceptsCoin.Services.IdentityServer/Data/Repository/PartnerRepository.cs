@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using AcceptsCoin.Services.IdentityServer.Data.Context;
 using AcceptsCoin.Services.IdentityServer.Domain.Interfaces;
 using AcceptsCoin.Services.IdentityServer.Domain.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace AcceptsCoin.Services.IdentityServer.Data.Repository
 {
@@ -29,7 +31,7 @@ namespace AcceptsCoin.Services.IdentityServer.Data.Repository
 
         public async Task<Partner> Find(string Id)
         {
-            return await _context.Partners.FindAsync(Guid.Parse(Id));
+            return await _context.Partners.Where(x => x.PartnerId == Guid.Parse(Id)).FirstOrDefaultAsync();
         }
 
 

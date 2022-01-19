@@ -56,6 +56,7 @@ namespace AcceptsCoin.Services.IdentityServer
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IPartnerRepository, PartnerRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();
+            services.AddScoped<IUserRoleRepository, UserRoleRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
