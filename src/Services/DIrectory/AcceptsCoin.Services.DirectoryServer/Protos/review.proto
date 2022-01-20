@@ -46,6 +46,7 @@ message ReviewListGm {
     int32 currentPage = 2;
     int32 itemCount = 3;
     int32 pageCount = 4;
+    
 }
 
 message ReviewFrontGm {

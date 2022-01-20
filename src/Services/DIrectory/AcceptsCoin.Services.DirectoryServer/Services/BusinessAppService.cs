@@ -64,6 +64,9 @@ namespace AcceptsCoin.Services.DirectoryServer
             response.Subtitle = business.Description;
             response.Title = business.Name;
             response.TotalRate = 100;
+
+            response.Verified = business.Verified;
+
             response.Category = new BusinessCategoryFrontGm
             {
                 Id = business.Category.CategoryId.ToString(),
@@ -98,6 +101,15 @@ namespace AcceptsCoin.Services.DirectoryServer
                               Comment = review.Message,
                               Name = "Name Family",
                               Rate = review.Rate,
+                              Date = review.CreatedDate.ToFileTimeUtc(),
+                              User = new BusinessReviewFrontGm.Types.User
+                              {
+                                  Email = "amin.shayesteh64@gmail.com",
+                                  Id = review.CreatedBy.UserId.ToString(),
+                                  Name = "Amin Shayesteh",
+                                  RateCount = 10,
+                                  ReviewCount = 29,
+                              },
                           };
             response.Reviews.AddRange(reviews.ToArray());
 

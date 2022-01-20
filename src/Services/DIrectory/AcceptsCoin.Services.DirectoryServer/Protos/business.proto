@@ -147,6 +147,7 @@ message SingleBusinessFrontGm {
     repeated BusinessTagFrontGm tags = 13;
     repeated BusinessReviewFrontGm reviews = 14;
     BusinessCategoryFrontGm category = 15;
+    bool verified = 17;
 }
 message BusinessGalleryFrontGm {
     string Id = 1;
@@ -165,12 +166,22 @@ message BusinessTokenFrontGm {
     string title = 2;
     }
     message BusinessReviewFrontGm {
+        message User {
+        string Id = 1;
+        string email = 2;
+        string name=4;
+        int32 rateCount=5;
+        int32 reviewCount = 6;
+        }
     string Id = 1;
     string comment = 2;
     int32 rate=4;
     string name=5;
+    int64 date = 6;
+    User user = 7;
     }
     message BusinessCategoryFrontGm {
     string Id = 1;
     string title = 2;
     }
+   

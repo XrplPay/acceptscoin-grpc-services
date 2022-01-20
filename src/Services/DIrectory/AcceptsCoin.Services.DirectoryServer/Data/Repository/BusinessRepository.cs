@@ -42,7 +42,7 @@ namespace AcceptsCoin.Services.DirectoryServer.Data.Repository
             return await _context.Businesses
                 .Include(x => x.BusinessGalleries)
                 .Include(x => x.BusinessTags)
-                .Include(x => x.BusinessReviews)
+                .Include(x => x.BusinessReviews).ThenInclude(x => x.CreatedBy)
                 .Include(x => x.Category)
                 .Where(x => x.BusinessId == Guid.Parse(Id)).FirstOrDefaultAsync();
         }
