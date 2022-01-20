@@ -319,13 +319,13 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Directory
                     foreach (var file in entity.Files.Files)
                     {
                         FileModel fileModel = await Upload(file);
-                        galleryClient.Post(new BusinessGalleryGm
-                        {
-                            Extension = fileModel.Extension,
-                            Id = "",
-                            Name = fileModel.Name,
-                            BusinessId = reply.Id,
-                        }, headers: GetHeader());
+                        //galleryClient.Post(new BusinessGalleryGm
+                        //{
+                        //    Extension = fileModel.Extension,
+                        //    Id = "",
+                        //    Name = fileModel.Name,
+                        //    BusinessId = reply.Id,
+                        //}, headers: GetHeader());
                     }
                 }
                 
