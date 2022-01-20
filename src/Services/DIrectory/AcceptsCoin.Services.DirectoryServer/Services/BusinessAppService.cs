@@ -76,6 +76,7 @@ namespace AcceptsCoin.Services.DirectoryServer
                              Id = image.BusinessGalleryId.ToString(),
                              Name = image.Name,
                              Extension = image.Extension,
+                             Url = image.Name + image.Extension,
                          };
             response.Images.AddRange(images.ToArray());
 
@@ -110,7 +111,7 @@ namespace AcceptsCoin.Services.DirectoryServer
                              Img = "/coin/xrplpay.png",
                              TotalCoin = 100,
                          };
-            response.Reviews.AddRange(reviews.ToArray());
+            response.Tokens.AddRange(tokens.ToArray());
             return await Task.FromResult(response);
         }
         [AllowAnonymous]

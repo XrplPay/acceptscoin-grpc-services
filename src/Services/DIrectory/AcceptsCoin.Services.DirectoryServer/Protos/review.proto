@@ -39,6 +39,7 @@ message ReviewGm {
     string Id = 1;
     string Message = 2;
     int32 Rate =3;
+    string businessId=4;
     }
 message ReviewListGm {
     repeated ReviewGm items = 1;

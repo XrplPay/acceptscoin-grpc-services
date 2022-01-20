@@ -116,6 +116,7 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Core
                     Id = "",
                     Message= entity.Messgae,
                     Rate=entity.Rate,
+                    BusinessId=entity.BusinessId.ToString(),
                 }, headers: GetHeader());
 
                 return Ok(reply);

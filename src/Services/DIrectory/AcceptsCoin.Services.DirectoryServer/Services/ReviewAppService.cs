@@ -101,11 +101,12 @@ namespace AcceptsCoin.Services.DirectoryServer
             {
                 ReviewId = Guid.NewGuid(),
                 Message = request.Message,
-                Rate=request.Rate,
+                Rate = request.Rate,
                 CreatedById = getUserId(context),
                 CreatedDate = DateTime.Now,
                 Published = true,
                 Deleted = false,
+                BusinessId = Guid.Parse(request.BusinessId),
             };
 
             var res = await _ReviewRepository.Add(reviewAdded);

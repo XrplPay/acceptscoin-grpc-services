@@ -39,7 +39,12 @@ namespace AcceptsCoin.Services.DirectoryServer.Data.Repository
 
         public async Task<Business> Find(string Id)
         {
-            return await _context.Businesses.Include(x => x.BusinessGalleries).Include(x => x.BusinessTags).Where(x => x.BusinessId == Guid.Parse(Id)).FirstOrDefaultAsync();
+            return await _context.Businesses
+                .Include(x => x.BusinessGalleries)
+                .Include(x => x.BusinessTags)
+                .Include(x => x.BusinessReviews)
+                .Include(x => x.Category)
+                .Where(x => x.BusinessId == Guid.Parse(Id)).FirstOrDefaultAsync();
         }
 
         public async Task<IEnumerable<Business>> GetAll()
