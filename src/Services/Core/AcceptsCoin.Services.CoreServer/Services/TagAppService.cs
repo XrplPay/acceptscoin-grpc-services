@@ -53,7 +53,32 @@ namespace AcceptsCoin.Services.CoreServer
             response.Items.AddRange(tags.ToArray());
             return await Task.FromResult(response);
         }
-     
+
+
+        [AllowAnonymous]
+        public override async Task<TagListFrontGm> GetAllTagFront(TagQueryFilter request, ServerCallContext context)
+        {
+            TagListFrontGm response = new TagListFrontGm();
+
+            IQueryable<Tag> query = _tagRepository.GetQuery();
+
+
+            response.CurrentPage = request.PageId;
+            response.ItemCount = await _tagRepository.GetCount(query);
+            response.PageCount = (response.ItemCount / request.PageSize) + 1;
+
+
+            var tags = from tag in await _tagRepository.GetAll(query, request.PageId, request.PageSize)
+                       select new TagFrontGm()
+                       {
+                           Id = tag.TagId.ToString(),
+                           Title = tag.Title,
+
+                       };
+            response.Items.AddRange(tags.ToArray());
+            return await Task.FromResult(response);
+        }
+
         public override async Task<TagGm> GetById(TagIdFilter request,ServerCallContext context)
         {
             var Tag =await _tagRepository.Find(Guid.Parse(request.TagId));

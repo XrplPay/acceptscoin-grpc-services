@@ -8,6 +8,7 @@ package tag;
 
 service TagAppService{
     rpc GetAll (TagQueryFilter) returns (TagListGm);
+    rpc GetAllTagFront (TagQueryFilter) returns (TagListFrontGm);
     rpc GetById (TagIdFilter) returns (TagGm);
     rpc Post (TagGm) returns (TagGm);
     rpc Put (TagGm) returns (TagGm);
@@ -33,6 +34,18 @@ message TagGm {
     }
 message TagListGm {
     repeated TagGm items = 1;
+    int32 currentPage = 2;
+    int32 itemCount = 3;
+    int32 pageCount = 4;
+}
+
+message TagFrontGm {
+    string Id = 1;
+    string Title = 2;
+    }
+message TagListFrontGm {
+    
+    repeated TagFrontGm items = 1;
     int32 currentPage = 2;
     int32 itemCount = 3;
     int32 pageCount = 4;

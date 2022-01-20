@@ -11,6 +11,8 @@ namespace AcceptsCoin.Services.DirectoryServer.Data.Context
         {
         }
 
+        public DbSet<Review> Reviews { get; set; }
+
         public DbSet<Business> Businesses { get; set; }
 
         public DbSet<BusinessGallery> BusinessGalleries { get; set; }

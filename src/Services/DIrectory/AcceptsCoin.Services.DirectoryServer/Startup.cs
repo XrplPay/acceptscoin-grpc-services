@@ -54,6 +54,7 @@ namespace AcceptsCoin.Services.DirectoryServer
 
 
 
+            services.AddScoped<IReviewRepository, ReviewRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IBusinessGalleryRepository, BusinessGalleryRepository>();
             services.AddScoped<IBusinessRepository, BusinessRepository>();
@@ -80,6 +81,9 @@ namespace AcceptsCoin.Services.DirectoryServer
                 .EnableGrpcWeb().RequireCors("cors");
 
                 endpoints.MapGrpcService<BusinessGalleryGrpcService>()
+                .EnableGrpcWeb().RequireCors("cors");
+
+                endpoints.MapGrpcService<ReviewGrpcService>()
                  .EnableGrpcWeb().RequireCors("cors");
 
 

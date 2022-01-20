@@ -98,5 +98,8 @@
     <Protobuf Include="..\..\Services\DIrectory\AcceptsCoin.Services.DirectoryServer\Protos\businessgallery.proto" GrpcServices="Client">
       <Link>Protos\businessgallery.proto</Link>
     </Protobuf>
+    <Protobuf Include="..\..\Services\DIrectory\AcceptsCoin.Services.DirectoryServer\Protos\review.proto" GrpcServices="Client">
+      <Link>Protos\review.proto</Link>
+    </Protobuf>
   </ItemGroup>
 </Project>

@@ -55,7 +55,7 @@
     <ProjectReference Include="..\..\..\Common\AcceptsCoin.Common\AcceptsCoin.Common.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Protobuf Include="Protos\category.proto" GrpcServices="Server"  />
+    <Protobuf Include="Protos\category.proto" GrpcServices="Server" />
     <Protobuf Include="Protos\language.proto" GrpcServices="Server" />
     <Protobuf Include="Protos\partner.proto" GrpcServices="Server" />
     <Protobuf Include="Protos\tag.proto" GrpcServices="Server" />

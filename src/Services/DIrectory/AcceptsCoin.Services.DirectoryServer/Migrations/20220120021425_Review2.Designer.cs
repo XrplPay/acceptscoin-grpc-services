@@ -3,15 +3,17 @@ using System;
 using AcceptsCoin.Services.DirectoryServer.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace AcceptsCoin.Services.DirectoryServer.Migrations
 {
     [DbContext(typeof(AcceptsCoinDirectoryDbContext))]
-    partial class AcceptsCoinDirectoryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220120021425_Review2")]
+    partial class Review2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -216,51 +218,6 @@ namespace AcceptsCoin.Services.DirectoryServer.Migrations
                         });
                 });
 
-            modelBuilder.Entity("AcceptsCoin.Services.DirectoryServer.Domain.Models.Review", b =>
-                {
-                    b.Property<Guid>("ReviewId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("BusinessId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("CreatedById")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<bool>("Deleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("Message")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<bool>("Published")
-                        .HasColumnType("boolean");
-
-                    b.Property<int>("Rate")
-                        .HasColumnType("integer");
-
-                    b.Property<Guid?>("UpdatedById")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.HasKey("ReviewId");
-
-                    b.HasIndex("BusinessId");
-
-                    b.HasIndex("CreatedById");
-
-                    b.HasIndex("UpdatedById");
-
-                    b.ToTable("Reviews");
-                });
-
             modelBuilder.Entity("AcceptsCoin.Services.DirectoryServer.Domain.Models.Tag", b =>
                 {
                     b.Property<Guid>("TagId")
@@ -366,38 +323,11 @@ namespace AcceptsCoin.Services.DirectoryServer.Migrations
                     b.Navigation("Tag");
                 });
 
-            modelBuilder.Entity("AcceptsCoin.Services.DirectoryServer.Domain.Models.Review", b =>
-                {
-                    b.HasOne("AcceptsCoin.Services.DirectoryServer.Domain.Models.Business", "Business")
-                        .WithMany("Reviews")
-                        .HasForeignKey("BusinessId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AcceptsCoin.Services.DirectoryServer.Domain.Models.User", "CreatedBy")
-                        .WithMany()
-                        .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AcceptsCoin.Services.DirectoryServer.Domain.Models.User", "UpdatedBy")
-                        .WithMany()
-                        .HasForeignKey("UpdatedById");
-
-                    b.Navigation("Business");
-
-                    b.Navigation("CreatedBy");
-
-                    b.Navigation("UpdatedBy");
-                });
-
             modelBuilder.Entity("AcceptsCoin.Services.DirectoryServer.Domain.Models.Business", b =>
                 {
                     b.Navigation("BusinessGalleries");
 
                     b.Navigation("BusinessTags");
-
-                    b.Navigation("Reviews");
                 });
 
             modelBuilder.Entity("AcceptsCoin.Services.DirectoryServer.Domain.Models.Tag", b =>

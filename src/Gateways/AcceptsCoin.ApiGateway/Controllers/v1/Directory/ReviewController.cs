@@ -4,8 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AcceptsCoin.ApiGateway.Core.Dtos;
 using AcceptsCoin.ApiGateway.Core.Views;
-using AcceptsCoin.Services.CoreServer ;
-using AcceptsCoin.Services.CoreServer.Protos;
+using AcceptsCoin.Services.DirectoryServer.Protos;
 using Grpc.Core;
 using Grpc.Net.Client;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -20,10 +19,10 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Core
     [ApiExplorerSettings(GroupName = "v1")]
     [Route("api/v1/[controller]")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    public class TagController : ControllerBase
+    public class ReviewController : ControllerBase
     {
-        const string channelUrl = "http://localhost:5052";
-        public TagController()
+        const string channelUrl = "http://localhost:5053";
+        public ReviewController()
         {
 
         }
@@ -39,8 +38,8 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Core
                 //var header = new Metadata();
                 //header.Add("Authorization", accessToken);
                 var channel = GrpcChannel.ForAddress(channelUrl);
-                var client = new TagAppService.TagAppServiceClient(channel);
-                var reply = await client.GetAllAsync(new  TagQueryFilter { PageId = pageId, PageSize = pageSize }, headers: GetHeader());
+                var client = new ReviewAppService.ReviewAppServiceClient(channel);
+                var reply = await client.GetAllAsync(new  ReviewQueryFilter { PageId = pageId, PageSize = pageSize }, headers: GetHeader());
 
                 return Ok(reply);
             }
@@ -58,14 +57,14 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Core
 
 
         [AllowAnonymous]
-        [HttpGet("GetAllTagFront")]
-        public async Task<ActionResult> GetAllTagFront([FromQuery] int pageId = 1, [FromQuery] int pageSize = 10)
+        [HttpGet("GetFrontReviewByBusinessId")]
+        public async Task<ActionResult> GetFrontReviewByBusinessId([FromQuery] Guid businessId, [FromQuery] int pageId = 1, [FromQuery] int pageSize = 10)
         {
             try
             {
                 var channel = GrpcChannel.ForAddress(channelUrl);
-                var client = new TagAppService.TagAppServiceClient(channel);
-                var reply = await client.GetAllTagFrontAsync(new TagQueryFilter { PageId = pageId, PageSize = pageSize });
+                var client = new ReviewAppService.ReviewAppServiceClient(channel);
+                var reply = await client.GetFrontReviewByBusinessIdAsync(new ReviewBusinessQueryFilter { BusinessId = businessId.ToString(), PageId = pageId, PageSize = pageSize });
 
                 return Ok(reply);
             }
@@ -87,8 +86,8 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Core
             try
             {
                 var channel = GrpcChannel.ForAddress(channelUrl);
-                var client = new TagAppService.TagAppServiceClient(channel);
-                var reply = await client.GetByIdAsync(new TagIdFilter { TagId = id.ToString() }, headers: GetHeader());
+                var client = new ReviewAppService.ReviewAppServiceClient(channel);
+                var reply = await client.GetByIdAsync(new ReviewIdFilter { ReviewId = id.ToString() }, headers: GetHeader());
 
                 return Ok(reply);
             }
@@ -106,16 +105,17 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Core
 
 
         [HttpPost]
-        public async Task<ActionResult> Post([FromBody] CreateTagDto entity)
+        public async Task<ActionResult> Post([FromBody] CreateReviewDto entity)
         {
             try
             {
                 var channel = GrpcChannel.ForAddress(channelUrl);
-                var client = new TagAppService.TagAppServiceClient(channel);
-                var reply = await client.PostAsync(new TagGm
+                var client = new ReviewAppService.ReviewAppServiceClient(channel);
+                var reply = await client.PostAsync(new ReviewGm
                 {
                     Id = "",
-                    Title= entity.Title,
+                    Message= entity.Messgae,
+                    Rate=entity.Rate,
                 }, headers: GetHeader());
 
                 return Ok(reply);
@@ -134,16 +134,17 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Core
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> Put(Guid id, [FromBody] UpdateTagDto entity)
+        public async Task<ActionResult> Put(Guid id, [FromBody] UpdateReviewDto entity)
         {
             try
             {
                 var channel = GrpcChannel.ForAddress(channelUrl);
-                var client = new TagAppService.TagAppServiceClient(channel);
-                var reply = await client.PutAsync(new TagGm
+                var client = new ReviewAppService.ReviewAppServiceClient(channel);
+                var reply = await client.PutAsync(new ReviewGm
                 {
                     Id = id.ToString(),
-                    Title = entity.Title,
+                    Message = entity.Messgae,
+                    Rate = entity.Rate,
                 }, headers: GetHeader());
 
                 return Ok(reply);
@@ -167,8 +168,8 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Core
             try
             {
                 var channel = GrpcChannel.ForAddress(channelUrl);
-                var client = new TagAppService.TagAppServiceClient(channel);
-                var reply = await client.SoftDeleteAsync(new TagIdFilter { TagId = id.ToString() }, headers: GetHeader());
+                var client = new ReviewAppService.ReviewAppServiceClient(channel);
+                var reply = await client.SoftDeleteAsync(new ReviewIdFilter { ReviewId = id.ToString() }, headers: GetHeader());
 
                 return Ok(reply);
             }
@@ -190,12 +191,12 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Core
             try
             {
                 var channel = GrpcChannel.ForAddress(channelUrl);
-                var client = new TagAppService.TagAppServiceClient(channel);
+                var client = new ReviewAppService.ReviewAppServiceClient(channel);
 
-                TagDeleteCollectionGm collectionGm = new TagDeleteCollectionGm();
+                ReviewDeleteCollectionGm collectionGm = new ReviewDeleteCollectionGm();
                 foreach (var item in items.Items)
                 {
-                    collectionGm.Items.Add(new TagIdFilter { TagId = item.Id.ToString() });
+                    collectionGm.Items.Add(new ReviewIdFilter { ReviewId = item.Id.ToString() });
                 }
 
                 var reply = await client.SoftDeleteCollectionAsync(collectionGm, headers: GetHeader());

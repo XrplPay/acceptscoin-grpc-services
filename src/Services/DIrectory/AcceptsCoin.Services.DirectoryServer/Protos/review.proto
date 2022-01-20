@@ -1,0 +1,61 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "AcceptsCoin.Services.DirectoryServer.Protos";
+
+
+package review;
+
+
+service ReviewAppService{
+    rpc GetAll (ReviewQueryFilter) returns (ReviewListGm);
+    rpc GetFrontReviewByBusinessId (ReviewBusinessQueryFilter) returns (ReviewListFrontGm);
+    rpc GetById (ReviewIdFilter) returns (ReviewGm);
+    rpc Post (ReviewGm) returns (ReviewGm);
+    rpc Put (ReviewGm) returns (ReviewGm);
+    rpc Delete (ReviewIdFilter) returns (EmptyReview);
+    rpc SoftDelete (ReviewIdFilter) returns (EmptyReview);
+    rpc SoftDeleteCollection (ReviewDeleteCollectionGm) returns (EmptyReview);
+}
+message EmptyReview{
+}
+
+
+message ReviewBusinessQueryFilter {
+ string businessId=1;
+ int32 pageId = 2;
+ int32 pageSize = 3;
+}
+message ReviewQueryFilter {
+ int32 pageId = 1;
+ int32 pageSize = 2;
+}
+message ReviewIdFilter {
+ string ReviewId = 1;
+}
+message ReviewDeleteCollectionGm {
+ repeated ReviewIdFilter items = 1;
+}
+message ReviewGm {
+    string Id = 1;
+    string Message = 2;
+    int32 Rate =3;
+    }
+message ReviewListGm {
+    repeated ReviewGm items = 1;
+    int32 currentPage = 2;
+    int32 itemCount = 3;
+    int32 pageCount = 4;
+}
+
+message ReviewFrontGm {
+    string Id = 1;
+    string Message = 2;
+    int32 Rate =3;
+    }
+message ReviewListFrontGm {
+    
+    repeated ReviewFrontGm items = 1;
+    int32 currentPage = 2;
+    int32 itemCount = 3;
+    int32 pageCount = 4;
+}
