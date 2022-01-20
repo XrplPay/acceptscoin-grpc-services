@@ -64,9 +64,17 @@ namespace AcceptsCoin.ApiGateway.Core.Dtos.Directory
 
         public Guid CategoryId { get; set; }
 
-        public ICollection<IFormFile> Files { get; set; }
+        public IFormCollection Files { get; set; }
+
+        public IEnumerable<Tag> Tags { get; set; }
 
 
+    }
+    public class Tag
+    {
+        public Guid Id { get; set; }
+
+        public string Title { get; set; }
     }
     public class UpdateBusinessDto
     {

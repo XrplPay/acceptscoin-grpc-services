@@ -279,7 +279,8 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Directory
             {
                 var channel = GrpcChannel.ForAddress(channelUrl);
                 var client = new BusinessAppService.BusinessAppServiceClient(channel);
-                var reply = await client.PostAsync(new BusinessGm
+
+                var business = new CreateBusinessGm
                 {
                     Id = "",
                     Address = entity.Address,
@@ -298,18 +299,27 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Directory
                     Twitter = entity.Twitter,
                     Verified = entity.Verified,
                     WebSiteUrl = entity.WebSiteUrl,
+                };
 
-                }, headers: GetHeader()); ;
+                var tags = from tag in entity.Tags
+                           select new CreateBusinessGm.Types.TagGm
+                           {
+                               TagId = tag.Id.ToString(),
+                           };
+
+                business.Tags.AddRange(tags);
+
+                var reply = await client.PostAsync(business, headers: GetHeader());
 
                 var galleryClient = new BusinessGalleryAppService.BusinessGalleryAppServiceClient(channel);
 
 
                 if(entity.Files!=null)
                 {
-                    foreach (var file in entity.Files)
+                    foreach (var file in entity.Files.Files)
                     {
                         FileModel fileModel = await Upload(file);
-                        var galleryReply = await galleryClient.PostAsync(new BusinessGalleryGm
+                        galleryClient.Post(new BusinessGalleryGm
                         {
                             Extension = fileModel.Extension,
                             Id = "",

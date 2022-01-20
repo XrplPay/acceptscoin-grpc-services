@@ -18,12 +18,17 @@ namespace AcceptsCoin.Services.DirectoryServer
     {
         private readonly ILogger<BusinessGrpcService> _logger;
         private IBusinessRepository _businessRepository;
+        private IBusinessTagRepository _businessTagRepository;
         private ICategoryRepository _categoryRepository;
-        public BusinessGrpcService(ILogger<BusinessGrpcService> logger, IBusinessRepository businessRepository, ICategoryRepository categoryRepository)
+        private ITagRepository  _tagRepository;
+        public BusinessGrpcService(ILogger<BusinessGrpcService> logger, IBusinessRepository businessRepository
+            , ICategoryRepository categoryRepository, IBusinessTagRepository businessTagRepository, ITagRepository tagRepository)
         {
             _logger = logger;
             _businessRepository = businessRepository;
+            _businessTagRepository = businessTagRepository;
             _categoryRepository = categoryRepository;
+            _tagRepository = tagRepository;
         }
 
         private Guid getUserId(ServerCallContext context)
@@ -334,7 +339,7 @@ namespace AcceptsCoin.Services.DirectoryServer
             return await Task.FromResult(searchedBusiness);
         }
 
-        public override async Task<BusinessGm> Post(BusinessGm request, ServerCallContext context)
+        public override async Task<BusinessGm> Post(CreateBusinessGm request, ServerCallContext context)
         {
 
             var category = await _categoryRepository.Find(request.CategoryId);
@@ -371,6 +376,38 @@ namespace AcceptsCoin.Services.DirectoryServer
             };
 
             var res = await _businessRepository.Add(business);
+
+
+            foreach (var tagGm in request.Tags)
+            {
+
+                var tag = await _tagRepository.Find(tagGm.TagId);
+
+                if (tag == null)
+                {
+                    await _tagRepository.Add(new Tag { TagId = Guid.Parse(tagGm.TagId) });
+                }
+
+                BusinessTag item = await _businessTagRepository.Find(res.BusinessId, Guid.Parse(tagGm.TagId));
+
+                if (item == null)
+                {
+                    var partnerToken = new BusinessTag()
+                    {
+                        BusinessId = res.BusinessId,
+                        TagId = Guid.Parse(tagGm.TagId),
+                    };
+
+                    await _businessTagRepository.Add(partnerToken);
+                }
+                else
+                {
+                    await _businessTagRepository.Delete(item);
+                }
+            }
+
+            
+
 
             var response = new BusinessGm()
             {

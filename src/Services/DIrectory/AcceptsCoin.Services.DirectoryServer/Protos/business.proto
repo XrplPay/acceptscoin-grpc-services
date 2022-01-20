@@ -13,7 +13,7 @@ service BusinessAppService{
     rpc GetById (BusinessIdFilter) returns (BusinessGm);
     rpc GetFrontById (BusinessIdFilter) returns (SingleBusinessFrontGm);
     rpc GetByUserId (BusinessQueryFilter) returns (BusinessListGm);
-    rpc Post (BusinessGm) returns (BusinessGm);
+    rpc Post (CreateBusinessGm) returns (BusinessGm);
     rpc Put (BusinessGm) returns (BusinessGm);
     rpc Delete (BusinessIdFilter) returns (Empty);
     rpc SoftDelete (BusinessIdFilter) returns (Empty);
@@ -53,6 +53,31 @@ message PaginationGm{
     int32 currentPage = 1;
     int32 itemCount = 2;
     int32 pageCount = 3;
+}
+
+message CreateBusinessGm {
+    message TagGm{
+        string tagId = 1;
+    }
+    string Id = 1;
+    string name = 2;
+    string email = 3;
+    string webSiteUrl = 4;
+    string contactNumber = 5;
+    optional string logo = 6;
+    string owner = 7;
+    string manager = 8;
+    string twitter = 9;
+    string faceBook = 10;
+    string instagram = 11;
+    bool verified = 12;
+    double latitude = 13;
+    double longitude = 14;
+    string description = 15;
+    string address = 16;
+    string offeredServices = 17;
+    string categoryId = 18;
+    repeated TagGm tags = 19;
 }
 message BusinessGm {
     string Id = 1;
