@@ -55,7 +55,7 @@ namespace AcceptsCoin.Services.DirectoryServer
             response.Icon = "icon";
 
             response.ImageUrl = business.BusinessGalleries.Count > 0 ?
-                business.BusinessGalleries.FirstOrDefault().Name
+                business.BusinessGalleries.FirstOrDefault().Name + business.BusinessGalleries.FirstOrDefault().Extension
                 :
                 "https://img.grouponcdn.com/deal/28PbQPC6SSX8BASL8NRkTSK4Ayoe/28-1200x720/v1/c870x524.webp";
 
@@ -64,7 +64,11 @@ namespace AcceptsCoin.Services.DirectoryServer
             response.Subtitle = business.Description;
             response.Title = business.Name;
             response.TotalRate = 100;
-
+            response.Category = new BusinessCategoryFrontGm
+            {
+                Id = business.Category.CategoryId.ToString(),
+                Title = "Category Title"
+            };
 
             var images = from image in business.BusinessGalleries
                          select new BusinessGalleryFrontGm()
@@ -76,11 +80,37 @@ namespace AcceptsCoin.Services.DirectoryServer
             response.Images.AddRange(images.ToArray());
 
 
+            var tags = from tag in business.BusinessTags
+                       select new BusinessTagFrontGm()
+                       {
+                           Id = tag.TagId.ToString(),
+                           Title = "Tag Title"
+                       };
+
+            response.Tags.AddRange(tags.ToArray());
+
+
+            var reviews = from review in business.BusinessReviews
+                          select new BusinessReviewFrontGm()
+                          {
+                              Id = review.ReviewId.ToString(),
+                              Comment = review.Message,
+                              Name = "Name Family",
+                              Rate = review.Rate,
+                          };
+            response.Reviews.AddRange(reviews.ToArray());
 
 
 
-
-
+            var tokens = from token in business.BusinessGalleries
+                         select new BusinessTokenFrontGm()
+                         {
+                             Id = token.BusinessId.ToString(),
+                             Coin = "Coin Name",
+                             Img = "/coin/xrplpay.png",
+                             TotalCoin = 100,
+                         };
+            response.Reviews.AddRange(reviews.ToArray());
             return await Task.FromResult(response);
         }
         [AllowAnonymous]

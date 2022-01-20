@@ -314,21 +314,27 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Directory
                 var galleryClient = new BusinessGalleryAppService.BusinessGalleryAppServiceClient(channel);
 
 
+                List<FileModel> fileModels = new List<FileModel>();
+
                 if(entity.Files!=null)
                 {
                     foreach (var file in entity.Files.Files)
                     {
-                        FileModel fileModel = await Upload(file);
-                        //galleryClient.Post(new BusinessGalleryGm
-                        //{
-                        //    Extension = fileModel.Extension,
-                        //    Id = "",
-                        //    Name = fileModel.Name,
-                        //    BusinessId = reply.Id,
-                        //}, headers: GetHeader());
+                        fileModels.Add(await Upload(file));                        
                     }
                 }
-                
+
+                foreach (var item in fileModels)
+                {
+                    galleryClient.Post(new BusinessGalleryGm
+                    {
+                        Extension = item.Extension,
+                        Id = "",
+                        Name = item.Name,
+                        BusinessId = reply.Id,
+                    }, headers: GetHeader());
+                }
+
 
                 return Ok(reply);
             }

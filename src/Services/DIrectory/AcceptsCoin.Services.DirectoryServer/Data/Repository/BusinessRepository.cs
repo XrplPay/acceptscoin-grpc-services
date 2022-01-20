@@ -39,7 +39,7 @@ namespace AcceptsCoin.Services.DirectoryServer.Data.Repository
 
         public async Task<Business> Find(string Id)
         {
-            return await _context.Businesses.Include(x => x.BusinessGalleries).Where(x => x.BusinessId == Guid.Parse(Id)).FirstOrDefaultAsync();
+            return await _context.Businesses.Include(x => x.BusinessGalleries).Include(x => x.BusinessTags).Where(x => x.BusinessId == Guid.Parse(Id)).FirstOrDefaultAsync();
         }
 
         public async Task<IEnumerable<Business>> GetAll()
@@ -55,7 +55,12 @@ namespace AcceptsCoin.Services.DirectoryServer.Data.Repository
             var skip = (pageId - 1) * pageSize;
             var take = pageSize;
 
-            return await query.Include(x=>x.BusinessGalleries).Where(x => x.Deleted == false).Skip(skip).Take(take).ToListAsync();
+            return await query
+                .Include(x => x.BusinessGalleries)
+                .Include(x => x.BusinessTags)
+                .Include(x=>x.BusinessReviews)
+                .Include(x=> x.Category)
+                .Where(x => x.Deleted == false).Skip(skip).Take(take).ToListAsync();
 
         }
 

@@ -106,7 +106,7 @@ namespace AcceptsCoin.Services.DirectoryServer
         public override async Task<BusinessGalleryGm> Post(BusinessGalleryGm request, ServerCallContext context)
         {
 
-            
+
 
             var BusinessGallery = new BusinessGallery()
             {
@@ -116,7 +116,8 @@ namespace AcceptsCoin.Services.DirectoryServer
                 Extension = request.Extension,
                 CreatedDate = DateTime.Now,
                 Published = true,
-                };
+                BusinessId = Guid.Parse(request.BusinessId),
+            };
 
             var res = await _businessGalleryRepository.Add(BusinessGallery);
 
