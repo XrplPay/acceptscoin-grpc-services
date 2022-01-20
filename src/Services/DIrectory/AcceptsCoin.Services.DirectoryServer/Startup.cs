@@ -8,6 +8,7 @@ using AcceptsCoin.Services.DirectoryServer.Core.Services;
 using AcceptsCoin.Services.DirectoryServer.Data.Context;
 using AcceptsCoin.Services.DirectoryServer.Data.Repository;
 using AcceptsCoin.Services.DirectoryServer.Domain.Interfaces;
+using AcceptsCoin.Services.DirectoryServer.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -54,6 +55,7 @@ namespace AcceptsCoin.Services.DirectoryServer
 
 
 
+            services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ITagRepository, TagRepository>();
             services.AddScoped<IBusinessTagRepository, BusinessTagRepository>();
             services.AddScoped<IReviewRepository, ReviewRepository>();
@@ -88,6 +90,8 @@ namespace AcceptsCoin.Services.DirectoryServer
                 endpoints.MapGrpcService<ReviewGrpcService>()
                  .EnableGrpcWeb().RequireCors("cors");
 
+                endpoints.MapGrpcService<DirectoryGrpcService>()
+                .EnableGrpcWeb().RequireCors("cors");
 
 
                 endpoints.MapGet("/", async context =>

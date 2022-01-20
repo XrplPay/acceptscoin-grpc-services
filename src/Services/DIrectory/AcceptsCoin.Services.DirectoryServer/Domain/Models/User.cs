@@ -11,5 +11,11 @@ namespace AcceptsCoin.Services.DirectoryServer.Domain.Models
         [Key]
         public Guid UserId { get; set; }
 
+        [Required]
+        public string Name { get; set; }
+
+        [EmailAddress]
+        public string Email { get; set; }
+
     }
 }

@@ -99,14 +99,13 @@ namespace AcceptsCoin.Services.DirectoryServer
                           {
                               Id = review.ReviewId.ToString(),
                               Comment = review.Message,
-                              Name = "Name Family",
                               Rate = review.Rate,
                               Date = review.CreatedDate.ToFileTimeUtc(),
                               User = new BusinessReviewFrontGm.Types.User
                               {
-                                  Email = "amin.shayesteh64@gmail.com",
+                                  Email = review.CreatedBy.Email,
                                   Id = review.CreatedBy.UserId.ToString(),
-                                  Name = "Amin Shayesteh",
+                                  Name = review.CreatedBy.Name,
                                   RateCount = 10,
                                   ReviewCount = 29,
                               },

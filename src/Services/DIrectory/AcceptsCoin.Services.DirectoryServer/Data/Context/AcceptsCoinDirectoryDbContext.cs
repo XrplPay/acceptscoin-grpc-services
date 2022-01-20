@@ -36,6 +36,8 @@ namespace AcceptsCoin.Services.DirectoryServer.Data.Context
             modelBuilder.Entity<User>().HasData(new User
             {
                 UserId = Guid.Parse("999bb90f-3167-4f81-83bb-0c76d1d3ace5"),
+                Email = "info@acceptscoin.com",
+                Name = "Super Admin",
             });
 
             #endregion

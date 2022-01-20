@@ -65,6 +65,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Protobuf Include="Protos\directoryservice.proto" GrpcServices="Server" />
     <Protobuf Include="Protos\review.proto" GrpcServices="Server" />
     <Protobuf Include="Protos\business.proto" GrpcServices="Server" />
     <Protobuf Include="Protos\businessgallery.proto" GrpcServices="Server" />

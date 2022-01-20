@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AcceptsCoin.ApiGateway.Core.Dtos;
 using AcceptsCoin.ApiGateway.Core.Dtos.Identity;
 using AcceptsCoin.ApiGateway.Core.Views;
+using AcceptsCoin.Services.DirectoryServer.Protos;
 using AcceptsCoin.Services.IdentityServer.Protos;
 using Grpc.Core;
 using Grpc.Net.Client;
@@ -23,6 +24,7 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Identity
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class UserController : ControllerBase
     {
+        const string directoryChannelUrl = "http://localhost:5053";
         const string channelUrl = "http://localhost:5051";
         public UserController()
         {
@@ -171,6 +173,24 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Identity
                     Password = entity.Password,
 
                 }, headers: GetHeader());
+
+
+
+                #region Dependency
+                if (reply != null && reply.Id != null)
+                {
+                    var directoryChannel = GrpcChannel.ForAddress(directoryChannelUrl);
+                    var directoryClient = new DirectoryAppService.DirectoryAppServiceClient(directoryChannel);
+                    directoryClient.DirectoryUserPost(new DirectoryUserGm
+                    {
+                        Id = reply.Id,
+                        Email = entity.Email,
+                        Name = entity.Name,
+
+                    }, headers: GetHeader());
+                }
+                #endregion
+
 
                 return Ok(reply);
             }

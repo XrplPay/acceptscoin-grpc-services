@@ -1,0 +1,16 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "AcceptsCoin.Services.DirectoryServer.Protos";
+
+package directoryservice;
+
+service DirectoryAppService{
+    rpc DirectoryUserPost (DirectoryUserGm) returns (DirectoryUserGm);
+    rpc DirectoryUserPut (DirectoryUserGm) returns (DirectoryUserGm);
+}
+
+message DirectoryUserGm {
+    string id = 1;
+    string name = 2;
+    string email = 3;
+}
