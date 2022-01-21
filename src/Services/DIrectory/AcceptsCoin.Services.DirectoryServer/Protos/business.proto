@@ -161,7 +161,8 @@ message BusinessGalleryFrontGm {
     string Id = 1;
     string name = 2;
     string extension = 3;
-    string url = 4;
+    string image = 4;
+    string caption = 5;
 }
 message BusinessTokenFrontGm {
     string Id = 1;

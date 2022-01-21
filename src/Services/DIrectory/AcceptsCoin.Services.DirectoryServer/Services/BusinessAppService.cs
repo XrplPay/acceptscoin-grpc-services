@@ -83,8 +83,9 @@ namespace AcceptsCoin.Services.DirectoryServer
                              Id = image.BusinessGalleryId.ToString(),
                              Name = image.Name,
                              Extension = image.Extension,
-                             //Url = image.Name + image.Extension,
-                             Url = "https://img.grouponcdn.com/deal/28PbQPC6SSX8BASL8NRkTSK4Ayoe/28-1200x720/v1/c870x524.webp",
+                             Image = image.Name + image.Extension,
+                             Caption = "",
+                             //Url = "https://img.grouponcdn.com/deal/28PbQPC6SSX8BASL8NRkTSK4Ayoe/28-1200x720/v1/c870x524.webp",
                          };
             response.Images.AddRange(images.ToArray());
 
