@@ -31,6 +31,8 @@ namespace AcceptsCoin.Services.DirectoryServer.Data.Context
         {
             modelBuilder.HasPostgresExtension("postgis");
 
+            modelBuilder.Entity<Business>().Property(b => b.Location).HasColumnType("geography (point)");
+
             #region UserSeed
 
             modelBuilder.Entity<User>().HasData(new User

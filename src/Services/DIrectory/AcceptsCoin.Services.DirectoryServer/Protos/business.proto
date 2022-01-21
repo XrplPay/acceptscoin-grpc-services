@@ -8,6 +8,7 @@ package business;
 service BusinessAppService{
     rpc GetAll (BusinessQueryFilter) returns (BusinessListGm);
     rpc GetByPartnerId (BusinessPartnerIdQueryFilter) returns (BusinessListGm);
+    rpc GetFrontBusinessByLocation (BusinessFrontLocationQueryFilter) returns (BusinessListFrontGm);
     rpc GetFrontBusinessList (BusinessFrontQueryFilter) returns (BusinessListFrontGm);
     rpc GetFrontBusinessListByTagId (BusinessFrontTagIdQueryFilter) returns (BusinessListFrontGm);
     rpc GetById (BusinessIdFilter) returns (BusinessGm);
@@ -18,12 +19,19 @@ service BusinessAppService{
     rpc Delete (BusinessIdFilter) returns (Empty);
     rpc SoftDelete (BusinessIdFilter) returns (Empty);
     rpc SoftDeleteCollection (BusinessDeleteCollectionGm) returns (Empty);
+    rpc UpdatePoint (BusinessQueryFilter) returns (Empty);
 }
 
 message Empty{
 }
 
-
+message BusinessFrontLocationQueryFilter {
+ int32 pageId = 1;
+ int32 pageSize = 2;
+ double latitude = 3;
+ double longitude = 4;
+ string query= 5;
+}
 message BusinessIdFilter {
  string businessId = 1;
 }

@@ -94,6 +94,53 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Directory
             }
         }
 
+        [AllowAnonymous]
+        [HttpGet("UpdateLocation")]
+        public async Task<ActionResult> UpdateLocation()
+        {
+            try
+            {
+                var channel = GrpcChannel.ForAddress(channelUrl);
+                var client = new BusinessAppService.BusinessAppServiceClient(channel);
+                var reply = await client.UpdatePointAsync(new BusinessQueryFilter { PageId = 1, PageSize = 10 });
+
+                return Ok(reply);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new WebApiErrorMessageResponse()
+                {
+                    Errors = new List<string>() {
+                            ex.Message
+                    },
+                    Success = false
+                });
+            }
+        }
+
+        [AllowAnonymous]
+        [HttpGet("GetFrontBusinessByLocation")]
+        public async Task<ActionResult> GetFrontBusinessByLocation([FromQuery] string query, [FromQuery] int pageId = 1, [FromQuery] int pageSize = 10)
+        {
+            try
+            {
+                var channel = GrpcChannel.ForAddress(channelUrl);
+                var client = new BusinessAppService.BusinessAppServiceClient(channel);
+                var reply = await client.GetFrontBusinessByLocationAsync(new BusinessFrontLocationQueryFilter { Query = query, Longitude = 29.236581, Latitude = 40.962990, PageId = pageId, PageSize = pageSize });
+
+                return Ok(reply);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new WebApiErrorMessageResponse()
+                {
+                    Errors = new List<string>() {
+                            ex.Message
+                    },
+                    Success = false
+                });
+            }
+        }
 
         [AllowAnonymous]
         [HttpGet("GetFrontSingleBusiness")]

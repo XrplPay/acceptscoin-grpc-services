@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using AcceptsCoin.Services.DirectoryServer.Domain.Interfaces;
 using AcceptsCoin.Services.DirectoryServer.Domain.Models;
@@ -9,6 +10,9 @@ using Grpc.Core;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
+using NetTopologySuite;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Operation.Valid;
 
 namespace AcceptsCoin.Services.DirectoryServer
 {
@@ -79,7 +83,8 @@ namespace AcceptsCoin.Services.DirectoryServer
                              Id = image.BusinessGalleryId.ToString(),
                              Name = image.Name,
                              Extension = image.Extension,
-                             Url = image.Name + image.Extension,
+                             //Url = image.Name + image.Extension,
+                             Url = "https://img.grouponcdn.com/deal/28PbQPC6SSX8BASL8NRkTSK4Ayoe/28-1200x720/v1/c870x524.webp",
                          };
             response.Images.AddRange(images.ToArray());
 
@@ -183,6 +188,99 @@ namespace AcceptsCoin.Services.DirectoryServer
 
             IQueryable<Business> query = _businessRepository.GetQuery();
             query = query.Where(x => x.BusinessTags.Any(c => c.TagId == Guid.Parse(request.TagId)));
+
+            response.CurrentPage = request.PageId;
+            response.ItemCount = await _businessRepository.GetCount(query);
+            response.PageCount = (response.ItemCount / request.PageSize) + 1;
+
+            var buinessList = await _businessRepository.GetAll(query, request.PageId, request.PageSize);
+
+            var businesses = from business in buinessList
+                             select new BusinessFrontGm()
+                             {
+                                 Id = business.BusinessId.ToString(),
+                                 Latitude = business.Latitude,
+                                 Longitude = business.Longitude,
+                                 Icon = "icon",
+                                 //ImageUrl = "https://img.grouponcdn.com/deal/28PbQPC6SSX8BASL8NRkTSK4Ayoe/28-1200x720/v1/c870x524.webp",
+                                 ImageUrl = business.BusinessGalleries.Count > 0 ? business.BusinessGalleries.FirstOrDefault().Name : "https://img.grouponcdn.com/deal/28PbQPC6SSX8BASL8NRkTSK4Ayoe/28-1200x720/v1/c870x524.webp",
+                                 LocationName = "United state",
+                                 Rate = 5,
+                                 Subtitle = business.Description,
+                                 Title = business.Name,
+                                 TotalRate = 100,
+
+                             };
+
+            response.Items.AddRange(businesses.ToArray());
+
+            for (int i = 0; i < businesses.Count() - 1; i++)
+            {
+                var tokens = from token in buinessList
+                             select new BusinessFrontGm.Types.BusinessTokenFrontGm()
+                             {
+                                 Id = Guid.NewGuid().ToString(),
+                                 Coin = "Token",
+                                 Img = "/coin/xrplpay.png",
+                                 TotalCoin = 10,
+                             };
+                //businesses.ElementAt(i).Token.Concat(tokens.ToArray());
+                response.Items[i].Token.AddRange(tokens.ToArray());
+            }
+
+
+            return await Task.FromResult(response);
+        }
+
+        [AllowAnonymous]
+        public override async Task<BusinessListFrontGm> GetFrontBusinessByLocation(BusinessFrontLocationQueryFilter request, ServerCallContext context)
+        {
+            BusinessListFrontGm response = new BusinessListFrontGm();
+
+            IQueryable<Business> query = _businessRepository.GetQuery();
+
+            string querystring = request.Query;
+
+            var c1 = querystring.Split("#");
+
+            var categoryIndex = -1;
+
+            //var categoryItem = c1.Where(x => x.StartsWith("category")).FirstOrDefault();
+            // var categoryValue =
+
+            var categoryValue = "saa".Split("&");
+            for (int i=0;i<=c1.Length-1;i++)
+            {
+                if(c1[i].Contains("category"))
+                {
+                    var c2 = c1[i].Split(":");
+                    categoryValue = c2[1].Split("|");
+                }
+            }
+
+            
+
+           
+
+
+
+            var distanceInMetres = 2000; // 1 km
+
+
+            var location = new Point(request.Longitude, request.Latitude) { SRID = 4326 };
+
+            IsValidOp isValidOp = new IsValidOp(location);
+
+            if (isValidOp.IsValid)
+            {
+                query = query.Where(x => x.Location.Distance(location) <= distanceInMetres);
+
+            }
+
+
+            query = query.Where(x => categoryValue.Contains(x.CategoryId.ToString()));
+            
+
 
             response.CurrentPage = request.PageId;
             response.ItemCount = await _businessRepository.GetCount(query);
@@ -383,6 +481,7 @@ namespace AcceptsCoin.Services.DirectoryServer
 
         public override async Task<BusinessGm> Post(CreateBusinessGm request, ServerCallContext context)
         {
+            var geometryFactory = NtsGeometryServices.Instance.CreateGeometryFactory(srid: 4326);
 
             var category = await _categoryRepository.Find(request.CategoryId);
 
@@ -415,6 +514,7 @@ namespace AcceptsCoin.Services.DirectoryServer
                 Description = request.Description,
                 Address = request.Address,
                 OfferedServices = request.OfferedServices,
+                Location = geometryFactory.CreatePoint(new NetTopologySuite.Geometries.Coordinate(request.Longitude, request.Latitude)),
             };
 
             var res = await _businessRepository.Add(business);
@@ -532,6 +632,22 @@ namespace AcceptsCoin.Services.DirectoryServer
                 OfferedServices = business.OfferedServices,
                 CategoryId = business.CategoryId.ToString(),
             });
+        }
+
+        [AllowAnonymous]
+        public override async Task<Empty> UpdatePoint(BusinessQueryFilter request, ServerCallContext context)
+        {
+            var geometryFactory = NtsGeometryServices.Instance.CreateGeometryFactory(srid: 4326);
+
+            var business =await  _businessRepository.GetAll();
+
+            foreach (var item in business)
+            {
+                item.Location = geometryFactory.CreatePoint(new NetTopologySuite.Geometries.Coordinate(item.Longitude, item.Latitude));
+                await _businessRepository.Update(item);
+            }
+
+            return await Task.FromResult<Empty>(new Empty());
         }
         public override async Task<Empty> Delete(BusinessIdFilter request, ServerCallContext context)
         {
