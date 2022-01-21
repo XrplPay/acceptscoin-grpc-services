@@ -30,6 +30,21 @@ namespace AcceptsCoin.Services.StorageServer
                            // Setup a HTTP/2 endpoint without TLS.
                            options.ListenLocalhost(5054, o => o.Protocols =
                                HttpProtocols.Http2);
+
+                           options.ListenLocalhost(11837, o => o.Protocols =
+                        HttpProtocols.Http1);
+                       });
+                   }
+                   else
+                   {
+                       webBuilder.ConfigureKestrel(options =>
+                       {
+                           // Setup a HTTP/2 endpoint without TLS.
+                           options.ListenLocalhost(5054, o => o.Protocols =
+                               HttpProtocols.Http2);
+
+                           options.ListenLocalhost(11837, o => o.Protocols =
+                        HttpProtocols.Http1);
                        });
                    }
                    webBuilder.UseStartup<Startup>().UseUrls("http://*:5054");

@@ -59,6 +59,8 @@ namespace AcceptsCoin.Services.StorageServer
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseDefaultFiles();
             app.UseStaticFiles();
 
             app.UseAuthentication();
@@ -66,6 +68,7 @@ namespace AcceptsCoin.Services.StorageServer
             app.UseAuthorization();
             app.UseCors("cors");
             app.UseGrpcWeb();
+            app.UseEndpoints(endpoints => { });
 
             app.UseEndpoints(endpoints =>
             {
@@ -73,7 +76,6 @@ namespace AcceptsCoin.Services.StorageServer
 
                 endpoints.MapGrpcService<FileUploadGrpcService>()
                 .EnableGrpcWeb().RequireCors("cors");
-
 
                              
                 //endpoints.MapGet("/", async context =>

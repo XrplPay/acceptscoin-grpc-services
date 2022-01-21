@@ -14,12 +14,15 @@
     <None Remove="Services\" />
     <None Remove="Protos\" />
     <None Remove="Microsoft.AspNetCore.Authentication.JwtBearer" />
+    <None Remove="Contenr\" />
+    <None Remove="Content\0ad98788-d1bc-4a8a-9f0c-ca63f184a0fe.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Services\" />
     <Folder Include="Protos\" />
     <Folder Include="wwwroot\" />
     <Folder Include="wwwroot\files\" />
+    <Folder Include="Content\" />
   </ItemGroup>
   <ItemGroup>
     <Protobuf Include="Protos\fileupload.proto" GrpcServices="Server" />
@@ -32,5 +35,11 @@
   <ItemGroup>
     <Content Remove="wwwroot\" />
     <Content Remove="wwwroot\files\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\0ad98788-d1bc-4a8a-9f0c-ca63f184a0fe.png">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
   </ItemGroup>
 </Project>

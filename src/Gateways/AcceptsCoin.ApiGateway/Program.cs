@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
@@ -31,7 +32,10 @@ namespace AcceptsCoin.ApiGateway
                             // HttpProtocols.Http1AndHttp2AndHttp3);
                       });
                   }
-                  webBuilder.UseStartup<Startup>().UseUrls("http://*:5050");
+                  webBuilder.UseStartup<Startup>().UseUrls("http://*:5050").UseKestrel()
+            .UseContentRoot(Directory.GetCurrentDirectory())
+            .UseWebRoot("Content");
+                                  
               });
     }
 }
