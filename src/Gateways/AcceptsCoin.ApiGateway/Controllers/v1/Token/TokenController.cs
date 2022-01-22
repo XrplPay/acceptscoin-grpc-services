@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AcceptsCoin.ApiGateway.Core.Dtos;
 using AcceptsCoin.ApiGateway.Core.Views;
+using AcceptsCoin.Services.DirectoryServer.Protos;
 using AcceptsCoin.Services.StorageServer.Protos;
 using AcceptsCoin.Services.TokenServer ;
 using AcceptsCoin.Services.TokenServer.Protos;
@@ -17,6 +18,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
+using Empty = AcceptsCoin.Services.TokenServer.Protos.Empty;
 
 namespace AcceptsCoin.ApiGateway.Controllers.v1.Token
 {
@@ -27,6 +29,7 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Token
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class TokenController : ControllerBase
     {
+        const string directoryChannelUrl = "http://localhost:5053";
         const string channelUrl = "http://localhost:5055";
         const string channelUrlStorage = "http://localhost:5054";
         public TokenController()
@@ -238,6 +241,25 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Token
                     Link = entity.Link,
                 }, headers: GetHeader());
 
+
+                #region Dependency
+                if (reply != null && reply.Id != null)
+                {
+                    var directoryChannel = GrpcChannel.ForAddress(directoryChannelUrl);
+                    var directoryClient = new DirectoryAppService.DirectoryAppServiceClient(directoryChannel);
+                    directoryClient.DirectoryTokenPost(new DirectoryTokenGm
+                    {
+                        Id = reply.Id,
+                        Name = entity.Name,
+                        Icon = "",
+                        Logo = entity.Logo,
+                        Symbol = entity.Symbol,
+
+                    }, headers: GetHeader());
+                }
+                #endregion
+
+
                 return Ok(reply);
             }
             catch (Exception ex)
@@ -273,6 +295,25 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Token
                     Priority = entity.Priority,
                     Link = entity.Link,
                 }, headers: GetHeader());
+
+
+                #region Dependency
+                if (reply != null && reply.Id != null)
+                {
+                    var directoryChannel = GrpcChannel.ForAddress(directoryChannelUrl);
+                    var directoryClient = new DirectoryAppService.DirectoryAppServiceClient(directoryChannel);
+                    directoryClient.DirectoryTokenPut(new DirectoryTokenGm
+                    {
+                        Id = id.ToString(),
+                        Name = entity.Name,
+                        Icon = entity.Icon,
+                        Logo = entity.Logo,
+                        Symbol = entity.Symbol,
+
+                    }, headers: GetHeader());
+                }
+                #endregion
+
 
                 return Ok(reply);
             }

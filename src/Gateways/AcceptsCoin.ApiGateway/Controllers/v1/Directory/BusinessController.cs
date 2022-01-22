@@ -126,7 +126,7 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Directory
             {
                 var channel = GrpcChannel.ForAddress(channelUrl);
                 var client = new BusinessAppService.BusinessAppServiceClient(channel);
-                var reply = await client.GetFrontBusinessByLocationAsync(new BusinessFrontLocationQueryFilter { Query = query, Longitude = 29.236581, Latitude = 40.962990, PageId = pageId, PageSize = pageSize });
+                var reply = await client.GetFrontBusinessByLocationAsync(new BusinessFrontLocationQueryFilter { Query = query, Longitude = 39.236581, Latitude = 40.962990, PageId = pageId, PageSize = pageSize });
 
                 return Ok(reply);
             }
