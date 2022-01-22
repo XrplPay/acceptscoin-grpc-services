@@ -11,7 +11,8 @@
       <File FileName="Gateways/AcceptsCoin.ApiGateway/Controllers/v1/Identity/UserController.cs" Line="179" Column="16" />
       <File FileName="Gateways/AcceptsCoin.ApiGateway/Controllers/v1/Token/TokenController.cs" Line="254" Column="34" />
       <File FileName="Services/DIrectory/AcceptsCoin.Services.DirectoryServer/Services/DirectoryAppService.cs" Line="78" Column="41" />
-      <File FileName="Services/DIrectory/AcceptsCoin.Services.DirectoryServer/Services/BusinessAppService.cs" Line="37" Column="35" />
+      <File FileName="Services/DIrectory/AcceptsCoin.Services.DirectoryServer/Services/BusinessAppService.cs" Line="120" Column="29" />
+      <File FileName="Services/DIrectory/AcceptsCoin.Services.DirectoryServer/Protos/business.proto" Line="27" Column="15" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">

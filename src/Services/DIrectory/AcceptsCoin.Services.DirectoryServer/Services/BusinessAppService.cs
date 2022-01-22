@@ -108,7 +108,7 @@ namespace AcceptsCoin.Services.DirectoryServer
                               Id = review.ReviewId.ToString(),
                               Comment = review.Message,
                               Rate = review.Rate,
-                              Date = review.CreatedDate.ToFileTimeUtc(),
+                              Date = review.CreatedDate.ToString(),
                               User = new BusinessReviewFrontGm.Types.User
                               {
                                   Email = review.CreatedBy.Email,

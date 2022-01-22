@@ -196,7 +196,7 @@ message BusinessTokenFrontGm {
     string Id = 1;
     string comment = 2;
     int32 rate=4;
-    int64 date = 5;
+    string date = 5;
     User user = 6;
     }
     message BusinessCategoryFrontGm {
