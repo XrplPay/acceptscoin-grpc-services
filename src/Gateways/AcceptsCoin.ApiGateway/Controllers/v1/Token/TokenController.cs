@@ -247,12 +247,12 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Token
                 {
                     var directoryChannel = GrpcChannel.ForAddress(directoryChannelUrl);
                     var directoryClient = new DirectoryAppService.DirectoryAppServiceClient(directoryChannel);
-                    directoryClient.DirectoryTokenPost(new DirectoryTokenGm
+                    await directoryClient.DirectoryTokenPostAsync(new DirectoryTokenGm
                     {
                         Id = reply.Id,
                         Name = entity.Name,
                         Icon = "",
-                        Logo = entity.Logo,
+                        Logo = logo,
                         Symbol = entity.Symbol,
 
                     }, headers: GetHeader());

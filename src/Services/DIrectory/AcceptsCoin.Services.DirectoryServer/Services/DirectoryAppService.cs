@@ -76,6 +76,7 @@ namespace AcceptsCoin.Services.DirectoryServer.Services
                 Icon = request.Icon,
                 Logo = request.Logo,
                 Symbol = request.Symbol,
+                
             };
 
             var res = await _tokenRepository.Add(token);

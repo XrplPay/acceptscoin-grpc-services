@@ -19,7 +19,7 @@ message DirectoryUserGm {
 message DirectoryTokenGm {
     string id = 1;
     string name = 2;
-    string icon = 3;
+    optional string icon = 3;
     string Symbol = 4;
     string Logo = 5;
 }
