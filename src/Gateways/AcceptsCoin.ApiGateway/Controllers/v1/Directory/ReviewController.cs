@@ -63,7 +63,7 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Core
             {
                 var channel = GrpcChannel.ForAddress(channelUrl);
                 var client = new ReviewAppService.ReviewAppServiceClient(channel);
-                var reply = await client.GetFrontReviewByBusinessIdAsync(new ReviewBusinessQueryFilter { BusinessId = businessId.ToString(), PageId = pageId, PageSize = pageSize });
+                var reply = await client.GetFrontReviewByBusinessIdAsync(new ReviewBusinessQueryFilter { BusinessId = businessId.ToString(), PageId = pageId, PageSize = pageSize }, headers: GetHeader());
 
                 return Ok(reply);
             }
