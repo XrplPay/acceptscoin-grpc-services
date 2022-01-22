@@ -16,10 +16,12 @@ namespace AcceptsCoin.Services.DirectoryServer.Services
     {
         private readonly ILogger<DirectoryGrpcService> _logger;
         private IUserRepository _userRepository;
-        public DirectoryGrpcService(ILogger<DirectoryGrpcService> logger, IUserRepository userRepository)
+        private ITokenRepository _tokenRepository;
+        public DirectoryGrpcService(ILogger<DirectoryGrpcService> logger, IUserRepository userRepository, ITokenRepository tokenRepository)
         {
             _logger = logger;
             _userRepository = userRepository;
+            _tokenRepository = tokenRepository;
         }
 
         public override async Task<DirectoryUserGm> DirectoryUserPost(DirectoryUserGm request, ServerCallContext context)
@@ -60,6 +62,58 @@ namespace AcceptsCoin.Services.DirectoryServer.Services
                 Id = user.UserId.ToString(),
                 Email = user.Email,
                 Name = user.Name,
+            });
+        }
+
+
+
+        public override async Task<DirectoryTokenGm> DirectoryTokenPost(DirectoryTokenGm request, ServerCallContext context)
+        {
+            var token = new Token()
+            {
+                TokenId = Guid.Parse(request.Id),
+                Name = request.Name,
+                Icon = request.Icon,
+                Logo = request.Logo,
+                Symbol = request.Symbol,
+            };
+
+            var res = await _tokenRepository.Add(token);
+
+            var response = new DirectoryTokenGm()
+            {
+                Id = res.TokenId.ToString(),
+                Icon = res.Icon,
+                Name = res.Name,
+                Symbol = res.Symbol,
+                Logo = res.Logo,
+            };
+            return await Task.FromResult(response);
+        }
+
+
+        public override async Task<DirectoryTokenGm> DirectoryTokenPut(DirectoryTokenGm request,
+          ServerCallContext context)
+        {
+             Token token = await _tokenRepository.Find(Guid.Parse(request.Id));
+            if (token == null)
+            {
+                return await Task.FromResult<DirectoryTokenGm>(null);
+            }
+            token.Symbol = request.Symbol;
+            token.Name = request.Name;
+            token.Logo = request.Logo;
+            token.Icon = request.Icon;
+
+            await _tokenRepository.Update(token);
+            return await Task.FromResult<DirectoryTokenGm>(new DirectoryTokenGm()
+            {
+                Id = token.TokenId.ToString(),
+                Icon = token.Icon,
+                Name = token.Name,
+                Symbol = token.Symbol,
+                Logo = token.Logo,
+
             });
         }
     }

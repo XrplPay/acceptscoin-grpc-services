@@ -7,10 +7,19 @@ package directoryservice;
 service DirectoryAppService{
     rpc DirectoryUserPost (DirectoryUserGm) returns (DirectoryUserGm);
     rpc DirectoryUserPut (DirectoryUserGm) returns (DirectoryUserGm);
+    rpc DirectoryTokenPost (DirectoryTokenGm) returns (DirectoryTokenGm);
+    rpc DirectoryTokenPut (DirectoryTokenGm) returns (DirectoryTokenGm);
 }
 
 message DirectoryUserGm {
     string id = 1;
     string name = 2;
     string email = 3;
+}
+message DirectoryTokenGm {
+    string id = 1;
+    string name = 2;
+    string icon = 3;
+    string Symbol = 4;
+    string Logo = 5;
 }

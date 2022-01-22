@@ -23,16 +23,18 @@ namespace AcceptsCoin.Services.DirectoryServer
         private readonly ILogger<BusinessGrpcService> _logger;
         private IBusinessRepository _businessRepository;
         private IBusinessTagRepository _businessTagRepository;
+        private IBusinessTokenRepository _businessTokenRepository;
         private ICategoryRepository _categoryRepository;
         private ITagRepository  _tagRepository;
         public BusinessGrpcService(ILogger<BusinessGrpcService> logger, IBusinessRepository businessRepository
-            , ICategoryRepository categoryRepository, IBusinessTagRepository businessTagRepository, ITagRepository tagRepository)
+            , ICategoryRepository categoryRepository, IBusinessTagRepository businessTagRepository, ITagRepository tagRepository, IBusinessTokenRepository businessTokenRepository)
         {
             _logger = logger;
             _businessRepository = businessRepository;
             _businessTagRepository = businessTagRepository;
             _categoryRepository = categoryRepository;
             _tagRepository = tagRepository;
+            _businessTokenRepository = businessTokenRepository;
         }
 
         private Guid getUserId(ServerCallContext context)
@@ -244,12 +246,11 @@ namespace AcceptsCoin.Services.DirectoryServer
 
             var c1 = querystring.Split("#");
 
-            var categoryIndex = -1;
-
             //var categoryItem = c1.Where(x => x.StartsWith("category")).FirstOrDefault();
             // var categoryValue =
 
             var categoryValue = "saa".Split("&");
+            var tokenValue = "saa".Split("&");
             for (int i=0;i<=c1.Length-1;i++)
             {
                 if(c1[i].Contains("category"))
@@ -257,15 +258,17 @@ namespace AcceptsCoin.Services.DirectoryServer
                     var c2 = c1[i].Split(":");
                     categoryValue = c2[1].Split("|");
                 }
+
+                if (c1[i].Contains("token"))
+                {
+                    var c2 = c1[i].Split(":");
+                    tokenValue = c2[1].Split("|");
+                }
             }
 
-            
+         
 
-           
-
-
-
-            var distanceInMetres = 2000; // 1 km
+            var distanceInMetres = 2000; // 2 km
 
 
             var location = new Point(request.Longitude, request.Latitude) { SRID = 4326 };
@@ -278,9 +281,15 @@ namespace AcceptsCoin.Services.DirectoryServer
 
             }
 
+            if (categoryValue.Length > 0)
+            {
+                query = query.Where(x => categoryValue.Contains(x.CategoryId.ToString()));
+            }
+            if (tokenValue.Length > 0)
+            {
+                query = query.Where(x => x.BusinessTokens.Any(c => tokenValue.Contains(c.TokenId.ToString())));
+            }
 
-            query = query.Where(x => categoryValue.Contains(x.CategoryId.ToString()));
-            
 
 
             response.CurrentPage = request.PageId;
@@ -697,6 +706,47 @@ namespace AcceptsCoin.Services.DirectoryServer
                 await _businessRepository.Update(business);
             }
 
+            return await Task.FromResult<Empty>(new Empty());
+        }
+        public override async Task<Empty> SaveBusinessToken(BusinessTokenGm request, ServerCallContext context)
+        {
+            BusinessToken item = await _businessTokenRepository.Find(Guid.Parse(request.BusinessId), Guid.Parse(request.TokenId));
+
+            if (item == null)
+            {
+                var businessToken = new BusinessToken()
+                {
+                    BusinessId = Guid.Parse(request.BusinessId),
+                    TokenId = Guid.Parse(request.TokenId),
+                };
+
+                await _businessTokenRepository.Add(businessToken);
+            }
+            else
+            {
+                await _businessTokenRepository.Delete(item);
+            }
+
+            return await Task.FromResult<Empty>(new Empty());
+        }
+        public override async Task<Empty> SaveBusinessTokenCollection(BusinessTokenListGm request, ServerCallContext context)
+        {
+
+            foreach (var entity in request.BusinessTokens)
+            {
+                BusinessToken item = await _businessTokenRepository.Find(Guid.Parse(entity.BusinessId), Guid.Parse(entity.TokenId));
+
+                if (item == null)
+                {
+                    var businessToken = new BusinessToken()
+                    {
+                        BusinessId = Guid.Parse(entity.BusinessId),
+                        TokenId = Guid.Parse(entity.TokenId),
+                    };
+
+                    await _businessTokenRepository.Add(businessToken);
+                }
+            }
             return await Task.FromResult<Empty>(new Empty());
         }
     }

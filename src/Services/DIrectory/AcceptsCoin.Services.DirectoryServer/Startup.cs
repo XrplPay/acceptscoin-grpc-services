@@ -51,10 +51,8 @@ namespace AcceptsCoin.Services.DirectoryServer
                 });
             });
 
-
-
-
-
+            services.AddScoped<ITokenRepository, TokenRepository>();
+            services.AddScoped<IBusinessTokenRepository, BusinessTokenRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ITagRepository, TagRepository>();
             services.AddScoped<IBusinessTagRepository, BusinessTagRepository>();

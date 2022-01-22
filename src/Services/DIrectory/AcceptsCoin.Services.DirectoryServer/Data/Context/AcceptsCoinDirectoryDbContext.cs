@@ -15,6 +15,10 @@ namespace AcceptsCoin.Services.DirectoryServer.Data.Context
 
         public DbSet<Business> Businesses { get; set; }
 
+        public DbSet<BusinessToken> BusinessTokens { get; set; }
+
+        public DbSet<Token> Tokens { get; set; }
+
         public DbSet<BusinessGallery> BusinessGalleries { get; set; }
 
         public DbSet<BusinessTag> BusinessTags { get; set; }
@@ -71,7 +75,7 @@ namespace AcceptsCoin.Services.DirectoryServer.Data.Context
 
             #endregion
 
-            #region PartnerToken
+            #region BusinessTag
             modelBuilder.Entity<BusinessTag>()
                 .HasKey(pt => new { pt.BusinessId, pt.TagId });
 
@@ -84,6 +88,23 @@ namespace AcceptsCoin.Services.DirectoryServer.Data.Context
                 .HasOne(pt => pt.Tag)
                 .WithMany(t => t.BusinessTags)
                 .HasForeignKey(pt => pt.TagId);
+
+            #endregion
+
+
+            #region BusinessToken
+            modelBuilder.Entity<BusinessToken>()
+                .HasKey(pt => new { pt.BusinessId, pt.TokenId });
+
+            modelBuilder.Entity<BusinessToken>()
+                .HasOne(pt => pt.Business)
+                .WithMany(p => p.BusinessTokens)
+                .HasForeignKey(pt => pt.BusinessId);
+
+            modelBuilder.Entity<BusinessToken>()
+                .HasOne(pt => pt.Token)
+                .WithMany(t => t.BusinessTokens)
+                .HasForeignKey(pt => pt.TokenId);
 
             #endregion
 

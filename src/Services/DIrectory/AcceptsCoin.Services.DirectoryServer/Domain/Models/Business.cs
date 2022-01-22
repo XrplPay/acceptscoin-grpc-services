@@ -103,5 +103,7 @@ namespace AcceptsCoin.Services.DirectoryServer.Domain.Models
 
        public ICollection<Review> BusinessReviews { get; set; }
 
+       public ICollection<BusinessToken> BusinessTokens { get; set; }
+
     }
 }

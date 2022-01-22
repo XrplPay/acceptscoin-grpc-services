@@ -20,9 +20,20 @@ service BusinessAppService{
     rpc SoftDelete (BusinessIdFilter) returns (Empty);
     rpc SoftDeleteCollection (BusinessDeleteCollectionGm) returns (Empty);
     rpc UpdatePoint (BusinessQueryFilter) returns (Empty);
+    rpc SaveBusinessToken (BusinessTokenGm) returns (Empty);
+    rpc SaveBusinessTokenCollection (BusinessTokenListGm) returns (Empty);
 }
 
 message Empty{
+}
+
+message BusinessTokenGm{
+    string businessId = 1;
+    string tokenId = 2;
+}
+
+message BusinessTokenListGm{
+    repeated BusinessTokenGm businessTokens =1;
 }
 
 message BusinessFrontLocationQueryFilter {
