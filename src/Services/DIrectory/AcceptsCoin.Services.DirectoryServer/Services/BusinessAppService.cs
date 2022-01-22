@@ -104,7 +104,7 @@ namespace AcceptsCoin.Services.DirectoryServer
             response.Tags.AddRange(tags.ToArray());
 
 
-            var reviews = from review in business.BusinessReviews
+            var reviews = from review in business.BusinessReviews.Where(x => x.Published == true && x.Deleted == false)
                           select new BusinessReviewFrontGm()
                           {
                               Id = review.ReviewId.ToString(),
@@ -764,6 +764,27 @@ namespace AcceptsCoin.Services.DirectoryServer
             else
             {
                 await _businessTokenRepository.Delete(item);
+            }
+
+            return await Task.FromResult<Empty>(new Empty());
+        }
+        public override async Task<Empty> SaveBusinessTag(BusinessTagGm request, ServerCallContext context)
+        {
+            BusinessTag item = await _businessTagRepository.Find(Guid.Parse(request.BusinessId), Guid.Parse(request.TagId));
+
+            if (item == null)
+            {
+                var businessTag = new BusinessTag()
+                {
+                    BusinessId = Guid.Parse(request.BusinessId),
+                    TagId = Guid.Parse(request.TagId),
+                };
+
+                await _businessTagRepository.Add(businessTag);
+            }
+            else
+            {
+                await _businessTagRepository.Delete(item);
             }
 
             return await Task.FromResult<Empty>(new Empty());

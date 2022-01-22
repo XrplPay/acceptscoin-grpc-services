@@ -22,6 +22,8 @@ service BusinessAppService{
     rpc UpdatePoint (BusinessQueryFilter) returns (Empty);
     rpc SaveBusinessToken (BusinessTokenGm) returns (Empty);
     rpc SaveBusinessTokenCollection (BusinessTokenListGm) returns (Empty);
+    rpc SaveBusinessTag (BusinessTagGm) returns (Empty);
+
 }
 
 message Empty{
@@ -30,6 +32,12 @@ message Empty{
 message BusinessTokenGm{
     string businessId = 1;
     string tokenId = 2;
+}
+
+
+message BusinessTagGm{
+    string businessId = 1;
+    string tagId = 2;
 }
 
 message BusinessTokenListGm{

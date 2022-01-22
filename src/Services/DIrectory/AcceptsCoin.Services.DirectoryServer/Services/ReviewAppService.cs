@@ -56,26 +56,33 @@ namespace AcceptsCoin.Services.DirectoryServer
         }
 
 
-        [AllowAnonymous]
         public override async Task<ReviewListFrontGm> GetFrontReviewByBusinessId(ReviewBusinessQueryFilter request, ServerCallContext context)
         {
             ReviewListFrontGm response = new ReviewListFrontGm();
 
             IQueryable<Review> query = _ReviewRepository.GetQuery();
-            query = query.Where(x => x.BusinessId == Guid.Parse(request.BusinessId) && x.Deleted == false);
-
+            query = query.Where(x => x.BusinessId == Guid.Parse(request.BusinessId) && x.Deleted == false && x.Published == true);
             response.CurrentPage = request.PageId;
             response.ItemCount = await _ReviewRepository.GetCount(query);
             response.PageCount = (response.ItemCount / request.PageSize) + 1;
 
 
-            var Reviews = from Review in await _ReviewRepository.GetAll(query, request.PageId, request.PageSize)
+            var Reviews = from review in await _ReviewRepository.GetAll(query, request.PageId, request.PageSize)
                           select new ReviewFrontGm()
                           {
-                              Id = Review.ReviewId.ToString(),
-                              Message = Review.Message,
-                              Rate = Review.Rate,
-
+                              Id = review.ReviewId.ToString(),
+                              Comment = review.Message,
+                              Rate = review.Rate,
+                              Date = review.CreatedDate.ToString(),
+                              User = new ReviewFrontGm.Types.User
+                              {
+                                  Email = review.CreatedBy.Email,
+                                  Id = review.CreatedBy.UserId.ToString(),
+                                  Name = review.CreatedBy.Name,
+                                  RateCount = 10,
+                                  ReviewCount = 29,
+                              },
+                              Publishd = review.Published,
                           };
             response.Items.AddRange(Reviews.ToArray());
             return await Task.FromResult(response);
@@ -104,7 +111,7 @@ namespace AcceptsCoin.Services.DirectoryServer
                 Rate = request.Rate,
                 CreatedById = getUserId(context),
                 CreatedDate = DateTime.Now,
-                Published = true,
+                Published = false,
                 Deleted = false,
                 BusinessId = Guid.Parse(request.BusinessId),
             };
@@ -147,6 +154,24 @@ namespace AcceptsCoin.Services.DirectoryServer
                 Message = review.Message,
                 Rate= review.Rate,
             });
+        }
+
+
+        public override async Task<EmptyReview> UpdatePublishStatus(ReviewIdFilter request,
+           ServerCallContext context)
+        {
+            Review review = await _ReviewRepository.Find(Guid.Parse(request.ReviewId));
+            if (review == null)
+            {
+                return await Task.FromResult<EmptyReview>(null);
+            }
+
+            review.Published = !review.Published;
+            review.UpdatedById = getUserId(context);
+            review.UpdatedDate = DateTime.Now;
+
+            await _ReviewRepository.Update(review);
+            return await Task.FromResult<EmptyReview>(new EmptyReview());
         }
 
 

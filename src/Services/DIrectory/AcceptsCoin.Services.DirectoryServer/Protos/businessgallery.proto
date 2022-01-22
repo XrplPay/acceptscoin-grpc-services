@@ -9,6 +9,7 @@ import "google/protobuf/empty.proto";
 service BusinessGalleryAppService{
     rpc GetAll (BusinessGalleryQueryFilter) returns (BusinessGalleryListGm);
     rpc GetById (BusinessGalleryIdFilter) returns (BusinessGalleryGm);
+    rpc GetByBusinessId (BusinessGalleryBusinessIdFilter) returns (BusinessGalleryListGm);
     rpc GetByUserId (BusinessGalleryQueryFilter) returns (BusinessGalleryListGm);
     rpc Post (BusinessGalleryGm) returns (BusinessGalleryGm);
     rpc Put (BusinessGalleryGm) returns (BusinessGalleryGm);
@@ -16,12 +17,13 @@ service BusinessGalleryAppService{
     rpc SoftDelete (BusinessGalleryIdFilter) returns (google.protobuf.Empty);
     rpc SoftDeleteCollection (BusinessGalleryDeleteCollectionGm) returns (google.protobuf.Empty);
 }
-
-
-
-
 message BusinessGalleryIdFilter {
  string BusinessGalleryId = 1;
+}
+message BusinessGalleryBusinessIdFilter {
+ string BusienssId = 1;
+ int32 pageId = 2;
+ int32 pageSize = 3;
 }
 message BusinessGalleryDeleteCollectionGm {
  repeated BusinessGalleryIdFilter items = 1;
@@ -37,6 +39,7 @@ message BusinessGalleryGm {
     string name = 2;
     string extension = 3;
     string businessId=4;
+    string url = 5;
 }
 message BusinessGalleryListGm {
     repeated BusinessGalleryGm items = 1;

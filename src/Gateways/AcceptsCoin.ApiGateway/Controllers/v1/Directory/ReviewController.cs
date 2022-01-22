@@ -56,7 +56,6 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Core
         }
 
 
-        [AllowAnonymous]
         [HttpGet("GetFrontReviewByBusinessId")]
         public async Task<ActionResult> GetFrontReviewByBusinessId([FromQuery] Guid businessId, [FromQuery] int pageId = 1, [FromQuery] int pageSize = 10)
         {
@@ -147,6 +146,30 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Core
                     Message = entity.Messgae,
                     Rate = entity.Rate,
                 }, headers: GetHeader());
+
+                return Ok(reply);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new WebApiErrorMessageResponse()
+                {
+                    Errors = new List<string>() {
+                            ex.Message
+                    },
+                    Success = false
+                });
+            }
+
+        }
+
+        [HttpPut("UpdatePublishStatus{id}")]
+        public async Task<ActionResult> UpdatePublishStatus(Guid id)
+        {
+            try
+            {
+                var channel = GrpcChannel.ForAddress(channelUrl);
+                var client = new ReviewAppService.ReviewAppServiceClient(channel);
+                var reply = await client.UpdatePublishStatusAsync(new ReviewIdFilter { ReviewId = id.ToString() }, headers: GetHeader());
 
                 return Ok(reply);
             }

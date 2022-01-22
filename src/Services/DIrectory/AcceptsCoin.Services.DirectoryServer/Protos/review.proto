@@ -12,6 +12,7 @@ service ReviewAppService{
     rpc GetById (ReviewIdFilter) returns (ReviewGm);
     rpc Post (ReviewGm) returns (ReviewGm);
     rpc Put (ReviewGm) returns (ReviewGm);
+    rpc UpdatePublishStatus (ReviewIdFilter) returns (EmptyReview);
     rpc Delete (ReviewIdFilter) returns (EmptyReview);
     rpc SoftDelete (ReviewIdFilter) returns (EmptyReview);
     rpc SoftDeleteCollection (ReviewDeleteCollectionGm) returns (EmptyReview);
@@ -49,10 +50,21 @@ message ReviewListGm {
     
 }
 
-message ReviewFrontGm {
+
+   message ReviewFrontGm {
+        message User {
+        string Id = 1;
+        string email = 2;
+        string name=4;
+        int32 rateCount=5;
+        int32 reviewCount = 6;
+        }
     string Id = 1;
-    string Message = 2;
-    int32 Rate =3;
+    string comment = 2;
+    int32 rate=4;
+    string date = 5;
+    User user = 6;
+    bool publishd = 7;
     }
 message ReviewListFrontGm {
     

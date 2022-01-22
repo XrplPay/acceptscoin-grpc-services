@@ -399,7 +399,7 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Directory
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> Put(Guid id, [FromBody] CreateBusinessDto entity)
+        public async Task<ActionResult> Put(Guid id, [FromBody] UpdateBusinessDto entity)
         {
             try
             {
@@ -504,6 +504,58 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Directory
                 }
 
                 var reply = await client.SoftDeleteCollectionAsync(collectionGm, headers: GetHeader());
+
+                return Ok(reply);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new WebApiErrorMessageResponse()
+                {
+                    Errors = new List<string>() {
+                            ex.Message
+                    },
+                    Success = false
+                });
+            }
+
+        }
+
+
+        [HttpPost("SaveBusinessToken")]
+        public async Task<ActionResult> SaveBusinessToken([FromQuery] Guid businessId , [FromQuery] Guid TokenId)
+        {
+            try
+            {
+                var channel = GrpcChannel.ForAddress(channelUrl);
+                var client = new BusinessAppService.BusinessAppServiceClient(channel);
+
+                var reply = await client.SaveBusinessTokenAsync(new BusinessTokenGm { BusinessId = businessId.ToString(), TokenId = TokenId.ToString() }, headers: GetHeader());
+
+                return Ok(reply);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new WebApiErrorMessageResponse()
+                {
+                    Errors = new List<string>() {
+                            ex.Message
+                    },
+                    Success = false
+                });
+            }
+
+        }
+
+
+        [HttpPost("SaveBusinessTag")]
+        public async Task<ActionResult> SaveBusinessTag([FromQuery] Guid businessId, [FromQuery] Guid TagId)
+        {
+            try
+            {
+                var channel = GrpcChannel.ForAddress(channelUrl);
+                var client = new BusinessAppService.BusinessAppServiceClient(channel);
+
+                var reply = await client.SaveBusinessTagAsync(new BusinessTagGm { BusinessId = businessId.ToString(), TagId = TagId.ToString() }, headers: GetHeader());
 
                 return Ok(reply);
             }

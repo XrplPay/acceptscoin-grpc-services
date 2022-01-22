@@ -143,8 +143,5 @@ namespace AcceptsCoin.ApiGateway.Core.Dtos.Directory
         public string OfferedServices { get; set; }
 
         public Guid CategoryId { get; set; }
-
-
-
     }
 }

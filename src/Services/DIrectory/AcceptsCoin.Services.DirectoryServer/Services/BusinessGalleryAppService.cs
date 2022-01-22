@@ -63,6 +63,35 @@ namespace AcceptsCoin.Services.DirectoryServer
             return await Task.FromResult(response);
 
         }
+
+        [AllowAnonymous]
+        public override async Task<BusinessGalleryListGm> GetByBusinessId(BusinessGalleryBusinessIdFilter request, ServerCallContext context)
+        {
+            BusinessGalleryListGm response = new BusinessGalleryListGm();
+
+            IQueryable<BusinessGallery> query = _businessGalleryRepository.GetQuery();
+            query = query.Where(x => x.BusinessId == Guid.Parse(request.BusienssId));
+
+            response.CurrentPage = request.PageId;
+            response.ItemCount = await _businessGalleryRepository.GetCount(query);
+            response.PageCount = (response.ItemCount / request.PageSize) + 1;
+
+
+
+            var BusinessGalleryes = from BusinessGallery in await _businessGalleryRepository.GetAll(query, request.PageId, request.PageSize)
+                                    select new BusinessGalleryGm()
+                                    {
+                                        Id = BusinessGallery.BusinessGalleryId.ToString(),
+                                        Extension = BusinessGallery.Extension,
+                                        Name = BusinessGallery.Name,
+                                        Url = BusinessGallery.Name + BusinessGallery.Extension,
+
+                                    };
+
+            response.Items.AddRange(BusinessGalleryes.ToArray());
+            return await Task.FromResult(response);
+
+        }
         public override async Task<BusinessGalleryListGm> GetByUserId(BusinessGalleryQueryFilter request, ServerCallContext context)
         {
             BusinessGalleryListGm response = new BusinessGalleryListGm();
@@ -83,6 +112,7 @@ namespace AcceptsCoin.Services.DirectoryServer
                                         Id = BusinessGallery.BusinessGalleryId.ToString(),
                                         Name = BusinessGallery.Name,
                                         Extension = BusinessGallery.Extension,
+                                        Url = BusinessGallery.Name + BusinessGallery.Extension,
 
                                     };
 
@@ -98,7 +128,8 @@ namespace AcceptsCoin.Services.DirectoryServer
                 Id = BusinessGallery.BusinessGalleryId.ToString(),
                  Name = BusinessGallery.Name,
                  Extension = BusinessGallery.Extension,
-                
+                Url = BusinessGallery.Name + BusinessGallery.Extension,
+
             };
             return await Task.FromResult(searchedBusinessGallery);
         }
