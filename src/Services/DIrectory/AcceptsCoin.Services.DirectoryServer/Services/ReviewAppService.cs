@@ -61,7 +61,7 @@ namespace AcceptsCoin.Services.DirectoryServer
             ReviewListFrontGm response = new ReviewListFrontGm();
 
             IQueryable<Review> query = _ReviewRepository.GetQuery();
-            query = query.Where(x => x.BusinessId == Guid.Parse(request.BusinessId) && x.Deleted == false && x.Published == true);
+            query = query.Where(x => x.BusinessId == Guid.Parse(request.BusinessId) && x.Deleted == false);
             response.CurrentPage = request.PageId;
             response.ItemCount = await _ReviewRepository.GetCount(query);
             response.PageCount = (response.ItemCount / request.PageSize) + 1;
