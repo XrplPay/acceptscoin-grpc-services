@@ -68,9 +68,18 @@ namespace AcceptsCoin.ApiGateway.Core.Dtos.Directory
 
         public IEnumerable<Tag> Tags { get; set; }
 
+        public IEnumerable<Token> Tokens { get; set; }
+
 
     }
     public class Tag
+    {
+        public Guid Id { get; set; }
+
+        public string Title { get; set; }
+    }
+
+    public class Token
     {
         public Guid Id { get; set; }
 

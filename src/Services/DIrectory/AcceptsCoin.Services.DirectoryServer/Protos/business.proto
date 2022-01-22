@@ -78,6 +78,9 @@ message CreateBusinessGm {
     message TagGm{
         string tagId = 1;
     }
+    message TokenGm{
+        string tokenId = 1;
+    }
     string Id = 1;
     string name = 2;
     string email = 3;
@@ -97,6 +100,7 @@ message CreateBusinessGm {
     string offeredServices = 17;
     string categoryId = 18;
     repeated TagGm tags = 19;
+    repeated TokenGm tokens = 20;
 }
 message BusinessGm {
     string Id = 1;

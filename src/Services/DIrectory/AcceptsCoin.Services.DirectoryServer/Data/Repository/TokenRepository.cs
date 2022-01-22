@@ -48,7 +48,7 @@ namespace AcceptsCoin.Services.DirectoryServer.Data.Repository
 
         public async Task<Token> Find(Guid Id)
         {
-            return await _context.Tokens.FindAsync(Id);
+            return await _context.Tokens.Where(x=>x.TokenId==Id).FirstOrDefaultAsync();
         }
        
 
