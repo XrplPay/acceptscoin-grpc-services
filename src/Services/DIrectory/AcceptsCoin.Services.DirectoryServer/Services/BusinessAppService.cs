@@ -63,7 +63,7 @@ namespace AcceptsCoin.Services.DirectoryServer
             response.ImageUrl = business.BusinessGalleries.Count > 0 ?
                 business.BusinessGalleries.FirstOrDefault().Name + business.BusinessGalleries.FirstOrDefault().Extension
                 :
-                "https://img.grouponcdn.com/deal/28PbQPC6SSX8BASL8NRkTSK4Ayoe/28-1200x720/v1/c870x524.webp";
+                "https://pambansangbakal.com.ph/wp-content/uploads/2019/10/no-image-800x511.png";
 
             response.LocationName = "United state";
             response.Rate = 5;
@@ -87,7 +87,7 @@ namespace AcceptsCoin.Services.DirectoryServer
                              Extension = image.Extension,
                              Image = image.Name + image.Extension,
                              Caption = "",
-                             //Url = "https://img.grouponcdn.com/deal/28PbQPC6SSX8BASL8NRkTSK4Ayoe/28-1200x720/v1/c870x524.webp",
+                             //Url = "https://pambansangbakal.com.ph/wp-content/uploads/2019/10/no-image-800x511.png",
                          };
             response.Images.AddRange(images.ToArray());
 
@@ -154,8 +154,8 @@ namespace AcceptsCoin.Services.DirectoryServer
                                  Latitude = business.Latitude,
                                  Longitude = business.Longitude,
                                  Icon = "icon",
-                                 //ImageUrl = "https://img.grouponcdn.com/deal/28PbQPC6SSX8BASL8NRkTSK4Ayoe/28-1200x720/v1/c870x524.webp",
-                                 ImageUrl = business.BusinessGalleries.Count > 0 ? business.BusinessGalleries.FirstOrDefault().Name : "https://img.grouponcdn.com/deal/28PbQPC6SSX8BASL8NRkTSK4Ayoe/28-1200x720/v1/c870x524.webp",
+                                 //ImageUrl = "https://pambansangbakal.com.ph/wp-content/uploads/2019/10/no-image-800x511.png",
+                                 ImageUrl = business.BusinessGalleries.Count > 0 ? business.BusinessGalleries.FirstOrDefault().Name : "https://pambansangbakal.com.ph/wp-content/uploads/2019/10/no-image-800x511.png",
                                  LocationName = "United state",
                                  Rate = 5,
                                  Subtitle = business.Description,
@@ -205,8 +205,8 @@ namespace AcceptsCoin.Services.DirectoryServer
                                  Latitude = business.Latitude,
                                  Longitude = business.Longitude,
                                  Icon = "icon",
-                                 //ImageUrl = "https://img.grouponcdn.com/deal/28PbQPC6SSX8BASL8NRkTSK4Ayoe/28-1200x720/v1/c870x524.webp",
-                                 ImageUrl = business.BusinessGalleries.Count > 0 ? business.BusinessGalleries.FirstOrDefault().Name : "https://img.grouponcdn.com/deal/28PbQPC6SSX8BASL8NRkTSK4Ayoe/28-1200x720/v1/c870x524.webp",
+                                 //ImageUrl = "https://pambansangbakal.com.ph/wp-content/uploads/2019/10/no-image-800x511.png",
+                                 ImageUrl = business.BusinessGalleries.Count > 0 ? business.BusinessGalleries.FirstOrDefault().Name : "https://pambansangbakal.com.ph/wp-content/uploads/2019/10/no-image-800x511.png",
                                  LocationName = "United state",
                                  Rate = 5,
                                  Subtitle = business.Description,
@@ -305,8 +305,8 @@ namespace AcceptsCoin.Services.DirectoryServer
                                  Latitude = business.Latitude,
                                  Longitude = business.Longitude,
                                  Icon = "icon",
-                                 //ImageUrl = "https://img.grouponcdn.com/deal/28PbQPC6SSX8BASL8NRkTSK4Ayoe/28-1200x720/v1/c870x524.webp",
-                                 ImageUrl = business.BusinessGalleries.Count > 0 ? business.BusinessGalleries.FirstOrDefault().Name : "https://img.grouponcdn.com/deal/28PbQPC6SSX8BASL8NRkTSK4Ayoe/28-1200x720/v1/c870x524.webp",
+                                 //ImageUrl = "https://pambansangbakal.com.ph/wp-content/uploads/2019/10/no-image-800x511.png",
+                                 ImageUrl = business.BusinessGalleries.Count > 0 ? business.BusinessGalleries.FirstOrDefault().Name : "https://pambansangbakal.com.ph/wp-content/uploads/2019/10/no-image-800x511.png",
                                  LocationName = "United state",
                                  Rate = 5,
                                  Subtitle = business.Description,
@@ -369,6 +369,8 @@ namespace AcceptsCoin.Services.DirectoryServer
                                  Address = business.Address,
                                  OfferedServices = business.OfferedServices,
                                  CategoryId = business.CategoryId.ToString(),
+                                 ImageUrl = business.BusinessGalleries.Count > 0 ? business.BusinessGalleries.FirstOrDefault().Name : "https://pambansangbakal.com.ph/wp-content/uploads/2019/10/no-image-800x511.png",
+
                              };
 
             response.Items.AddRange(businesses.ToArray());
@@ -412,7 +414,10 @@ namespace AcceptsCoin.Services.DirectoryServer
                                  Address = business.Address,
                                  OfferedServices = business.OfferedServices,
                                  CategoryId = business.CategoryId.ToString(),
+                                 ImageUrl = business.BusinessGalleries.Count > 0 ? business.BusinessGalleries.FirstOrDefault().Name : "https://pambansangbakal.com.ph/wp-content/uploads/2019/10/no-image-800x511.png",
                              };
+
+
 
             response.Items.AddRange(businesses.ToArray());
             response.Pagination = pagination;
@@ -455,6 +460,9 @@ namespace AcceptsCoin.Services.DirectoryServer
                                  Address = business.Address,
                                  OfferedServices = business.OfferedServices,
                                  CategoryId = business.CategoryId.ToString(),
+                                 ImageUrl = business.BusinessGalleries.Count > 0 ? business.BusinessGalleries.FirstOrDefault().Name : "https://pambansangbakal.com.ph/wp-content/uploads/2019/10/no-image-800x511.png",
+
+
                              };
 
             response.Items.AddRange(businesses.ToArray());
@@ -518,7 +526,7 @@ namespace AcceptsCoin.Services.DirectoryServer
                 Twitter = request.Twitter,
                 FaceBook = request.FaceBook,
                 Instagram = request.Instagram,
-                Verified = false,
+                Verified = true,
                 Latitude = request.Latitude,
                 Longitude = request.Longitude,
                 Description = request.Description,

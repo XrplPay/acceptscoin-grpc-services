@@ -117,6 +117,8 @@ message BusinessGm {
     string address = 16;
     string offeredServices = 17;
     string categoryId = 18;
+    optional string imageUrl = 19;
+
 }
 message BusinessListGm {
     repeated BusinessGm items = 1;
