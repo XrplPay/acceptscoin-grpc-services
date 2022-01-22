@@ -162,7 +162,7 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Core
 
         }
 
-        [HttpPut("UpdatePublishStatus{id}")]
+        [HttpPut("UpdatePublishStatus/{id}")]
         public async Task<ActionResult> UpdatePublishStatus(Guid id)
         {
             try
