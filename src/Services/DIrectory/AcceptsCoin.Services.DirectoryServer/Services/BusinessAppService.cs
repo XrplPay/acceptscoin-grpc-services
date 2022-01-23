@@ -215,6 +215,30 @@ namespace AcceptsCoin.Services.DirectoryServer
         }
 
         [AllowAnonymous]
+        public override async Task<BusinessTokenListGm> GetBusinessToken(BusinessIdFilter request, ServerCallContext context)
+        {
+            BusinessTokenListGm response = new BusinessTokenListGm();
+
+            IQueryable<BusinessToken> query = _businessTokenRepository.GetQuery();
+            query = query.Where(x => x.BusinessId == Guid.Parse(request.BusinessId));
+
+
+            var tagList = await _businessTokenRepository.GetAll(query, 1, 1000);
+
+            var tokens = from token in tagList
+                       select new BusinessTokenGm()
+                       {
+                           BusinessId = request.BusinessId,
+                           TokenId = token.TokenId.ToString(),
+                       };
+
+            response.BusinessTokens.AddRange(tokens.ToArray());
+
+
+            return await Task.FromResult(response);
+        }
+
+        [AllowAnonymous]
         public override async Task<BusinessListFrontGm> GetFrontBusinessListByTagId(BusinessFrontTagIdQueryFilter request, ServerCallContext context)
         {
             BusinessListFrontGm response = new BusinessListFrontGm();

@@ -35,6 +35,8 @@ namespace AcceptsCoin.ApiGateway.Core.Dtos
         public int Priority { get; set; }
 
         public string Link { get; set; }
+        public IFormFile? File { get; set; }
+
 
     }
     public class DeleteDto

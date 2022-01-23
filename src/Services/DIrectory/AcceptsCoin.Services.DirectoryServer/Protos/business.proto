@@ -24,6 +24,7 @@ service BusinessAppService{
     rpc SaveBusinessTokenCollection (BusinessTokenListGm) returns (Empty);
     rpc SaveBusinessTag (BusinessTagGm) returns (Empty);
     rpc GetBusinessTag (BusinessIdFilter) returns (BusinessTagListGm);
+    rpc GetBusinessToken (BusinessIdFilter) returns (BusinessTokenListGm);
 
 }
 

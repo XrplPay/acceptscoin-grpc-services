@@ -276,25 +276,42 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Token
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> Put(Guid id, [FromBody] UpdateTokenDto entity)
+        public async Task<ActionResult> Put(Guid id, [FromForm] UpdateTokenDto entity)
         {
             try
             {
                 var channel = GrpcChannel.ForAddress(channelUrl);
                 var client = new TokenAppService.TokenAppServiceClient(channel);
-                var reply = await client.PutAsync(new TokenGm
+
+
+                string logo;
+
+
+                if (entity.File != null)
+                {
+                    logo = await Upload(entity.File);
+                }
+                else
+                {
+                    logo = entity.Logo;
+                }
+
+                var reply = await client.PutAsync(new UpdateTokenGm
                 {
                     Id = id.ToString(),
                     Name = entity.Name,
                     Symbol = entity.Symbol,
                     Description = entity.Description,
 
-                    Icon = entity.Icon,
-
-                    Logo = entity.Logo,
+                    Icon = "",
+                    
+                    Logo = logo,
                     Priority = entity.Priority,
                     Link = entity.Link,
                 }, headers: GetHeader());
+
+
+                
 
 
                 #region Dependency
@@ -306,8 +323,8 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Token
                     {
                         Id = id.ToString(),
                         Name = entity.Name,
-                        Icon = entity.Icon,
-                        Logo = entity.Logo,
+                        Icon = "",
+                        Logo = logo,
                         Symbol = entity.Symbol,
 
                     }, headers: GetHeader());

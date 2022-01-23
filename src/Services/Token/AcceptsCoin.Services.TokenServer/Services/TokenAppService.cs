@@ -232,13 +232,13 @@ namespace AcceptsCoin.Services.TokenServer
             return await Task.FromResult<Empty>(new Empty());
         }
 
-        public override async Task<TokenGm> Put(TokenGm request,
+        public override async Task<UpdateTokenGm> Put(UpdateTokenGm request,
            ServerCallContext context)
         {
             Token token = await _tokenService.Find(Guid.Parse(request.Id));
             if (token == null)
             {
-                return await Task.FromResult<TokenGm>(null);
+                return await Task.FromResult<UpdateTokenGm>(null);
             }
 
 
@@ -258,7 +258,7 @@ namespace AcceptsCoin.Services.TokenServer
 
 
             await _tokenService.Update(token);
-            return await Task.FromResult<TokenGm>(new TokenGm()
+            return await Task.FromResult<UpdateTokenGm>(new UpdateTokenGm()
             {
                 Id = token.TokenId.ToString(),
                 Icon = token.Icon,

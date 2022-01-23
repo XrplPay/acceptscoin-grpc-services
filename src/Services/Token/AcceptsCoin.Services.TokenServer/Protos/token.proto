@@ -12,7 +12,7 @@ service TokenAppService{
     rpc GetByPartnerId (PartnerTokenQueryFilter) returns (TokenListGm);
     rpc GetFrontTokenList (Empty) returns (TokenFrontListGm);
     rpc Post (TokenGm) returns (TokenGm);
-    rpc Put (TokenGm) returns (TokenGm);
+    rpc Put (UpdateTokenGm) returns (UpdateTokenGm);
     rpc Delete (TokenIdFilter) returns (Empty);
     rpc SoftDelete (TokenIdFilter) returns (Empty);
     rpc SoftDeleteCollection (DeleteCollectionGm) returns (Empty);
@@ -47,7 +47,7 @@ message PaginationGm{
     int32 itemCount = 2;
     int32 pageCount = 3;
 }
-message TokenGm {
+message UpdateTokenGm {
     string Id = 1;
     string Name = 2;
     string Symbol = 3;
@@ -56,6 +56,21 @@ message TokenGm {
     string Logo = 6;
     int32 Priority = 7;  
     string Link = 8;
+    
+}
+message TokenGm {
+    message FileGm{
+        string file = 1;
+    }
+    string Id = 1;
+    string Name = 2;
+    string Symbol = 3;
+    string Description = 4;
+    string Icon = 5;
+    string Logo = 6;
+    int32 Priority = 7;  
+    string Link = 8;
+    repeated FileGm files=9;
     
 }
 message TokenListGm {
