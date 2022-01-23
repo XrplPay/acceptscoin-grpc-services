@@ -1,17 +1,12 @@
 ﻿<Properties StartupConfiguration="Multiple Projects">
   <MonoDevelop.Ide.ItemProperties.src.Services.DIrectory.AcceptsCoin.Services.DirectoryServer PreferredExecutionTarget="/Applications/Google Chrome.app" />
   <MonoDevelop.Ide.ItemProperties.src.Services.Token.AcceptsCoin.Services.TokenServer PreferredExecutionTarget="/Applications/Google Chrome.app" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Services/Token/AcceptsCoin.Services.TokenServer/Protos/token.proto">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Services/DIrectory/AcceptsCoin.Services.DirectoryServer/Data/Repository/BusinessRepository.cs">
     <Files>
-      <File FileName="Services/DIrectory/AcceptsCoin.Services.DirectoryServer/Protos/businessgallery.proto" Line="31" Column="16" />
-      <File FileName="Gateways/AcceptsCoin.ApiGateway/Controllers/v1/Token/TokenController.cs" />
-      <File FileName="Services/DIrectory/AcceptsCoin.Services.DirectoryServer/Protos/directoryservice.proto" />
-      <File FileName="Services/DIrectory/AcceptsCoin.Services.DirectoryServer/Services/DirectoryAppService.cs" />
-      <File FileName="Services/Token/AcceptsCoin.Services.TokenServer/Services/TokenAppService.cs" Line="127" Column="29" />
-      <File FileName="Gateways/AcceptsCoin.ApiGateway/Controllers/v1/Directory/ReviewController.cs" Line="169" Column="14" />
-      <File FileName="Services/DIrectory/AcceptsCoin.Services.DirectoryServer/Services/ReviewAppService.cs" />
-      <File FileName="Services/DIrectory/AcceptsCoin.Services.DirectoryServer/Services/BusinessAppService.cs" Line="789" Column="14" />
-      <File FileName="Services/Token/AcceptsCoin.Services.TokenServer/Protos/token.proto" Line="69" Column="23" />
+      <File FileName="Services/DIrectory/AcceptsCoin.Services.DirectoryServer/Services/BusinessAppService.cs" Line="150" Column="59" />
+      <File FileName="Services/DIrectory/AcceptsCoin.Services.DirectoryServer/Protos/business.proto" Line="26" Column="71" />
+      <File FileName="Gateways/AcceptsCoin.ApiGateway/Controllers/v1/Directory/BusinessController.cs" Line="121" Column="25" />
+      <File FileName="Services/DIrectory/AcceptsCoin.Services.DirectoryServer/Data/Repository/BusinessRepository.cs" Line="67" Column="30" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -39,7 +34,11 @@
                 <Node name="Core" expanded="True" />
                 <Node name="DIrectory" expanded="True">
                   <Node name="AcceptsCoin.Services.DirectoryServer" expanded="True">
-                    <Node name="Data" expanded="True" />
+                    <Node name="Data" expanded="True">
+                      <Node name="Repository" expanded="True">
+                        <Node name="BusinessRepository.cs" selected="True" />
+                      </Node>
+                    </Node>
                     <Node name="Domain" expanded="True" />
                     <Node name="Protos" expanded="True" />
                     <Node name="Services" expanded="True" />
@@ -52,9 +51,7 @@
                 <Node name="Token" expanded="True">
                   <Node name="AcceptsCoin.Services.TokenServer" expanded="True">
                     <Node name="Core" expanded="True" />
-                    <Node name="Protos" expanded="True">
-                      <Node name="token.proto" selected="True" />
-                    </Node>
+                    <Node name="Protos" expanded="True" />
                     <Node name="Services" expanded="True" />
                   </Node>
                 </Node>
@@ -82,6 +79,7 @@
       <Breakpoint file="/Users/amin/Projects/acceptscoin-grpc-services/src/Gateways/AcceptsCoin.ApiGateway/Controllers/v1/Directory/ReviewController.cs" relfile="Gateways/AcceptsCoin.ApiGateway/Controllers/v1/Directory/ReviewController.cs" line="64" column="1" />
       <Breakpoint file="/Users/amin/Projects/acceptscoin-grpc-services/src/Gateways/AcceptsCoin.ApiGateway/Controllers/v1/Identity/UserController.cs" relfile="Gateways/AcceptsCoin.ApiGateway/Controllers/v1/Identity/UserController.cs" line="166" column="1" />
       <Breakpoint file="/Users/amin/Projects/acceptscoin-grpc-services/src/Gateways/AcceptsCoin.ApiGateway/Controllers/v1/Identity/UserController.cs" relfile="Gateways/AcceptsCoin.ApiGateway/Controllers/v1/Identity/UserController.cs" line="180" column="1" />
+      <Breakpoint file="/Users/amin/Projects/acceptscoin-grpc-services/src/Services/DIrectory/AcceptsCoin.Services.DirectoryServer/Services/BusinessAppService.cs" relfile="Services/DIrectory/AcceptsCoin.Services.DirectoryServer/Services/BusinessAppService.cs" line="175" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MultiItemStartupConfigurations>

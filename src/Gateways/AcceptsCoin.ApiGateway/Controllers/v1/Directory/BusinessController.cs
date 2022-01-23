@@ -119,6 +119,30 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Directory
         }
 
         [AllowAnonymous]
+        [HttpGet("GetBusinessTags")]
+        public async Task<ActionResult> GetBusinessTags([FromQuery] Guid businessId)
+        {
+            try
+            {
+                var channel = GrpcChannel.ForAddress(channelUrl);
+                var client = new BusinessAppService.BusinessAppServiceClient(channel);
+                var reply = await client.GetBusinessTagAsync(new BusinessIdFilter { BusinessId = businessId.ToString() });
+
+                return Ok(reply);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new WebApiErrorMessageResponse()
+                {
+                    Errors = new List<string>() {
+                            ex.Message
+                    },
+                    Success = false
+                });
+            }
+        }
+
+        [AllowAnonymous]
         [HttpGet("GetFrontBusinessByLocation")]
         public async Task<ActionResult> GetFrontBusinessByLocation([FromQuery] string query, [FromQuery] int pageId = 1, [FromQuery] int pageSize = 10)
         {

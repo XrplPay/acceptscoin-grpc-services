@@ -23,6 +23,7 @@ service BusinessAppService{
     rpc SaveBusinessToken (BusinessTokenGm) returns (Empty);
     rpc SaveBusinessTokenCollection (BusinessTokenListGm) returns (Empty);
     rpc SaveBusinessTag (BusinessTagGm) returns (Empty);
+    rpc GetBusinessTag (BusinessIdFilter) returns (BusinessTagListGm);
 
 }
 
@@ -38,6 +39,9 @@ message BusinessTokenGm{
 message BusinessTagGm{
     string businessId = 1;
     string tagId = 2;
+}
+message BusinessTagListGm{
+    repeated BusinessTagGm businessTags =1;
 }
 
 message BusinessTokenListGm{

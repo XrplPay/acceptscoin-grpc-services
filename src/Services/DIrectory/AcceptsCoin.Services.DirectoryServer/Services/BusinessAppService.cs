@@ -124,12 +124,12 @@ namespace AcceptsCoin.Services.DirectoryServer
 
 
 
-            var tokens = from token in business.BusinessGalleries
+            var tokens = from token in business.BusinessTokens
                          select new BusinessTokenFrontGm()
                          {
-                             Id = token.BusinessId.ToString(),
-                             Coin = "Coin Name",
-                             Img = "/coin/xrplpay.png",
+                             Id = token.TokenId.ToString(),
+                             Coin = token.Token.Name,
+                             Img = token.Token.Logo,
                              TotalCoin = 100,
                          };
             response.Tokens.AddRange(tokens.ToArray());
@@ -168,19 +168,47 @@ namespace AcceptsCoin.Services.DirectoryServer
 
             response.Items.AddRange(businesses.ToArray());
 
+
+
+
+
             for (int i = 0; i < businesses.Count() - 1; i++)
             {
-                var tokens = from token in buinessList
+                var tokens = from token in buinessList.ElementAt(i).BusinessTokens
                              select new BusinessFrontGm.Types.BusinessTokenFrontGm()
                              {
-                                 Id = Guid.NewGuid().ToString(),
-                                 Coin = "Token",
-                                 Img = "/coin/xrplpay.png",
+                                 Id = token.TokenId.ToString(),
+                                 Coin = token.Token.Name,
+                                 Img = token.Token.Logo,
                                  TotalCoin = 10,
                              };
                 //businesses.ElementAt(i).Token.Concat(tokens.ToArray());
                 response.Items[i].Token.AddRange(tokens.ToArray());
             }
+
+
+            return await Task.FromResult(response);
+        }
+
+        [AllowAnonymous]
+        public override async Task<BusinessTagListGm> GetBusinessTag(BusinessIdFilter request, ServerCallContext context)
+        {
+            BusinessTagListGm response = new BusinessTagListGm();
+
+            IQueryable<BusinessTag> query = _businessTagRepository.GetQuery();
+            query = query.Where(x => x.BusinessId == Guid.Parse(request.BusinessId));
+
+
+            var tagList = await _businessTagRepository.GetAll(query, 1, 1000);
+
+            var tags = from tag in tagList
+                       select new BusinessTagGm()
+                       {
+                           BusinessId = request.BusinessId,
+                           TagId = tag.TagId.ToString(),
+                       };
+
+            response.BusinessTags.AddRange(tags.ToArray());
 
 
             return await Task.FromResult(response);
@@ -221,12 +249,12 @@ namespace AcceptsCoin.Services.DirectoryServer
 
             for (int i = 0; i < businesses.Count() - 1; i++)
             {
-                var tokens = from token in buinessList
+                var tokens = from token in buinessList.ElementAt(i).BusinessTokens
                              select new BusinessFrontGm.Types.BusinessTokenFrontGm()
                              {
-                                 Id = Guid.NewGuid().ToString(),
-                                 Coin = "Token",
-                                 Img = "/coin/xrplpay.png",
+                                 Id = token.TokenId.ToString(),
+                                 Coin = token.Token.Name,
+                                 Img = token.Token.Logo,
                                  TotalCoin = 10,
                              };
                 //businesses.ElementAt(i).Token.Concat(tokens.ToArray());
@@ -321,12 +349,12 @@ namespace AcceptsCoin.Services.DirectoryServer
 
             for (int i = 0; i < businesses.Count() - 1; i++)
             {
-                var tokens = from token in buinessList
+                var tokens = from token in buinessList.ElementAt(i).BusinessTokens
                              select new BusinessFrontGm.Types.BusinessTokenFrontGm()
                              {
-                                 Id = Guid.NewGuid().ToString(),
-                                 Coin = "Token",
-                                 Img = "/coin/xrplpay.png",
+                                 Id = token.TokenId.ToString(),
+                                 Coin = token.Token.Name,
+                                 Img = token.Token.Logo,
                                  TotalCoin = 10,
                              };
                 //businesses.ElementAt(i).Token.Concat(tokens.ToArray());

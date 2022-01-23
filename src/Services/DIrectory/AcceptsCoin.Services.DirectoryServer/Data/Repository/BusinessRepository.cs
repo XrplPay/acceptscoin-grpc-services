@@ -64,6 +64,7 @@ namespace AcceptsCoin.Services.DirectoryServer.Data.Repository
                 .Include(x => x.BusinessGalleries)
                 .Include(x => x.BusinessTags)
                 .Include(x=>x.BusinessReviews)
+                .Include(x=>x.BusinessTokens).ThenInclude(x=>x.Token)
                 .Include(x=> x.Category)
                 .Where(x => x.Deleted == false).Skip(skip).Take(take).ToListAsync();
 
