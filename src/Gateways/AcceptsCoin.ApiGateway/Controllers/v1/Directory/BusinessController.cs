@@ -446,6 +446,55 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Directory
 
         }
 
+
+        [HttpPost("UploadBusinessGallery/{id}")]
+        public async Task<ActionResult> UploadBusinessGallery(Guid id, [FromForm] UploadBusinessGalleryDto entity)
+        {
+            try
+            {
+                var channel = GrpcChannel.ForAddress(channelUrl);
+                var client = new BusinessAppService.BusinessAppServiceClient(channel);
+
+                var galleryClient = new BusinessGalleryAppService.BusinessGalleryAppServiceClient(channel);
+
+
+                List<FileModel> fileModels = new List<FileModel>();
+
+                if (entity.Files != null)
+                {
+                    foreach (var file in entity.Files.Files)
+                    {
+                        fileModels.Add(await Upload(file));
+                    }
+                }
+
+                foreach (var item in fileModels)
+                {
+                    galleryClient.Post(new BusinessGalleryGm
+                    {
+                        Extension = item.Extension,
+                        Id = "",
+                        Name = item.Name,
+                        BusinessId = id.ToString(),
+                    }, headers: GetHeader());
+                }
+
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new WebApiErrorMessageResponse()
+                {
+                    Errors = new List<string>() {
+                            ex.Message
+                    },
+                    Success = false
+                });
+            }
+
+        }
+
         [HttpPut("{id}")]
         public async Task<ActionResult> Put(Guid id, [FromBody] UpdateBusinessDto entity)
         {

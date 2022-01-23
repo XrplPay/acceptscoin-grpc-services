@@ -72,6 +72,14 @@ namespace AcceptsCoin.ApiGateway.Core.Dtos.Directory
 
 
     }
+
+    public class UploadBusinessGalleryDto
+    {
+
+        public IFormCollection Files { get; set; }
+
+
+    }
     public class Tag
     {
         public Guid Id { get; set; }
