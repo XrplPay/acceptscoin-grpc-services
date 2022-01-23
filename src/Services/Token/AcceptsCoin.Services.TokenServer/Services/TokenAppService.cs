@@ -121,14 +121,15 @@ namespace AcceptsCoin.Services.TokenServer
 
 
 
-            var coins = from coin in await _tokenRepository.GetAll()
+            var tokens = from token in await _tokenRepository.GetAll()
                         select new TokenFrontGm()
                         {
-                            Coin = coin.Name,
-                            Img = coin.Logo,
+                            Id = token.TokenId.ToString(),
+                            Coin = token.Name,
+                            Img = token.Logo,
                             TotalCoin = 100,
                         };
-            response.Items.AddRange(coins.ToArray());
+            response.Items.AddRange(tokens.ToArray());
             //response.Pagination = pagination;
             return await Task.FromResult(response);
 

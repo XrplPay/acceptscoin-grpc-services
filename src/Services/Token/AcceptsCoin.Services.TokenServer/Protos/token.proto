@@ -67,9 +67,10 @@ message TokenListGm {
 }
 
 message TokenFrontGm {
-    string Coin = 1;
-    int32 TotalCoin = 2;
-    string Img = 3;
+    string Id = 1;
+    string Coin = 2;
+    int32 TotalCoin = 3;
+    string Img = 4;
 }
 message TokenFrontListGm {
     repeated TokenFrontGm items = 1;

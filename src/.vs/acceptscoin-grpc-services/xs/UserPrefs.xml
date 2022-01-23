@@ -1,16 +1,17 @@
 ﻿<Properties StartupConfiguration="Multiple Projects">
   <MonoDevelop.Ide.ItemProperties.src.Services.DIrectory.AcceptsCoin.Services.DirectoryServer PreferredExecutionTarget="/Applications/Google Chrome.app" />
   <MonoDevelop.Ide.ItemProperties.src.Services.Token.AcceptsCoin.Services.TokenServer PreferredExecutionTarget="/Applications/Google Chrome.app" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Services/DIrectory/AcceptsCoin.Services.DirectoryServer/Services/BusinessAppService.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Services/Token/AcceptsCoin.Services.TokenServer/Protos/token.proto">
     <Files>
       <File FileName="Services/DIrectory/AcceptsCoin.Services.DirectoryServer/Protos/businessgallery.proto" Line="31" Column="16" />
       <File FileName="Gateways/AcceptsCoin.ApiGateway/Controllers/v1/Token/TokenController.cs" />
       <File FileName="Services/DIrectory/AcceptsCoin.Services.DirectoryServer/Protos/directoryservice.proto" />
       <File FileName="Services/DIrectory/AcceptsCoin.Services.DirectoryServer/Services/DirectoryAppService.cs" />
-      <File FileName="Services/Token/AcceptsCoin.Services.TokenServer/Services/TokenAppService.cs" />
+      <File FileName="Services/Token/AcceptsCoin.Services.TokenServer/Services/TokenAppService.cs" Line="127" Column="29" />
       <File FileName="Gateways/AcceptsCoin.ApiGateway/Controllers/v1/Directory/ReviewController.cs" Line="169" Column="14" />
       <File FileName="Services/DIrectory/AcceptsCoin.Services.DirectoryServer/Services/ReviewAppService.cs" />
-      <File FileName="Services/DIrectory/AcceptsCoin.Services.DirectoryServer/Services/BusinessAppService.cs" Line="750" Column="43" />
+      <File FileName="Services/DIrectory/AcceptsCoin.Services.DirectoryServer/Services/BusinessAppService.cs" Line="789" Column="14" />
+      <File FileName="Services/Token/AcceptsCoin.Services.TokenServer/Protos/token.proto" Line="69" Column="23" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -41,9 +42,7 @@
                     <Node name="Data" expanded="True" />
                     <Node name="Domain" expanded="True" />
                     <Node name="Protos" expanded="True" />
-                    <Node name="Services" expanded="True">
-                      <Node name="BusinessAppService.cs" selected="True" />
-                    </Node>
+                    <Node name="Services" expanded="True" />
                   </Node>
                 </Node>
                 <Node name="Identity" expanded="True">
@@ -53,7 +52,9 @@
                 <Node name="Token" expanded="True">
                   <Node name="AcceptsCoin.Services.TokenServer" expanded="True">
                     <Node name="Core" expanded="True" />
-                    <Node name="Protos" expanded="True" />
+                    <Node name="Protos" expanded="True">
+                      <Node name="token.proto" selected="True" />
+                    </Node>
                     <Node name="Services" expanded="True" />
                   </Node>
                 </Node>
