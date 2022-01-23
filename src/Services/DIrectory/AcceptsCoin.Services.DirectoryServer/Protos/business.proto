@@ -134,7 +134,9 @@ message BusinessGm {
     string address = 16;
     string offeredServices = 17;
     string categoryId = 18;
-    optional string imageUrl = 19;
+    repeated BusinessTokenFrontGm tokens = 19;
+    optional string imageUrl = 20;
+
 
 }
 message BusinessListGm {

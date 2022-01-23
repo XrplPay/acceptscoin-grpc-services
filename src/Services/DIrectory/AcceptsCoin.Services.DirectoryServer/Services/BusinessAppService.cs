@@ -445,9 +445,11 @@ namespace AcceptsCoin.Services.DirectoryServer
             pagination.ItemCount = await _businessRepository.GetCount(query);
             pagination.PageCount = (pagination.ItemCount / request.PageSize) + 1;
 
+            var buinessList = await _businessRepository.GetAll(query, request.PageId, request.PageSize);
 
 
-            var businesses = from business in await _businessRepository.GetAll(query, request.PageId, request.PageSize)
+
+            var businesses = from business in  buinessList
                              select new BusinessGm()
                              {
                                  Id = business.BusinessId.ToString(),
@@ -469,11 +471,27 @@ namespace AcceptsCoin.Services.DirectoryServer
                                  OfferedServices = business.OfferedServices,
                                  CategoryId = business.CategoryId.ToString(),
                                  ImageUrl = business.BusinessGalleries.Count > 0 ? business.BusinessGalleries.FirstOrDefault().Name + business.BusinessGalleries.FirstOrDefault().Extension : "https://pambansangbakal.com.ph/wp-content/uploads/2019/10/no-image-800x511.png",
+                                 
                              };
 
 
-
+            
             response.Items.AddRange(businesses.ToArray());
+
+            for (int i = 0; i < businesses.Count() - 1; i++)
+            {
+                var tokens = from token in buinessList.ElementAt(i).BusinessTokens
+                             select new BusinessTokenFrontGm()
+                             {
+                                 Id = token.TokenId.ToString(),
+                                 Coin = token.Token.Name,
+                                 Img = token.Token.Logo,
+                                 TotalCoin = 10,
+                             };
+                //businesses.ElementAt(i).Token.Concat(tokens.ToArray());
+                response.Items[i].Tokens.AddRange(tokens.ToArray());
+            }
+
             response.Pagination = pagination;
             return await Task.FromResult(response);
 
