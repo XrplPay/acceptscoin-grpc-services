@@ -774,6 +774,11 @@ namespace AcceptsCoin.Services.DirectoryServer
 
             if (item == null)
             {
+                var tag = await _tagRepository.Find(request.TagId);
+                if (tag == null)
+                {
+                    await _tagRepository.Add(new Tag { TagId = Guid.Parse(request.TagId) });
+                }
                 var businessTag = new BusinessTag()
                 {
                     BusinessId = Guid.Parse(request.BusinessId),
