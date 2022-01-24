@@ -10,6 +10,8 @@ namespace AcceptsCoin.Services.CoreServer.Domain.Interfaces
 {
     public interface IPartnerRepository
     {
+        Task<Partner> FindByApiKey(Guid Apikey);
+
         IQueryable<Partner> GetQuery();
 
         Task<int> GetCount(IQueryable<Partner> query);

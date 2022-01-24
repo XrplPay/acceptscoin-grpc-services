@@ -110,6 +110,19 @@ namespace AcceptsCoin.Services.CoreServer
             return await Task.FromResult(searchedPartner);
         }
 
+
+        [AllowAnonymous]
+        public override async Task<PartnerIdFilter> GetPartnerIdByApiKey(PartnerApiKeyGm request, ServerCallContext context)
+        {
+            PartnerIdFilter response = new PartnerIdFilter();
+            var partner = await _partnerRepository.FindByApiKey(Guid.Parse(request.ApiKey));
+            if (partner != null)
+            {
+                response.PartnerId = partner.PartnerId.ToString();
+            }
+            return await Task.FromResult(response);
+        }
+
         public override async Task<PartnerGm> Post(PartnerGm request, ServerCallContext context)
         {
 

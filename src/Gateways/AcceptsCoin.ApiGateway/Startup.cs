@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AcceptsCoin.ApiGateway.Helper;
 using AcceptsCoin.Common.Auth;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -46,6 +47,9 @@ namespace AcceptsCoin.ApiGateway
                 c.SwaggerDoc(name: "v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "Accepts Coin WebAPI", Version = "V1", });
                 c.SwaggerDoc(name: "v2", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "Accepts Coin WebAPI", Version = "V2", });
             });
+
+            services.AddTransient<IDataControl, DataControl>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

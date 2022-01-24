@@ -166,14 +166,14 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Identity
             {
                 var channel = GrpcChannel.ForAddress(channelUrl);
                 var client = new UserAppService.UserAppServiceClient(channel);
-                var reply = await client.PostAsync(new UserGm
+                var reply = await client.PostAsync(new CreateUserGm
                 {
                     Id = "",
                     Email = entity.Email,
                     Name = entity.Name,
                     Password = entity.Password,
 
-                }, headers: GetHeader());
+                });
 
 
 
@@ -188,7 +188,7 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Identity
                         Email = entity.Email,
                         Name = entity.Name,
 
-                    }, headers: GetHeader());
+                    });
                 }
                 #endregion
 

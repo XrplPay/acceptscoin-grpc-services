@@ -11,7 +11,7 @@ service UserAppService{
     rpc GetByPartnerId (UserPartnerIdQueryFilter) returns (UserListGm);
     rpc GetById (UserIdFilter) returns (UserGm);
     rpc GetProfile (EmptyUser) returns (UserProfileGm);
-    rpc Post (UserGm) returns (UserGm);
+    rpc Post (CreateUserGm) returns (UserGm);
     rpc Put (UserGm) returns (UserGm);
     rpc Delete (UserIdFilter) returns (EmptyUser);
     rpc SoftDelete (UserIdFilter) returns (EmptyUser);
@@ -48,7 +48,12 @@ message UserProfileGm {
     string name = 1;
     string email = 2;
 }
-
+message CreateUserGm {
+    string id = 1;
+    string name = 2;
+    string email = 3;
+    optional string password = 4;
+}
 message UserGm {
     string id = 1;
     string name = 2;

@@ -24,6 +24,7 @@ namespace AcceptsCoin.Services.DirectoryServer.Services
             _tokenRepository = tokenRepository;
         }
 
+        [AllowAnonymous]
         public override async Task<DirectoryUserGm> DirectoryUserPost(DirectoryUserGm request, ServerCallContext context)
         {
             var user = new User()

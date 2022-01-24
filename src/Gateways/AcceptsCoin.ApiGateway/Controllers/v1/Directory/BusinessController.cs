@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AcceptsCoin.ApiGateway.Core.Dtos;
 using AcceptsCoin.ApiGateway.Core.Dtos.Directory;
 using AcceptsCoin.ApiGateway.Core.Views;
+using AcceptsCoin.ApiGateway.Helper;
 using AcceptsCoin.Services.DirectoryServer.Protos;
 using AcceptsCoin.Services.StorageServer.Protos;
 using Google.Protobuf;
@@ -30,10 +31,10 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Directory
     {
         const string channelUrlStorage = "http://localhost:5054";
         const string channelUrl = "http://localhost:5053";
-
-        public BusinessController()
+        private IDataControl _dataControl;
+        public BusinessController(IDataControl dataControl)
         {
-
+            _dataControl = dataControl;
         }
         private Metadata GetHeader()
         {
@@ -44,6 +45,35 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Directory
             return header;
         }
 
+
+        [AllowAnonymous]
+        [HttpGet("GetPartnerId")]
+        public async Task<ActionResult> GetPartnerId()
+        {
+            try
+            {
+                Guid? partnerId = await _dataControl.getPartnerId(Request.HttpContext);
+                if (partnerId != null)
+                {
+                    return Ok(partnerId);
+                }
+                else
+                {
+                    return Unauthorized();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new WebApiErrorMessageResponse()
+                {
+                    Errors = new List<string>() {
+                            ex.Message
+                    },
+                    Success = false
+                });
+            }
+        }
 
         [AllowAnonymous]
         [HttpGet("GetFrontBusinessList")]

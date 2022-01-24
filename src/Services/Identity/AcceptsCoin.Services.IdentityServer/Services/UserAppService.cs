@@ -124,19 +124,22 @@ namespace AcceptsCoin.Services.IdentityServer.Services
             return await Task.FromResult(userProfile);
         }
 
-        public override async Task<UserGm> Post(UserGm request, ServerCallContext context)
+        [AllowAnonymous]
+        public override async Task<UserGm> Post(CreateUserGm request, ServerCallContext context)
         {
+            var userId = Guid.NewGuid();
             var user = new User()
             {
-                UserId = Guid.NewGuid(),
+                UserId = userId,
                 Name = request.Name,
-                CreatedById = getUserId(context),
+                CreatedById = userId,
                 CreatedDate = DateTime.Now,
                 Published = true,
                 Email = request.Email,
-                UserName=request.Email,
-                Password=request.Password,
-                Activated=true,
+                UserName = request.Email,
+                Password = request.Password,
+                Activated = true,
+                PartnerId = Guid.Parse(getPartnetId(context)),
             };
 
             var res = await _userRepository.Add(user);

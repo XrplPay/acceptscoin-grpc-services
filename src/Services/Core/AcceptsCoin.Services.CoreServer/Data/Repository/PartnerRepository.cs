@@ -49,7 +49,11 @@ namespace AcceptsCoin.Services.CoreServer.Data.Repository
         {
             return await _context.Partners.FindAsync(Id);
         }
-       
+
+        public async Task<Partner> FindByApiKey(Guid Apikey)
+        {
+            return await _context.Partners.Where(x => x.ApiKey == Apikey && x.Deleted == false && x.Published == true).FirstOrDefaultAsync();
+        }
 
         public async Task<IEnumerable<Partner>> GetAll()
         {

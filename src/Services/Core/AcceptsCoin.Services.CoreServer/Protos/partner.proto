@@ -9,6 +9,7 @@ package partner;
 service PartnerAppService{
     rpc GetAll (PartnerQueryFilter) returns (PartnerListGm);
     rpc GetById (PartnerIdFilter) returns (PartnerGm);
+    rpc GetPartnerIdByApiKey (PartnerApiKeyGm) returns (PartnerIdFilter);
     rpc GetByTokenId (PartnerTokenQueryFilter) returns (PartnerListGm);
     rpc Post (PartnerGm) returns (PartnerGm);
     rpc Put (PartnerGm) returns (PartnerGm);
@@ -17,6 +18,11 @@ service PartnerAppService{
     rpc SoftDeleteCollection (PartnerDeleteCollectionGm) returns (EmptyPartner);
 }
 message EmptyPartner{
+}
+
+message PartnerApiKeyGm
+{
+    string apiKey =1;
 }
 message PartnerIdFilter {
  string PartnerId = 1;
