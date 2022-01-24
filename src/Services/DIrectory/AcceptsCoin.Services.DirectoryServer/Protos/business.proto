@@ -158,11 +158,11 @@ message BusinessFrontGm {
     string img = 4;
     }
     string Id = 1;
-    string title = 2;
+    string name = 2;
     string locationName = 3;
     int32 rate = 4;
     int32 totalRate = 5;
-    string subtitle = 6;
+    string description = 6;
     double latitude = 7;
     double longitude = 8;
     string icon = 9;
@@ -177,13 +177,12 @@ message BusinessListFrontGm {
 }
 
 message SingleBusinessFrontGm {
-    
     string Id = 1;
-    string title = 2;
+    string name = 2;
     string locationName = 3;
     int32 rate = 4;
     int32 totalRate = 5;
-    string subtitle = 6;
+    string description = 6;
     double latitude = 7;
     double longitude = 8;
     string icon = 9;
@@ -195,7 +194,14 @@ message SingleBusinessFrontGm {
     BusinessCategoryFrontGm category = 15;
     bool verified = 17;
     string offeredServices =18;
-
+    string instagram = 19;
+    string twitter = 20;
+    string facebook = 21;
+    string address = 22;
+    string owner = 23;
+    string contactNumbrt = 24;
+    string manager = 25;
+    string email = 26;
 }
 message BusinessGalleryFrontGm {
     string Id = 1;

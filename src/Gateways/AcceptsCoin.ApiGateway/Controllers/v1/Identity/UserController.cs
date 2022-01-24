@@ -158,6 +158,7 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Identity
         }
 
 
+        [AllowAnonymous]
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] CreateUserDto entity)
         {

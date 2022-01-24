@@ -66,10 +66,16 @@ namespace AcceptsCoin.Services.DirectoryServer
 
             response.LocationName = "United state";
             response.Rate = 5;
-            response.Subtitle = business.Description;
-            response.Title = business.Name;
+            response.Description = business.Description;
+            response.Name = business.Name;
+            response.Instagram = business.Instagram;
+            response.Twitter = business.Twitter;
+            response.Facebook = business.FaceBook;
             response.TotalRate = 100;
-
+            response.Email = business.Email;
+            response.Manager = business.Manager;
+            response.ContactNumbrt = business.ContactNumber;
+            response.Owner = business.Owner;
             response.Verified = business.Verified;
             response.OfferedServices = business.OfferedServices;
             response.Category = new BusinessCategoryFrontGm
@@ -157,8 +163,8 @@ namespace AcceptsCoin.Services.DirectoryServer
                                  ImageUrl = getDefaultImage(business.BusinessGalleries),
                                  LocationName = "United state",
                                  Rate = 5,
-                                 Subtitle = business.Description,
-                                 Title = business.Name,
+                                 Description = business.Description,
+                                 Name = business.Name,
                                  TotalRate = 100,
 
                              };
@@ -260,8 +266,8 @@ namespace AcceptsCoin.Services.DirectoryServer
                                  ImageUrl  = getDefaultImage(business.BusinessGalleries),
                                  LocationName = "United state",
                                  Rate = 5,
-                                 Subtitle = business.Description,
-                                 Title = business.Name,
+                                 Description = business.Description,
+                                 Name = business.Name,
                                  TotalRate = 100,
 
                              };
@@ -360,9 +366,10 @@ namespace AcceptsCoin.Services.DirectoryServer
                                  ImageUrl = getDefaultImage(business.BusinessGalleries),
                                  LocationName = "United state",
                                  Rate = 5,
-                                 Subtitle = business.Description,
-                                 Title = business.Name,
+                                 Description = business.Description,
+                                 Name = business.Name,
                                  TotalRate = 100,
+                                  
 
                              };
 
