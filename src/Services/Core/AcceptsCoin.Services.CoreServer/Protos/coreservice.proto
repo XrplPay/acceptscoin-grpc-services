@@ -1,0 +1,14 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "AcceptsCoin.Services.CoreServer.Protos";
+
+package coreservice;
+
+service CoreAppService{
+    rpc SavePartnerToken (CorePartnerTokenGm) returns (CorePartnerTokenGm);
+}
+
+message CorePartnerTokenGm {
+    string tokenId = 1;
+    string partnerId = 2;
+}

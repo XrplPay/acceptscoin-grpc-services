@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AcceptsCoin.ApiGateway.Core.Dtos;
 using AcceptsCoin.ApiGateway.Core.Views;
+using AcceptsCoin.Services.CoreServer.Protos;
 using AcceptsCoin.Services.DirectoryServer.Protos;
 using AcceptsCoin.Services.StorageServer.Protos;
 using AcceptsCoin.Services.TokenServer ;
@@ -29,6 +30,7 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Token
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class TokenController : ControllerBase
     {
+        const string coreChannelUrl = "http://localhost:5052";
         const string directoryChannelUrl = "http://localhost:5053";
         const string channelUrl = "http://localhost:5055";
         const string channelUrlStorage = "http://localhost:5054";
@@ -77,7 +79,7 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Token
             {
                 var channel = GrpcChannel.ForAddress(channelUrl);
                 var client = new TokenAppService.TokenAppServiceClient(channel);
-                var reply = await client.GetByPartnerIdAsync(new PartnerTokenQueryFilter { PartnerId = partnerId.ToString(), PageId = pageId, PageSize = pageSize }, headers: GetHeader());
+                var reply = await client.GetByPartnerIdAsync(new Services.TokenServer.Protos.PartnerTokenQueryFilter { PartnerId = partnerId.ToString(), PageId = pageId, PageSize = pageSize }, headers: GetHeader());
 
                 return Ok(reply);
             }
@@ -101,6 +103,9 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Token
                 var channel = GrpcChannel.ForAddress(channelUrl);
                 var client = new TokenAppService.TokenAppServiceClient(channel);
                 await client.SavePartnerTokenAsync(new PartnerTokenGm { PartnerId = partnerToken.PartnerId.ToString(), TokenId = partnerToken.TokenId.ToString() }, headers: GetHeader());
+
+                var coreClient = new CoreAppService.CoreAppServiceClient(channel);
+                await coreClient.SavePartnerTokenAsync(new CorePartnerTokenGm { PartnerId = partnerToken.PartnerId.ToString(), TokenId = partnerToken.TokenId.ToString() }, headers: GetHeader());
 
                 return Ok();
             }
