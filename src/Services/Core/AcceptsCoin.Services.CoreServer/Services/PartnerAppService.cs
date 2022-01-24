@@ -56,9 +56,36 @@ namespace AcceptsCoin.Services.CoreServer
                                Owner = partner.Owner,
                                ApiKey = partner.ApiKey.ToString(),
                                LanguageId = partner.LanguageId.ToString(),
+                           };
+            response.Items.AddRange(partners.ToArray());
+            return await Task.FromResult(response);
+        }
+
+        public override async Task<PartnerListGm> GetByTokenId(PartnerTokenQueryFilter request, ServerCallContext context)
+        {
+            PartnerListGm response = new PartnerListGm();
+
+            IQueryable<Partner> query = _partnerRepository.GetQuery();
+            query = query.Where(x => x.PartnerTokens.Any(z => z.TokenId == Guid.Parse(request.TokenId)));
+
+            response.CurrentPage = request.PageId;
+            response.ItemCount = await _partnerRepository.GetCount(query);
+            response.PageCount = (response.ItemCount / request.PageSize) + 1;
 
 
-
+            var partners = from partner in await _partnerRepository.GetAll(query, request.PageId, request.PageSize)
+                           select new PartnerGm()
+                           {
+                               Id = partner.PartnerId.ToString(),
+                               Name = partner.Name,
+                               Logo = partner.Logo,
+                               WebSiteUrl = partner.WebSiteUrl,
+                               Email = partner.Email,
+                               ContactNumber = partner.ContactNumber,
+                               Manager = partner.Manager,
+                               Owner = partner.Owner,
+                               ApiKey = partner.ApiKey.ToString(),
+                               LanguageId = partner.LanguageId.ToString(),
                            };
             response.Items.AddRange(partners.ToArray());
             return await Task.FromResult(response);

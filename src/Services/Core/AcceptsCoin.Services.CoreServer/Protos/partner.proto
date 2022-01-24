@@ -9,6 +9,7 @@ package partner;
 service PartnerAppService{
     rpc GetAll (PartnerQueryFilter) returns (PartnerListGm);
     rpc GetById (PartnerIdFilter) returns (PartnerGm);
+    rpc GetByTokenId (PartnerTokenQueryFilter) returns (PartnerListGm);
     rpc Post (PartnerGm) returns (PartnerGm);
     rpc Put (PartnerGm) returns (PartnerGm);
     rpc Delete (PartnerIdFilter) returns (EmptyPartner);
@@ -19,6 +20,12 @@ message EmptyPartner{
 }
 message PartnerIdFilter {
  string PartnerId = 1;
+}
+
+message PartnerTokenQueryFilter {
+ string tokenId = 1;
+ int32 pageId = 2;
+ int32 pageSize = 3;
 }
 message PartnerQueryFilter {
  int32 pageId = 1;

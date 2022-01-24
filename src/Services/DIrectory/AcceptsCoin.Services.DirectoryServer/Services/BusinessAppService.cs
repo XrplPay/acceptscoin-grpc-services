@@ -62,10 +62,7 @@ namespace AcceptsCoin.Services.DirectoryServer
             response.Longitude = business.Longitude;
             response.Icon = "icon";
 
-            response.ImageUrl = business.BusinessGalleries.Count > 0 ?
-                business.BusinessGalleries.FirstOrDefault().Name + business.BusinessGalleries.FirstOrDefault().Extension
-                :
-                "https://pambansangbakal.com.ph/wp-content/uploads/2019/10/no-image-800x511.png";
+            response.ImageUrl = getDefaultImage(business.BusinessGalleries);
 
             response.LocationName = "United state";
             response.Rate = 5;
@@ -81,7 +78,7 @@ namespace AcceptsCoin.Services.DirectoryServer
                 Title = "Category Title"
             };
 
-            var images = from image in business.BusinessGalleries
+            var images = from image in business.BusinessGalleries.Where(x => x.Deleted == false)
                          select new BusinessGalleryFrontGm()
                          {
                              Id = image.BusinessGalleryId.ToString(),
@@ -157,7 +154,7 @@ namespace AcceptsCoin.Services.DirectoryServer
                                  Longitude = business.Longitude,
                                  Icon = "icon",
                                  //ImageUrl = "https://pambansangbakal.com.ph/wp-content/uploads/2019/10/no-image-800x511.png",
-                                 ImageUrl = business.BusinessGalleries.Count > 0 ? business.BusinessGalleries.FirstOrDefault().Name + business.BusinessGalleries.FirstOrDefault().Extension : "https://pambansangbakal.com.ph/wp-content/uploads/2019/10/no-image-800x511.png",
+                                 ImageUrl = getDefaultImage(business.BusinessGalleries),
                                  LocationName = "United state",
                                  Rate = 5,
                                  Subtitle = business.Description,
@@ -260,7 +257,7 @@ namespace AcceptsCoin.Services.DirectoryServer
                                  Longitude = business.Longitude,
                                  Icon = "icon",
                                  //ImageUrl = "https://pambansangbakal.com.ph/wp-content/uploads/2019/10/no-image-800x511.png",
-                                 ImageUrl = business.BusinessGalleries.Count > 0 ? business.BusinessGalleries.FirstOrDefault().Name + business.BusinessGalleries.FirstOrDefault().Extension : "https://pambansangbakal.com.ph/wp-content/uploads/2019/10/no-image-800x511.png",
+                                 ImageUrl  = getDefaultImage(business.BusinessGalleries),
                                  LocationName = "United state",
                                  Rate = 5,
                                  Subtitle = business.Description,
@@ -360,7 +357,7 @@ namespace AcceptsCoin.Services.DirectoryServer
                                  Longitude = business.Longitude,
                                  Icon = "icon",
                                  //ImageUrl = "https://pambansangbakal.com.ph/wp-content/uploads/2019/10/no-image-800x511.png",
-                                 ImageUrl = business.BusinessGalleries.Count > 0 ? business.BusinessGalleries.FirstOrDefault().Name + business.BusinessGalleries.FirstOrDefault().Extension : "https://pambansangbakal.com.ph/wp-content/uploads/2019/10/no-image-800x511.png",
+                                 ImageUrl = getDefaultImage(business.BusinessGalleries),
                                  LocationName = "United state",
                                  Rate = 5,
                                  Subtitle = business.Description,
@@ -423,14 +420,20 @@ namespace AcceptsCoin.Services.DirectoryServer
                                  Address = business.Address,
                                  OfferedServices = business.OfferedServices,
                                  CategoryId = business.CategoryId.ToString(),
-                                 ImageUrl = business.BusinessGalleries.Count > 0 ? business.BusinessGalleries.FirstOrDefault().Name + business.BusinessGalleries.FirstOrDefault().Extension : "https://pambansangbakal.com.ph/wp-content/uploads/2019/10/no-image-800x511.png",
-
+                                 ImageUrl = getDefaultImage(business.BusinessGalleries),
                              };
 
             response.Items.AddRange(businesses.ToArray());
             response.Pagination = pagination;
             return await Task.FromResult(response);
 
+        }
+        private string getDefaultImage(ICollection<BusinessGallery> businessGalleries)
+        {
+            return businessGalleries.Where(x => x.Deleted == false).Count() > 0 ?
+                businessGalleries.Where(x => x.Deleted == false).FirstOrDefault().Name + businessGalleries.Where(x => x.Deleted == false).FirstOrDefault().Extension
+                :
+                "https://pambansangbakal.com.ph/wp-content/uploads/2019/10/no-image-800x511.png";
         }
         public override async Task<BusinessListGm> GetByUserId(BusinessQueryFilter request, ServerCallContext context)
         {
@@ -449,7 +452,7 @@ namespace AcceptsCoin.Services.DirectoryServer
 
 
 
-            var businesses = from business in  buinessList
+            var businesses = from business in buinessList
                              select new BusinessGm()
                              {
                                  Id = business.BusinessId.ToString(),
@@ -470,8 +473,7 @@ namespace AcceptsCoin.Services.DirectoryServer
                                  Address = business.Address,
                                  OfferedServices = business.OfferedServices,
                                  CategoryId = business.CategoryId.ToString(),
-                                 ImageUrl = business.BusinessGalleries.Count > 0 ? business.BusinessGalleries.FirstOrDefault().Name + business.BusinessGalleries.FirstOrDefault().Extension : "https://pambansangbakal.com.ph/wp-content/uploads/2019/10/no-image-800x511.png",
-                                 
+                                 ImageUrl = getDefaultImage(business.BusinessGalleries),
                              };
 
 
@@ -532,8 +534,53 @@ namespace AcceptsCoin.Services.DirectoryServer
                                  Address = business.Address,
                                  OfferedServices = business.OfferedServices,
                                  CategoryId = business.CategoryId.ToString(),
-                                 ImageUrl = business.BusinessGalleries.Count > 0 ? business.BusinessGalleries.FirstOrDefault().Name + business.BusinessGalleries.FirstOrDefault().Extension : "https://pambansangbakal.com.ph/wp-content/uploads/2019/10/no-image-800x511.png",
+                                 ImageUrl = getDefaultImage(business.BusinessGalleries),
 
+                             };
+
+            response.Items.AddRange(businesses.ToArray());
+            response.Pagination = pagination;
+            return await Task.FromResult(response);
+
+        }
+        public override async Task<BusinessListGm> GetByTokenId(BusinessTokenIdQueryFilter request, ServerCallContext context)
+        {
+            BusinessListGm response = new BusinessListGm();
+            PaginationGm pagination = new PaginationGm();
+
+            IQueryable<Business> query = _businessRepository.GetQuery();
+
+            query = query.Where(x => x.BusinessTokens.Any(c => c.TokenId == Guid.Parse(request.TokenId)));
+
+
+            pagination.CurrentPage = request.PageId;
+            pagination.ItemCount = await _businessRepository.GetCount(query);
+            pagination.PageCount = (pagination.ItemCount / request.PageSize) + 1;
+
+
+
+            var businesses = from business in await _businessRepository.GetAll(query, request.PageId, request.PageSize)
+                             select new BusinessGm()
+                             {
+                                 Id = business.BusinessId.ToString(),
+                                 Email = business.Email,
+                                 WebSiteUrl = business.WebSiteUrl,
+                                 ContactNumber = business.ContactNumber,
+                                 Logo = business.Logo,
+                                 Name = business.Name,
+                                 Owner = business.Owner,
+                                 Manager = business.Manager,
+                                 Twitter = business.Twitter,
+                                 FaceBook = business.FaceBook,
+                                 Instagram = business.Instagram,
+                                 Verified = business.Verified,
+                                 Latitude = business.Latitude,
+                                 Longitude = business.Longitude,
+                                 Description = business.Description,
+                                 Address = business.Address,
+                                 OfferedServices = business.OfferedServices,
+                                 CategoryId = business.CategoryId.ToString(),
+                                 ImageUrl = getDefaultImage(business.BusinessGalleries),
 
                              };
 
