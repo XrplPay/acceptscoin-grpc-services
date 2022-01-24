@@ -9,6 +9,7 @@ using AcceptsCoin.Services.CoreServer.Core.Services;
 using AcceptsCoin.Services.CoreServer.Data.Context;
 using AcceptsCoin.Services.CoreServer.Data.Repository;
 using AcceptsCoin.Services.CoreServer.Domain.Interfaces;
+using AcceptsCoin.Services.CoreServer.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -101,6 +102,9 @@ namespace AcceptsCoin.Services.CoreServer
                 .RequireCors("cors");
 
                 endpoints.MapGrpcService<LanguageGrpcService>()
+                .EnableGrpcWeb().RequireCors("cors");
+
+                endpoints.MapGrpcService<CoreGrpcService>()
                 .EnableGrpcWeb().RequireCors("cors");
 
                 endpoints.MapGet("/", async context =>

@@ -104,6 +104,7 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Token
                 var client = new TokenAppService.TokenAppServiceClient(channel);
                 await client.SavePartnerTokenAsync(new PartnerTokenGm { PartnerId = partnerToken.PartnerId.ToString(), TokenId = partnerToken.TokenId.ToString() }, headers: GetHeader());
 
+                var coreChannel = GrpcChannel.ForAddress(coreChannelUrl);
                 var coreClient = new CoreAppService.CoreAppServiceClient(channel);
                 await coreClient.SavePartnerTokenAsync(new CorePartnerTokenGm { PartnerId = partnerToken.PartnerId.ToString(), TokenId = partnerToken.TokenId.ToString() }, headers: GetHeader());
 

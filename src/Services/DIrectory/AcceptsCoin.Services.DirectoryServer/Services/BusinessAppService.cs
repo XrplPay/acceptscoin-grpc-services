@@ -71,7 +71,7 @@ namespace AcceptsCoin.Services.DirectoryServer
             response.TotalRate = 100;
 
             response.Verified = business.Verified;
-
+            response.of
             response.Category = new BusinessCategoryFrontGm
             {
                 Id = business.Category.CategoryId.ToString(),

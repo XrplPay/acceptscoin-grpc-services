@@ -194,6 +194,8 @@ message SingleBusinessFrontGm {
     repeated BusinessReviewFrontGm reviews = 14;
     BusinessCategoryFrontGm category = 15;
     bool verified = 17;
+    string offeredServices =18;
+
 }
 message BusinessGalleryFrontGm {
     string Id = 1;
