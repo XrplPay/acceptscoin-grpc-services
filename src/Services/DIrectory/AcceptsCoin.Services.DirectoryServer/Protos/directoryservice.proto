@@ -9,6 +9,8 @@ service DirectoryAppService{
     rpc DirectoryUserPut (DirectoryUserGm) returns (DirectoryUserGm);
     rpc DirectoryTokenPost (DirectoryTokenGm) returns (DirectoryTokenGm);
     rpc DirectoryTokenPut (DirectoryTokenGm) returns (DirectoryTokenGm);
+    rpc GetTokenListByBusinessId (TokenBusinessIdQueryFilter) returns (DirectoryTokenListGm);
+    rpc GetTagListByBusinessId (TagBusinessIdQueryFilter) returns (DirectoryTagListGm);
 }
 
 message DirectoryUserGm {
@@ -22,4 +24,37 @@ message DirectoryTokenGm {
     optional string icon = 3;
     string Symbol = 4;
     string Logo = 5;
+}
+
+message DirectoryTokenListGm {
+    repeated DirectoryTokenGm items = 1;
+    int32 currentPage = 2;
+    int32 itemCount = 3;
+    int32 pageCount = 4;
+
+}
+message TokenBusinessIdQueryFilter {
+ int32 pageId = 1;
+ int32 pageSize = 2;
+ string businessId=3; 
+}
+
+
+message TagBusinessIdQueryFilter {
+ int32 pageId = 1;
+ int32 pageSize = 2;
+ string businessId=3; 
+}
+
+
+message DirectoryTagGm {
+    string id = 1;
+    string title = 2;
+}
+message DirectoryTagListGm {
+    repeated DirectoryTagGm items = 1;
+    int32 currentPage = 2;
+    int32 itemCount = 3;
+    int32 pageCount = 4;
+
 }

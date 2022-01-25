@@ -6,6 +6,7 @@ using AcceptsCoin.ApiGateway.Core.Dtos;
 using AcceptsCoin.ApiGateway.Core.Views;
 using AcceptsCoin.Services.CoreServer ;
 using AcceptsCoin.Services.CoreServer.Protos;
+using AcceptsCoin.Services.DirectoryServer.Protos;
 using Grpc.Core;
 using Grpc.Net.Client;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -22,6 +23,8 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Core
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class TagController : ControllerBase
     {
+        const string directoryChannelUrl = "http://localhost:5053";
+
         const string channelUrl = "http://localhost:5052";
         public TagController()
         {
@@ -80,6 +83,9 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Core
                 });
             }
         }
+
+
+        
 
         [HttpGet("{id}")]
         public async Task<ActionResult> Get(Guid id)
@@ -222,5 +228,29 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Core
             header.Add("Authorization", accessToken);
             return header;
         }
+
+        [HttpGet("GetByBusinessIdFromDirectoryService")]
+        public async Task<ActionResult> GetByBusinessIdFromDirectoryService([FromQuery] Guid businessId, [FromQuery] int pageId = 1, [FromQuery] int pageSize = 10)
+        {
+            try
+            {
+                var channel = GrpcChannel.ForAddress(directoryChannelUrl);
+                var client = new DirectoryAppService.DirectoryAppServiceClient(channel);
+                var reply = await client.GetTagListByBusinessIdAsync(new TagBusinessIdQueryFilter {   BusinessId  = businessId.ToString(), PageId = pageId, PageSize = pageSize }, headers: GetHeader());
+
+                return Ok(reply);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new WebApiErrorMessageResponse()
+                {
+                    Errors = new List<string>() {
+                            ex.Message
+                    },
+                    Success = false
+                });
+            }
+        }
+
     }
 }

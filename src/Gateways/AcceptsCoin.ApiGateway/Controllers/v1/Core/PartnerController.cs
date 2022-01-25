@@ -178,12 +178,28 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Core
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> Put(Guid id, [FromBody] UpdatePartnerDto entity)
+        public async Task<ActionResult> Put(Guid id, [FromForm] UpdatePartnerDto entity)
         {
             try
             {
                 var channel = GrpcChannel.ForAddress(channelUrl);
                 var client = new PartnerAppService.PartnerAppServiceClient(channel);
+
+
+
+                string logo;
+
+
+                if (entity.File != null)
+                {
+                    logo = await Upload(entity.File);
+                }
+                else
+                {
+                    logo = entity.Logo;
+                }
+
+
                 var reply = await client.PutAsync(new PartnerGm
                 {
                     Id = id.ToString(),
@@ -191,7 +207,7 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Core
                     ContactNumber = entity.ContactNumber,
                     Email = entity.Email,
                     LanguageId = entity.LanguageId.ToString(),
-                    Logo = entity.Logo,
+                    Logo = logo,
                     Manager = entity.Manager,
                     Owner = entity.Owner,
                     WebSiteUrl = entity.WebSiteUrl,
@@ -244,6 +260,29 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Core
                 var channel = GrpcChannel.ForAddress(channelUrl);
                 var client = new PartnerAppService.PartnerAppServiceClient(channel);
                 var reply = await client.GetByTokenIdAsync(new PartnerTokenQueryFilter { TokenId = tokenId.ToString(), PageId = pageId, PageSize = pageSize }, headers: GetHeader());
+
+                return Ok(reply);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new WebApiErrorMessageResponse()
+                {
+                    Errors = new List<string>() {
+                            ex.Message
+                    },
+                    Success = false
+                });
+            }
+        }
+
+        [HttpGet("GetByLanguageId")]
+        public async Task<ActionResult> GetByLanguageId([FromQuery] Guid languageId, [FromQuery] int pageId = 1, [FromQuery] int pageSize = 10)
+        {
+            try
+            {
+                var channel = GrpcChannel.ForAddress(channelUrl);
+                var client = new PartnerAppService.PartnerAppServiceClient(channel);
+                var reply = await client.GetByLanguageIdAsync(new PartnerLanguageQueryFilter { LanguageId = languageId.ToString(), PageId = pageId, PageSize = pageSize }, headers: GetHeader());
 
                 return Ok(reply);
             }

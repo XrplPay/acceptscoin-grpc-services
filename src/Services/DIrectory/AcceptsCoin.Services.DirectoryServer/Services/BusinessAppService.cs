@@ -550,6 +550,51 @@ namespace AcceptsCoin.Services.DirectoryServer
             return await Task.FromResult(response);
 
         }
+        public override async Task<BusinessListGm> GetByTagId(BusinessTagIdQueryFilter request, ServerCallContext context)
+        {
+            BusinessListGm response = new BusinessListGm();
+            PaginationGm pagination = new PaginationGm();
+
+            IQueryable<Business> query = _businessRepository.GetQuery();
+
+            query = query.Where(x => x.BusinessTags.Any(x => x.TagId == Guid.Parse(request.TagId)));
+
+            pagination.CurrentPage = request.PageId;
+            pagination.ItemCount = await _businessRepository.GetCount(query);
+            pagination.PageCount = (pagination.ItemCount / request.PageSize) + 1;
+
+
+
+            var businesses = from business in await _businessRepository.GetAll(query, request.PageId, request.PageSize)
+                             select new BusinessGm()
+                             {
+                                 Id = business.BusinessId.ToString(),
+                                 Email = business.Email,
+                                 WebSiteUrl = business.WebSiteUrl,
+                                 ContactNumber = business.ContactNumber,
+                                 Logo = business.Logo,
+                                 Name = business.Name,
+                                 Owner = business.Owner,
+                                 Manager = business.Manager,
+                                 Twitter = business.Twitter,
+                                 FaceBook = business.FaceBook,
+                                 Instagram = business.Instagram,
+                                 Verified = business.Verified,
+                                 Latitude = business.Latitude,
+                                 Longitude = business.Longitude,
+                                 Description = business.Description,
+                                 Address = business.Address,
+                                 OfferedServices = business.OfferedServices,
+                                 CategoryId = business.CategoryId.ToString(),
+                                 ImageUrl = getDefaultImage(business.BusinessGalleries),
+
+                             };
+
+            response.Items.AddRange(businesses.ToArray());
+            response.Pagination = pagination;
+            return await Task.FromResult(response);
+
+        }
         public override async Task<BusinessListGm> GetByTokenId(BusinessTokenIdQueryFilter request, ServerCallContext context)
         {
             BusinessListGm response = new BusinessListGm();
@@ -558,6 +603,52 @@ namespace AcceptsCoin.Services.DirectoryServer
             IQueryable<Business> query = _businessRepository.GetQuery();
 
             query = query.Where(x => x.BusinessTokens.Any(c => c.TokenId == Guid.Parse(request.TokenId)));
+
+
+            pagination.CurrentPage = request.PageId;
+            pagination.ItemCount = await _businessRepository.GetCount(query);
+            pagination.PageCount = (pagination.ItemCount / request.PageSize) + 1;
+
+
+
+            var businesses = from business in await _businessRepository.GetAll(query, request.PageId, request.PageSize)
+                             select new BusinessGm()
+                             {
+                                 Id = business.BusinessId.ToString(),
+                                 Email = business.Email,
+                                 WebSiteUrl = business.WebSiteUrl,
+                                 ContactNumber = business.ContactNumber,
+                                 Logo = business.Logo,
+                                 Name = business.Name,
+                                 Owner = business.Owner,
+                                 Manager = business.Manager,
+                                 Twitter = business.Twitter,
+                                 FaceBook = business.FaceBook,
+                                 Instagram = business.Instagram,
+                                 Verified = business.Verified,
+                                 Latitude = business.Latitude,
+                                 Longitude = business.Longitude,
+                                 Description = business.Description,
+                                 Address = business.Address,
+                                 OfferedServices = business.OfferedServices,
+                                 CategoryId = business.CategoryId.ToString(),
+                                 ImageUrl = getDefaultImage(business.BusinessGalleries),
+
+                             };
+
+            response.Items.AddRange(businesses.ToArray());
+            response.Pagination = pagination;
+            return await Task.FromResult(response);
+
+        }
+        public override async Task<BusinessListGm> GetByCategoryId(BusinessCategoryIdQueryFilter request, ServerCallContext context)
+        {
+            BusinessListGm response = new BusinessListGm();
+            PaginationGm pagination = new PaginationGm();
+
+            IQueryable<Business> query = _businessRepository.GetQuery();
+
+            query = query.Where(x => x.CategoryId == Guid.Parse(request.CategoryId));
 
 
             pagination.CurrentPage = request.PageId;

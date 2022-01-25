@@ -95,6 +95,31 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Token
             }
         }
 
+
+        [HttpGet("GetByBusinessIdFromDirectoryService")]
+        public async Task<ActionResult> GetByBusinessIdFromDirectoryService([FromQuery] Guid businessId, [FromQuery] int pageId = 1, [FromQuery] int pageSize = 10)
+        {
+            try
+            {
+                var channel = GrpcChannel.ForAddress(directoryChannelUrl);
+                var client = new DirectoryAppService.DirectoryAppServiceClient(channel);
+                var reply = await client.GetTokenListByBusinessIdAsync(new TokenBusinessIdQueryFilter { BusinessId = businessId.ToString(), PageId = pageId, PageSize = pageSize }, headers: GetHeader());
+
+                return Ok(reply);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new WebApiErrorMessageResponse()
+                {
+                    Errors = new List<string>() {
+                            ex.Message
+                    },
+                    Success = false
+                });
+            }
+        }
+
+
         [HttpPost("SavePartnerToken")]
         public async Task<ActionResult> SavePartnerToken([FromBody] PartnerTokenDto partnerToken)
         {

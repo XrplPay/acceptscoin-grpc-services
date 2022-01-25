@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using AcceptsCoin.Services.DirectoryServer.Domain.Interfaces;
@@ -17,11 +18,13 @@ namespace AcceptsCoin.Services.DirectoryServer.Services
         private readonly ILogger<DirectoryGrpcService> _logger;
         private IUserRepository _userRepository;
         private ITokenRepository _tokenRepository;
-        public DirectoryGrpcService(ILogger<DirectoryGrpcService> logger, IUserRepository userRepository, ITokenRepository tokenRepository)
+        private ITagRepository _tagRepository;
+        public DirectoryGrpcService(ILogger<DirectoryGrpcService> logger, IUserRepository userRepository, ITokenRepository tokenRepository, ITagRepository tagRepository)
         {
             _logger = logger;
             _userRepository = userRepository;
             _tokenRepository = tokenRepository;
+            _tagRepository = tagRepository;
         }
 
         [AllowAnonymous]
@@ -142,6 +145,57 @@ namespace AcceptsCoin.Services.DirectoryServer.Services
             }
             
         }
+
+
+        public override async Task<DirectoryTokenListGm> GetTokenListByBusinessId(TokenBusinessIdQueryFilter request, ServerCallContext context)
+        {
+            DirectoryTokenListGm response = new DirectoryTokenListGm();
+
+            IQueryable<Token> query = _tokenRepository.GetQuery();
+            query = query.Where(x => x.BusinessTokens.Any(x => x.BusinessId == Guid.Parse(request.BusinessId)));
+            
+            response.CurrentPage = request.PageId;
+            response.ItemCount = await _tokenRepository.GetCount(query);
+            response.PageCount = (response.ItemCount / request.PageSize) + 1;
+
+
+            var tokens = from token in await _tokenRepository.GetAll(query, request.PageId, request.PageSize)
+                         select new DirectoryTokenGm()
+                         {
+
+                             Icon = token.Icon,
+                             Id = token.TokenId.ToString(),
+                             Logo = token.Logo,
+                             Name = token.Name,
+                             Symbol = token.Symbol,
+                         };
+            response.Items.AddRange(tokens.ToArray());
+            return await Task.FromResult(response);
+        }
+
+        public override async Task<DirectoryTagListGm> GetTagListByBusinessId(TagBusinessIdQueryFilter request, ServerCallContext context)
+        {
+            DirectoryTagListGm response = new DirectoryTagListGm();
+
+            IQueryable<Tag> query = _tagRepository.GetQuery();
+            query = query.Where(x => x.BusinessTags.Any(x => x.BusinessId == Guid.Parse(request.BusinessId)));
+
+            response.CurrentPage = request.PageId;
+            response.ItemCount = await _tagRepository.GetCount(query);
+            response.PageCount = (response.ItemCount / request.PageSize) + 1;
+
+
+            var tags = from tag in await _tagRepository.GetAll(query, request.PageId, request.PageSize)
+                       select new DirectoryTagGm()
+                       {
+                           Id = tag.TagId.ToString(),
+                           Title = "TAG TITLE",
+                       };
+            response.Items.AddRange(tags.ToArray());
+            return await Task.FromResult(response);
+        }
+
+
     }
 
 }

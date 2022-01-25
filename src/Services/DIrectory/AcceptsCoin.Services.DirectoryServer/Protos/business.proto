@@ -9,6 +9,8 @@ service BusinessAppService{
     rpc GetAll (BusinessQueryFilter) returns (BusinessListGm);
     rpc GetByPartnerId (BusinessPartnerIdQueryFilter) returns (BusinessListGm);
     rpc GetByTokenId (BusinessTokenIdQueryFilter) returns (BusinessListGm);
+    rpc GetByTagId (BusinessTagIdQueryFilter) returns (BusinessListGm);
+    rpc GetByCategoryId (BusinessCategoryIdQueryFilter) returns (BusinessListGm);
     rpc GetFrontBusinessByLocation (BusinessFrontLocationQueryFilter) returns (BusinessListFrontGm);
     rpc GetFrontBusinessList (BusinessFrontQueryFilter) returns (BusinessListFrontGm);
     rpc GetFrontBusinessListByTagId (BusinessFrontTagIdQueryFilter) returns (BusinessListFrontGm);
@@ -67,11 +69,26 @@ message BusinessQueryFilter {
  int32 pageId = 1;
  int32 pageSize = 2;
 }
+
+message BusinessCategoryIdQueryFilter {
+ int32 pageId = 1;
+ int32 pageSize = 2;
+ string categoryId=3; 
+}
 message BusinessTokenIdQueryFilter {
  int32 pageId = 1;
  int32 pageSize = 2;
  string tokenId=3; 
 }
+
+
+message BusinessTagIdQueryFilter {
+ int32 pageId = 1;
+ int32 pageSize = 2;
+ string tagId=3; 
+}
+
+
 message BusinessPartnerIdQueryFilter {
  int32 pageId = 1;
  int32 pageSize = 2;

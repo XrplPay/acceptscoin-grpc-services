@@ -28,5 +28,8 @@ namespace AcceptsCoin.ApiGateway.Core.Dtos
         public string Owner { get; set; }
         public Guid LanguageId { get; set; }
 
+        public IFormFile? File { get; set; }
+
+
     }
 }

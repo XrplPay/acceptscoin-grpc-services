@@ -31,6 +31,7 @@ message TagDeleteCollectionGm {
 message TagGm {
     string Id = 1;
     string Title = 2;
+    int32 BusinessCount = 3;
     }
 message TagListGm {
     repeated TagGm items = 1;

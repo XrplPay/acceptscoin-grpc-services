@@ -110,7 +110,7 @@ namespace AcceptsCoin.Services.TokenServer
             return await Task.FromResult(response);
 
         }
-        [AllowAnonymous]
+               [AllowAnonymous]
         public override async Task<TokenFrontListGm> GetFrontTokenList(Empty request, ServerCallContext context)
         {
             TokenFrontListGm response = new TokenFrontListGm();

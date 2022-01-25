@@ -63,6 +63,35 @@ namespace AcceptsCoin.Services.IdentityServer.Services
             response.Items.AddRange(users.ToArray());
             return await Task.FromResult(response);
         }
+        public override async Task<UserListGm> GetByRoleId(UserRoleIdQueryFilter request, ServerCallContext context)
+        {
+
+           
+            UserListGm response = new UserListGm();
+
+            IQueryable<User> query = _userRepository.GetQuery();
+            query = query.Where(x => x.UserRoles.Any(x => x.RoleId == Guid.Parse(request.RoleId)));
+
+            response.CurrentPage = request.PageId;
+            response.ItemCount = await _userRepository.GetCount(query);
+            response.PageCount = (response.ItemCount / request.PageSize) + 1;
+
+
+            var users = from user in await _userRepository.GetAll(query, request.PageId, request.PageSize)
+                        select new UserGm()
+                        {
+                            Id = user.UserId.ToString(),
+                            Name = user.Name,
+                            Email = user.Email,
+                            Activate = user.Activated,
+                            Partner = "Partner",
+                            Published = user.Published,
+                            UserName = user.UserName,
+
+                        };
+            response.Items.AddRange(users.ToArray());
+            return await Task.FromResult(response);
+        }
         public override async Task<UserListGm> GetByPartnerId(UserPartnerIdQueryFilter request, ServerCallContext context)
         {
 

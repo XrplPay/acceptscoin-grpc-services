@@ -9,6 +9,7 @@ package user;
 service UserAppService{
     rpc GetAll (UserQueryFilter) returns (UserListGm);
     rpc GetByPartnerId (UserPartnerIdQueryFilter) returns (UserListGm);
+    rpc GetByRoleId (UserRoleIdQueryFilter) returns (UserListGm);
     rpc GetById (UserIdFilter) returns (UserGm);
     rpc GetProfile (EmptyUser) returns (UserProfileGm);
     rpc Post (CreateUserGm) returns (UserGm);
@@ -33,6 +34,11 @@ message UserIdFilter {
 }
 message UserDeleteCollectionGm {
  repeated UserIdFilter items = 1;
+}
+message UserRoleIdQueryFilter {
+ int32 pageId = 1;
+ int32 pageSize = 2;
+ string roleId=3;
 }
 message UserPartnerIdQueryFilter {
  int32 pageId = 1;

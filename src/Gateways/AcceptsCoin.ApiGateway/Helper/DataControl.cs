@@ -15,7 +15,7 @@ namespace AcceptsCoin.ApiGateway.Helper
     public interface IDataControl
     {
         public Task<Guid?> getPartnerId(HttpContext context);
-        public Task<Guid> getUserId(HttpContext context);
+        public Guid getUserId(HttpContext context);
     }
 
     
@@ -58,7 +58,7 @@ namespace AcceptsCoin.ApiGateway.Helper
             }
             return null;
         }
-        public async Task<Guid> getUserId(HttpContext context)
+        public Guid  getUserId(HttpContext context)
         {
             var userId = Guid.Parse(context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
             return userId;

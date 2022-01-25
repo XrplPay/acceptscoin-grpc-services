@@ -87,6 +87,32 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Identity
             }
         }
 
+        [HttpGet("GetByRoleId")]
+        public async Task<ActionResult> GetByRoleId([FromQuery] Guid roleId, [FromQuery] int pageId = 1, [FromQuery] int pageSize = 10)
+        {
+            try
+            {
+                var accessToken = Request.Headers[HeaderNames.Authorization];
+
+                //var header = new Metadata();
+                //header.Add("Authorization", accessToken);
+                var channel = GrpcChannel.ForAddress(channelUrl);
+                var client = new UserAppService.UserAppServiceClient(channel);
+                var reply = await client.GetByRoleIdAsync(new UserRoleIdQueryFilter { RoleId = roleId.ToString(), PageId = pageId, PageSize = pageSize }, headers: GetHeader());
+
+                return Ok(reply);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new WebApiErrorMessageResponse()
+                {
+                    Errors = new List<string>() {
+                            ex.Message
+                    },
+                    Success = false
+                });
+            }
+        }
 
         [HttpPost("SaveUserRole")]
         public async Task<ActionResult> SaveUserRole([FromBody] UserRoleDto  userRole)
