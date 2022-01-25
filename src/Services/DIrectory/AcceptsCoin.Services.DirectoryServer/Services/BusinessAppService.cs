@@ -63,7 +63,7 @@ namespace AcceptsCoin.Services.DirectoryServer
             response.Icon = "icon";
 
             response.ImageUrl = getDefaultImage(business.BusinessGalleries);
-
+            response.WebSiteUrl = business.WebSiteUrl;
             response.LocationName = "United state";
             response.Rate = 5;
             response.Description = business.Description;

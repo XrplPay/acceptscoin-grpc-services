@@ -202,6 +202,7 @@ message SingleBusinessFrontGm {
     string contactNumbrt = 24;
     string manager = 25;
     string email = 26;
+    string webSiteUrl = 27;
 }
 message BusinessGalleryFrontGm {
     string Id = 1;
