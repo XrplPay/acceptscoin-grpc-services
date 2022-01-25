@@ -70,6 +70,31 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Directory
         }
 
 
+
+        [HttpGet("GetBusinessGalleryListByBusinessId")]
+        public async Task<ActionResult> GetBusinessGalleryListByBusinessId([FromQuery] Guid businessId, [FromQuery] int pageId = 1, [FromQuery] int pageSize = 10)
+        {
+            try
+            {
+                var channel = GrpcChannel.ForAddress(channelUrl);
+                var client = new BusinessGalleryAppService.BusinessGalleryAppServiceClient(channel);
+                var reply = await client.GetByBusinessIdAsync(new BusinessGalleryBusinessIdFilter { BusienssId = businessId.ToString(), PageId = pageId, PageSize = pageSize });
+
+                return Ok(reply);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new WebApiErrorMessageResponse()
+                {
+                    Errors = new List<string>() {
+                            ex.Message
+                    },
+                    Success = false
+                });
+            }
+        }
+
+
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(Guid id)
         {
