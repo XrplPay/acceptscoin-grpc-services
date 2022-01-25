@@ -46,6 +46,10 @@ namespace AcceptsCoin.Services.IdentityServer.Data.Repository
         {
             return await _context.Users.Where(x => x.UserName == userName).FirstOrDefaultAsync();
         }
+        public async Task<User> LoginAsync(string userName, string password)
+        {
+            return await _context.Users.Where(x => x.UserName == userName && x.Password == password && x.Deleted == false).FirstOrDefaultAsync();
+        }
 
         public async Task<IEnumerable<User>> GetAll(IQueryable<User> query, int pageId, int pageSize)
         {

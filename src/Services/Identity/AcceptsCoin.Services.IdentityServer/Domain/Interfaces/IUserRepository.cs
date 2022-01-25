@@ -8,6 +8,8 @@ namespace AcceptsCoin.Services.IdentityServer.Domain.Interfaces
 {
     public interface IUserRepository
     {
+        Task<User> LoginAsync(string userName, string password);
+
         IQueryable<User> GetQuery();
 
         Task<int> GetCount(IQueryable<User> query);

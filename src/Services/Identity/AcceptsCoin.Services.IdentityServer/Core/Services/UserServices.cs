@@ -37,7 +37,7 @@ namespace AcceptsCoin.Services.IdentityServer.Core.Services
 
         public async Task<JsonWebToken> LoginAsync(string userName, string password)
         {
-            var user = await _userRepository.Find(userName);
+            var user = await _userRepository.LoginAsync(userName, password);
             if (user == null)
             {
                  throw new Exception("invalid_credentials");
