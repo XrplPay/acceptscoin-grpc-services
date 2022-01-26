@@ -294,9 +294,21 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Core
             {
                 var channel = GrpcChannel.ForAddress(channelUrl);
                 var client = new CategoryAppService.CategoryAppServiceClient(channel);
-                var logo = await Upload(createCategory.File);
-                var reply = await client.PostAsync(new CategoryGm { Id = "", Name = createCategory.Name, Icon = createCategory.Icon
-                    , Logo = logo, Priority = createCategory.Priority }, headers: GetHeader());
+                var logo = "";
+                if (createCategory.File != null)
+                {
+                    logo = await Upload(createCategory.File);
+                }
+                var reply = await client.PostAsync(new CreateCategoryGm
+                {
+                    Id = "",
+                    Name = createCategory.Name,
+                    Icon = createCategory.Icon
+                    ,
+                    Logo = logo,
+                    Priority = createCategory.Priority,
+                    ParentId = createCategory.ParentId.ToString()
+                }, headers: GetHeader());
 
                 return Ok(reply);
             }

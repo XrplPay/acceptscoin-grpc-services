@@ -185,7 +185,7 @@ namespace AcceptsCoin.Services.CoreServer
 
             response.Items.AddRange(categories.ToArray());
 
-            for (int i = 0; i < response.Items.Count - 1; i++)
+            for (int i = 0; i <= response.Items.Count - 1; i++)
             {
                 var level2 = from category in await _categoryRepository.GetAll(Guid.Parse(response.Items[i].Id))
                                  select new CategoryMenuLevelTwo()
@@ -197,9 +197,9 @@ namespace AcceptsCoin.Services.CoreServer
 
             }
 
-            for (int i = 0; i < response.Items.Count - 1; i++)
+            for (int i = 0; i <= response.Items.Count - 1; i++)
             {
-                for (int j = 0; j < response.Items[i].Menu.Count - 1; j++)
+                for (int j = 0; j <= response.Items[i].Menu.Count - 1; j++)
                 {
                     var level3 = from category in await _categoryRepository.GetAll(Guid.Parse(response.Items[i].Menu[j].Id))
                                  select new CategoryMenuLevelThree()
@@ -302,8 +302,13 @@ namespace AcceptsCoin.Services.CoreServer
             return await Task.FromResult(searchedCategory);
         }
 
-        public override async Task<CategoryGm> Post(CategoryGm request, ServerCallContext context)
+        public override async Task<CategoryGm> Post(CreateCategoryGm request, ServerCallContext context)
         {
+            Guid? parentId = null;
+            if(request.ParentId!="0000")
+            {
+                parentId = Guid.Parse(request.ParentId);
+            }
             var prdAdded = new Category()
             {
                 CategoryId = Guid.NewGuid(),
@@ -314,6 +319,7 @@ namespace AcceptsCoin.Services.CoreServer
                 CreatedById = getUserId(context),
                 CreatedDate = DateTime.Now,
                 Published = true,
+                ParentId = parentId,
             };
 
             var res = await _categoryRepository.Add(prdAdded);

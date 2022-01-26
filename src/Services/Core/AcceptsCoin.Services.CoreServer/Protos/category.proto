@@ -13,7 +13,7 @@ service CategoryAppService{
     rpc GetByPartnerId (PartnerCategoryQueryFilter) returns (CategoryListGm); 
     rpc GetFrontTree (Empty) returns (CategoryChildrenListGm);
     rpc GetById (CategoryIdFilter) returns (CategoryGm);
-    rpc Post (CategoryGm) returns (CategoryGm);
+    rpc Post (CreateCategoryGm) returns (CategoryGm);
     rpc Put (CategoryGm) returns (CategoryGm);
     rpc Delete (CategoryIdFilter) returns (Empty);
     rpc SoftDelete (CategoryIdFilter) returns (Empty);
@@ -46,6 +46,14 @@ message CategoryDeleteCollectionGm {
  repeated CategoryIdFilter items = 1;
 }
 
+message CreateCategoryGm {
+    string Id = 1;
+    string name = 2;
+    string icon = 3;
+    string logo = 4;
+    int32 priority = 5;
+    string parentId=6;
+}
 message CategoryGm {
     string Id = 1;
     string name = 2;

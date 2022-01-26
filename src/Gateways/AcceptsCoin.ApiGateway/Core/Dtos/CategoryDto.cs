@@ -9,12 +9,14 @@ namespace AcceptsCoin.ApiGateway.Core.Dtos
     public class CreateCategoryDto
     {
         public string Name { get; set; }
+
         public string Icon { get; set; }
+
+        public Guid? ParentId { get; set; } 
 
         public int Priority { get; set; }
 
-        public IFormFile File { get; set; }
-
+        public IFormFile? File { get; set; }
     }
     public class PartnerCategoryDto
     {
