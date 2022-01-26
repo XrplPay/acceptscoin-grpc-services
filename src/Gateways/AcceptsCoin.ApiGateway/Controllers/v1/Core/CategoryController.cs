@@ -326,19 +326,36 @@ namespace AcceptsCoin.ApiGateway.Controllers.v1.Core
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> Put(Guid id, [FromBody] UpdateCategoryDto updateCategory)
+        public async Task<ActionResult> Put(Guid id, [FromForm] UpdateCategoryDto updateCategory)
         {
             try
             {
                 var channel = GrpcChannel.ForAddress(channelUrl);
                 var client = new CategoryAppService.CategoryAppServiceClient(channel);
+
+
+
+
+                string logo;
+
+
+                if (updateCategory.File != null)
+                {
+                    logo = await Upload(updateCategory.File);
+                }
+                else
+                {
+                    logo = updateCategory.Logo;
+                }
+
+
                 var reply = await client.PutAsync(new CategoryGm
                 {
                     Id = id.ToString(),
                     Name = updateCategory.Name,
                     Icon = updateCategory.Icon
                     ,
-                    Logo = updateCategory.Logo,
+                    Logo = logo,
                     Priority = updateCategory.Priority
                 }, headers: GetHeader());
 

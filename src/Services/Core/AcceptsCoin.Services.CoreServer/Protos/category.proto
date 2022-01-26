@@ -55,11 +55,16 @@ message CreateCategoryGm {
     string parentId=6;
 }
 message CategoryGm {
+message FileGm{
+        string file = 1;
+    }
     string Id = 1;
     string name = 2;
     string icon = 3;
     string logo = 4;
     int32 priority = 5;
+    repeated FileGm files=6;
+
 }
 message CategoryListGm {
     repeated CategoryGm items = 1;
