@@ -24,51 +24,38 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Protos\" />
-    <None Remove="Services\" />
+    <PackageReference Include="Grpc.AspNetCore" Version="2.34.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Domain\" />
+    <None Remove="Domain\Common\" />
     <None Remove="Domain\Interfaces\" />
     <None Remove="Domain\Models\" />
-    <None Remove="GeoAPI" />
-    <None Remove="NetTopologySuite" />
-    <None Remove="Microsoft.EntityFrameworkCore" />
-    <None Remove="Core\" />
     <None Remove="Data\" />
-    <None Remove="Core\Interfaces\" />
-    <None Remove="Core\Services\" />
     <None Remove="Data\Context\" />
     <None Remove="Data\Repository\" />
-    <None Remove="Grpc.AspNetCore.Web" />
-    <None Remove="Npgsql.EntityFrameworkCore.PostgreSQL" />
-    <None Remove="Npgsql.EntityFrameworkCore.PostgreSQL.NetTopologySuite" />
-    <None Remove="Microsoft.EntityFrameworkCore.Design" />
-    <None Remove="Microsoft.EntityFrameworkCore.Tools" />
-    <None Remove="Microsoft.AspNetCore.Authentication.JwtBearer" />
-    <None Remove="Protos\business.proto" />
+    <None Remove="Protos\" />
+    <None Remove="Services\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Protos\" />
-    <Folder Include="Services\" />
     <Folder Include="Domain\" />
+    <Folder Include="Domain\Common\" />
     <Folder Include="Domain\Interfaces\" />
     <Folder Include="Domain\Models\" />
-    <Folder Include="Core\" />
     <Folder Include="Data\" />
-    <Folder Include="Core\Interfaces\" />
-    <Folder Include="Core\Services\" />
     <Folder Include="Data\Context\" />
     <Folder Include="Data\Repository\" />
+    <Folder Include="Protos\" />
+    <Folder Include="Services\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Common\AcceptsCoin.Common\AcceptsCoin.Common.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Protobuf Include="Protos\directoryservice.proto" GrpcServices="Server" />
-    <Protobuf Include="Protos\review.proto" GrpcServices="Server" />
-    <Protobuf Include="Protos\business.proto" GrpcServices="Server" />
-    <Protobuf Include="Protos\businessgallery.proto" GrpcServices="Server" />
+   <ItemGroup>
+    <Protobuf Include="Protos\invoice.proto" GrpcServices="Server" />
+    <Protobuf Include="Protos\store.proto" GrpcServices="Server" />
   </ItemGroup>
-  
 </Project>

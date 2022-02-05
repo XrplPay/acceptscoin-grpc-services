@@ -36,6 +36,12 @@
     <None Remove="Controllers\v1\Storage\" />
     <None Remove="Core\Dtos\Directory\" />
     <None Remove="Core\Dtos\Identity\" />
+    <None Remove="Controllers\v1\Exchange\" />
+    <None Remove="Controllers\v1\Email\" />
+    <None Remove="Controllers\v1\Notification\" />
+    <None Remove="Controllers\v1\Sms\" />
+    <None Remove="Controllers\v1\Ledger\" />
+    <None Remove="Core\Dtos\Pos\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\v1\Directory\" />
@@ -46,6 +52,12 @@
     <Folder Include="Controllers\v1\Storage\" />
     <Folder Include="Core\Dtos\Directory\" />
     <Folder Include="Core\Dtos\Identity\" />
+    <Folder Include="Controllers\v1\Pos\" />
+    <Folder Include="Controllers\v1\Email\" />
+    <Folder Include="Controllers\v1\Notification\" />
+    <Folder Include="Controllers\v1\Sms\" />
+    <Folder Include="Controllers\v1\Ledger\" />
+    <Folder Include="Core\Dtos\Pos\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.11.1" />
@@ -106,6 +118,12 @@
     </Protobuf>
     <Protobuf Include="..\..\Services\Core\AcceptsCoin.Services.CoreServer\Protos\coreservice.proto" GrpcServices="Client">
       <Link>Protos\coreservice.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\..\Services\Pos\AcceptsCoin.Services.PosServer\Protos\invoice.proto" GrpcServices="Client">
+      <Link>Protos\invoice.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\..\Services\Pos\AcceptsCoin.Services.PosServer\Protos\store.proto" GrpcServices="Client">
+      <Link>Protos\store.proto</Link>
     </Protobuf>
   </ItemGroup>
 </Project>

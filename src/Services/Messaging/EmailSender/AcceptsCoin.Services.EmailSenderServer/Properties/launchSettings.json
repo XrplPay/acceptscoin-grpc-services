@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "AcceptsCoin.Services.EmailSenderServer": {
+      "commandName": "Project",
+      "applicationUrl": "http://localhost:34110;https://localhost:9379",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}

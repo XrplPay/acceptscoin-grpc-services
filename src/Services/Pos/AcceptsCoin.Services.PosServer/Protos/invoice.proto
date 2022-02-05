@@ -1,0 +1,55 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "AcceptsCoin.Services.PosServer.Protos";
+
+
+package invoice;
+
+
+
+service InvoiceAppService{
+    rpc GetAll (InvoiceQueryFilter) returns (InvoiceListGm);
+    rpc GetById (InvoiceIdFilter) returns (InvoiceGm);
+    rpc Post (InvoiceGm) returns (InvoiceGm);
+    rpc Put (InvoiceGm) returns (InvoiceGm);
+    rpc UpdatePublishStatus (InvoiceIdFilter) returns (EmptyInvoice);
+    rpc Delete (InvoiceIdFilter) returns (EmptyInvoice);
+    rpc SoftDelete (InvoiceIdFilter) returns (EmptyInvoice);
+    rpc SoftDeleteCollection (InvoiceDeleteCollectionGm) returns (EmptyInvoice);
+}
+
+
+message EmptyInvoice{
+}
+
+
+message InvoiceQueryFilter {
+ int32 pageId = 1;
+ int32 pageSize = 2;
+ string storeId = 3;
+}
+
+message InvoiceIdFilter {
+ string InvoiceId = 1;
+}
+
+message InvoiceDeleteCollectionGm {
+ repeated InvoiceIdFilter items = 1;
+}
+
+message InvoiceGm {
+    string Id = 1;
+    float Amount = 2;
+    string Currency =3;
+    optional string OrderId=4;
+    string CustomerEmail=5;
+    string NotificationUrl=6;
+    string NotificationEmail=7;
+    string StoreId=8;
+}
+message InvoiceListGm {
+    repeated InvoiceGm items = 1;
+    int32 currentPage = 2;
+    int32 itemCount = 3;
+    int32 pageCount = 4; 
+}

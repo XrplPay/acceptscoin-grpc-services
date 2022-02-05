@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "AcceptsCoin.Services.NotificationSenderServer": {
+      "commandName": "Project",
+      "applicationUrl": "http://localhost:56727;https://localhost:41748",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}

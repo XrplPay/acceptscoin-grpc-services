@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "AcceptsCoin.Services.SmsSenderServer": {
+      "commandName": "Project",
+      "applicationUrl": "http://localhost:6359;https://localhost:45439",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}

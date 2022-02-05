@@ -1,0 +1,79 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "AcceptsCoin.Services.PosServer.Protos";
+
+
+package store;
+
+
+
+service StoreAppService{
+    rpc GetAll (StoreQueryFilter) returns (StoreListGm);
+    rpc GetById (StoreIdFilter) returns (StoreGm);
+    rpc Post (CreateStoreGm) returns (StoreGm);
+    rpc WoocommercePost (WoocommerceCreateStoreGm) returns (WoocommerceStoreGm);
+    rpc Put (UpdateStoreGm) returns (StoreGm);
+    rpc UpdatePublishStatus (StoreIdFilter) returns (EmptyStore);
+    rpc Delete (StoreIdFilter) returns (EmptyStore);
+    rpc SoftDelete (StoreIdFilter) returns (EmptyStore);
+    rpc SoftDeleteCollection (StoreDeleteCollectionGm) returns (EmptyStore);
+}
+
+
+message EmptyStore{
+}
+
+
+message StoreQueryFilter {
+ int32 pageId = 1;
+ int32 pageSize = 2;
+}
+
+message StoreIdFilter {
+ string StoreId = 1;
+}
+
+message StoreDeleteCollectionGm {
+ repeated StoreIdFilter items = 1;
+}
+
+message WoocommerceCreateStoreGm {
+    string Name = 1;
+    string WebSite =2;
+    string DefaultCurrency=3;
+    string Email=4;
+    string UserId=5;
+}
+message WoocommerceStoreGm {
+    string Email=1;
+}
+message UpdateStoreGm {
+    string Id = 1;
+    string Name = 2;
+    string DefaultCurrency=3;
+    int32 Threshold=4;
+    int32 RefundDay=5;
+}
+message CreateStoreGm {
+    string Name = 1;
+    string WebSite =2;
+    string DefaultCurrency=3;
+    int32 Threshold=4;
+    int32 RefundDay=5;
+    string Email=6;
+}
+message StoreGm {
+    string Id = 1;
+    string Name = 2;
+    string WebSite =3;
+    string DefaultCurrency=4;
+    int32 Threshold=5;
+    int32 RefundDay=6;
+    string Email=7;
+}
+message StoreListGm {
+    repeated StoreGm items = 1;
+    int32 currentPage = 2;
+    int32 itemCount = 3;
+    int32 pageCount = 4; 
+}
