@@ -65,6 +65,7 @@ namespace AcceptsCoin.Services.DirectoryServer
             response.ImageUrl = getDefaultImage(business.BusinessGalleries);
             response.WebSiteUrl = business.WebSiteUrl;
             response.LocationName = "United state";
+            response.Address = business.Address;
             response.Rate = 5;
             response.Description = business.Description;
             response.Name = business.Name;
@@ -175,7 +176,7 @@ namespace AcceptsCoin.Services.DirectoryServer
 
 
 
-            for (int i = 0; i < businesses.Count() - 1; i++)
+            for (int i = 0; i <= businesses.Count() - 1; i++)
             {
                 var tokens = from token in buinessList.ElementAt(i).BusinessTokens
                              select new BusinessFrontGm.Types.BusinessTokenFrontGm()
@@ -274,7 +275,7 @@ namespace AcceptsCoin.Services.DirectoryServer
 
             response.Items.AddRange(businesses.ToArray());
 
-            for (int i = 0; i < businesses.Count() - 1; i++)
+            for (int i = 0; i <= businesses.Count() - 1; i++)
             {
                 var tokens = from token in buinessList.ElementAt(i).BusinessTokens
                              select new BusinessFrontGm.Types.BusinessTokenFrontGm()
@@ -375,7 +376,7 @@ namespace AcceptsCoin.Services.DirectoryServer
 
             response.Items.AddRange(businesses.ToArray());
 
-            for (int i = 0; i < businesses.Count() - 1; i++)
+            for (int i = 0; i <= businesses.Count() - 1; i++)
             {
                 var tokens = from token in buinessList.ElementAt(i).BusinessTokens
                              select new BusinessFrontGm.Types.BusinessTokenFrontGm()
@@ -487,7 +488,7 @@ namespace AcceptsCoin.Services.DirectoryServer
             
             response.Items.AddRange(businesses.ToArray());
 
-            for (int i = 0; i < businesses.Count() - 1; i++)
+            for (int i = 0; i <= businesses.Count() - 1; i++)
             {
                 var tokens = from token in buinessList.ElementAt(i).BusinessTokens
                              select new BusinessTokenFrontGm()
